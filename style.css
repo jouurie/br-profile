@@ -199,25 +199,24 @@ body[data-page=intro] .site-footer{display:none}
 .world-note-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
 .world-note-tabs button{background:var(--paper);border:1px solid var(--blue);padding:5px 9px;min-height:40px;color:var(--navy);font-size:13px}
 .world-note-tabs button[aria-selected=true]{background:var(--blue);color:var(--paper)}
-.keepsake{position:relative;background:var(--paper);border:0;outline:0;box-shadow:4px 5px 0 var(--navy);padding:25px 25px 30px;border-radius:0;isolation:isolate;background-image:linear-gradient(color-mix(in srgb,var(--paper) 65%,transparent),color-mix(in srgb,var(--paper) 65%,transparent)),url('assets/paper-texture.png');background-size:auto,360px 360px;background-color:var(--paper);margin:0 7px}
-.keepsake:before{content:'';position:absolute;z-index:-1;inset:4px -4px -4px;background:var(--paper);border:1px solid var(--navy);transform:rotate(-.7deg);border-radius:3px}
-.keepsake:after{content:'';position:absolute;z-index:-1;inset:8px 2px -7px;background:var(--paper);border:1px solid var(--navy);transform:rotate(.5deg);border-radius:3px}
-.opening-top{display:grid;grid-template-columns:43% 1fr;gap:18px;align-items:center;margin:0 0 35px;margin-bottom:32px;position:relative;padding-top:0}
+.keepsake{position:relative;margin:8px 3px 4px}
+.opening-top,.opening-layout{position:relative;isolation:isolate}
+.opening-top{display:grid;grid-template-columns:43% minmax(0,1fr);gap:18px;align-items:center;margin-bottom:16px;padding:25px 25px 24px}
 .opening-top>.pool-photo{transform:rotate(-7deg);z-index:2;width:285px;max-width:100%;margin-top:-8px;margin-left:-8px;padding:10px 10px 15px}
 .opening-top .pool-photo img{height:175px}
 .opening-top .pool-photo figcaption{font-size:23px;text-align:left;padding:8px 5px 0;line-height:1}
-.opening-heading{position:relative;padding:6px 0;isolation:isolate}
-.opening-heading h1{font-size:83px;color:var(--paper);background:none;text-shadow:3px 4px 0 var(--cyan);transform:rotate(-5deg);padding:10px 2px;white-space:nowrap;position:relative;line-height:1.5;z-index:0}
-.opening-heading>.star-mark{position:absolute;right:-5px;top:83px;width:38px;height:38px}
+.opening-heading{position:relative;min-width:0;padding:6px 0;isolation:isolate}
+.opening-heading h1{font-size:83px;color:var(--paper);background:none;text-shadow:3px 4px 0 var(--cyan);transform:rotate(-5deg);padding:10px 7px;white-space:nowrap;position:relative;line-height:1.15;z-index:0}
+.opening-heading>.star-mark{position:absolute;right:-5px;top:74px;width:37px;height:37px}
 .opening-heading .name-ticket{font-size:24px;margin-top:3px;width:85%}
 .opening-heading .wave-mark{display:block;margin-left:10px;height:28px;width:145px;margin-top:13px}
-.opening-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px}
-.opening-copy{min-width:0;background:repeating-linear-gradient(transparent 0 31px,color-mix(in srgb,var(--blue) 8%,transparent) 31px 32px);padding:12px 0 0}
+.opening-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;padding:26px 25px 28px}
+.opening-copy{min-width:0;padding:0}
 .opening-number{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);color:var(--paper);min-width:53px;height:40px;border:2px solid var(--ink);font:27px Bangers,sans-serif;transform:rotate(-3deg);margin-bottom:14px}
-.opening-copy h2{font-size:22px;color:var(--blue);margin-bottom:15px}
+.opening-copy h2{font-size:25px;line-height:1.35;color:var(--blue);margin-bottom:17px}
 .opening-text{font-size:16px;line-height:1.9;margin-bottom:24px}
-.opening-copy .prose{font-size:15px;line-height:1.9}
-.opening-copy .prose .subnote{font-size:12px}
+.opening-copy .prose{font-size:16px;line-height:27px}
+.opening-copy .prose .subnote{font-size:14px}
 .opening-mementos{padding-top:12px;min-width:0;position:relative}
 .opening-mementos .portrait{width:248px;transform:rotate(6deg);max-width:100%;padding:10px 10px 20px;z-index:2}
 .opening-mementos .portrait img{height:284px;object-position:50% 15%}
@@ -554,18 +553,18 @@ body[data-page=intro] .site-footer{display:none}
 .world-notes>h2{font-size:21px}
 .world-note-tabs button{font-size:12px;padding:5px 8px}
 .world-notes .prose{font-size:15px}
-.keepsake{padding:22px 18px 26px;border-width:5px;margin:0 4px}
-.opening-top{gap:14px;margin-bottom:30px;grid-template-columns:44% 1fr}
+.keepsake{margin:0 2px 3px}
+.opening-top{gap:14px;margin-bottom:15px;grid-template-columns:44% minmax(0,1fr);padding:22px 18px 24px}
 .opening-top .pool-photo img{height:123px}
 .opening-top .pool-photo figcaption{font-size:18px;line-height:1.05;padding-top:7px}
-.opening-heading h1{font-size:37px;padding:9px 0;line-height:1.5}
+.opening-heading h1{font-size:42px;padding:9px 2px;line-height:1.15}
 .opening-heading .name-ticket{font-size:19px;width:96%;margin-top:3px}
-.opening-heading>.star-mark{width:28px;height:28px;top:48px}
+.opening-heading>.star-mark{width:27px;height:27px;top:45px}
 .opening-heading .wave-mark{width:95px;height:25px;margin-top:10px}
-.opening-layout{grid-template-columns:1fr;gap:25px}
+.opening-layout{grid-template-columns:1fr;gap:25px;padding:23px 18px 25px}
 .opening-copy h2{font-size:23px}
-.opening-copy .prose{font-size:15px}
-.opening-copy .prose .subnote{font-size:13px}
+.opening-copy .prose{font-size:16px}
+.opening-copy .prose .subnote{font-size:14px}
 .opening-mementos{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:3px 4px 7px;align-items:start}
 .opening-mementos .portrait img{height:218px}
 .opening-mementos .portrait figcaption{font-size:20px}
@@ -693,7 +692,7 @@ body[data-page=intro] .site-footer{display:none}
 .album-reading{padding-inline:16px}
 .tab-row button{font-size:11px}
 .site-footer .handwritten{display:none}
-.opening-heading h1{font-size:32px}
+.opening-heading h1{font-size:37px}
 .opening-heading .name-ticket{font-size:17px}
 .opening-top .pool-photo img{height:111px}
 .cassette-panel{padding-inline:12px}
