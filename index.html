@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1459d9">
+  <meta name="description" content="브렌든 헤일 소개, 꿈의 워터파크 세계관, 시작 안내와 플레이리스트.">
+  <title>브렌든 헤일 | BR Dream Log</title>
+  <link rel="preload" href="fonts/Cafe24Ohsquare.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="fonts/Bangers-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="content.js"></script>
+  <script defer src="youtube-engine.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">본문으로</a>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="브렌든 홈"><b>BR</b><span>DREAM LOG<span aria-hidden="true">✦</span></span></a>
+    <nav aria-label="주 메뉴">
+      <a href="#home" data-route="home">홈</a>
+      <a href="#profile" data-route="profile">프로필</a>
+      <a href="#world" data-route="world">세계관</a>
+      <a href="#opening" data-route="opening">시작하기</a>
+      <a href="#guide" data-route="guide">플레이가이드</a>
+      <a href="#playlist" data-route="playlist">플레이리스트</a>
+    </nav>
+    <a class="admit" href="#opening">꿈으로 입장 <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <aside class="music-dock" aria-label="음악 재생기">
+    <div class="dock-label"><span class="music-light" aria-hidden="true"></span><span id="dock-title">여름밤의 플레이리스트</span></div>
+    <div class="transport">
+      <button type="button" data-music="prev" aria-label="이전 곡"></button>
+      <button type="button" data-music="toggle" aria-label="재생"></button>
+      <button type="button" data-music="next" aria-label="다음 곡"></button>
+      <a href="#playlist" aria-label="플레이리스트 열기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h10"/></svg></a>
+    </div>
+  </aside>
+  <div id="media-host" class="media-host"><div id="youtube-player"></div></div>
+  <p id="music-message" class="music-message" role="status" hidden></p>
+  <footer class="site-footer"><a class="brand" href="#home"><b>BR</b><span>DREAM LOG<span aria-hidden="true">✦</span></span></a><span class="handwritten">언제나, 여름의 끝에서.</span><a href="#main" class="top-link" aria-label="본문 맨 위로">↑</a></footer>
+  <noscript>이 페이지의 화면 전환과 음악 재생에는 JavaScript가 필요합니다.</noscript>
+</body>
+</html>
