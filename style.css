@@ -206,14 +206,14 @@ body[data-page=intro] .site-footer{display:none}
 .opening-top .pool-photo img{height:175px}
 .opening-top .pool-photo figcaption{font-size:23px;text-align:left;padding:8px 5px 0;line-height:1}
 .opening-heading{position:relative;min-width:0;padding:6px 0;isolation:isolate}
-.opening-heading h1{font-size:83px;color:var(--paper);background:none;text-shadow:3px 4px 0 var(--cyan);transform:rotate(-5deg);padding:10px 7px;white-space:nowrap;position:relative;line-height:1.15;z-index:0}
+.opening-heading h1{font-size:48px;color:var(--paper);background:none;text-shadow:3px 4px 0 var(--cyan);transform:rotate(-5deg);padding:10px 7px;position:relative;line-height:1.3;z-index:0}
+.opening-heading h1>span{display:block;white-space:nowrap}
 .opening-heading>.star-mark{position:absolute;right:-5px;top:74px;width:37px;height:37px}
 .opening-heading .name-ticket{font-size:24px;margin-top:3px;width:85%}
 .opening-heading .wave-mark{display:block;margin-left:10px;height:28px;width:145px;margin-top:13px}
 .opening-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;padding:26px 25px 28px}
 .opening-copy{min-width:0;padding:0}
 .opening-number{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);color:var(--paper);min-width:53px;height:40px;border:2px solid var(--ink);font:27px Bangers,sans-serif;transform:rotate(-3deg);margin-bottom:14px}
-.opening-copy h2{font-size:25px;line-height:1.35;color:var(--blue);margin-bottom:17px}
 .opening-text{font-size:16px;line-height:1.9;margin-bottom:24px}
 .opening-copy .prose{font-size:16px;line-height:27px}
 .opening-copy .prose .subnote{font-size:14px}
@@ -557,12 +557,11 @@ body[data-page=intro] .site-footer{display:none}
 .opening-top{gap:14px;margin-bottom:15px;grid-template-columns:44% minmax(0,1fr);padding:22px 18px 24px}
 .opening-top .pool-photo img{height:123px}
 .opening-top .pool-photo figcaption{font-size:18px;line-height:1.05;padding-top:7px}
-.opening-heading h1{font-size:42px;padding:9px 2px;line-height:1.15}
+.opening-heading h1{font-size:25px;padding:9px 2px;line-height:1.3}
 .opening-heading .name-ticket{font-size:19px;width:96%;margin-top:3px}
 .opening-heading>.star-mark{width:27px;height:27px;top:45px}
 .opening-heading .wave-mark{width:95px;height:25px;margin-top:10px}
 .opening-layout{grid-template-columns:1fr;gap:25px;padding:23px 18px 25px}
-.opening-copy h2{font-size:23px}
 .opening-copy .prose{font-size:16px}
 .opening-copy .prose .subnote{font-size:14px}
 .opening-mementos{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:3px 4px 7px;align-items:start}
@@ -692,7 +691,7 @@ body[data-page=intro] .site-footer{display:none}
 .album-reading{padding-inline:16px}
 .tab-row button{font-size:11px}
 .site-footer .handwritten{display:none}
-.opening-heading h1{font-size:37px}
+.opening-heading h1{font-size:22px}
 .opening-heading .name-ticket{font-size:17px}
 .opening-top .pool-photo img{height:111px}
 .cassette-panel{padding-inline:12px}
@@ -756,4 +755,86 @@ html{scrollbar-color:auto}
 .intro-ticket .hook-sub{font-size:19px}
 .intro-ticket .name-ticket{font-size:27px}
 .intro-quote{right:0;font-size:43px}
+}
+/* Opening: one scene-led paper, followed by practical guidance. */
+.opening-story,.opening-guide{position:relative;isolation:isolate;padding:28px;min-width:0}
+.opening-story-header{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:14px;align-items:center;margin-bottom:24px}
+.opening-story-number{font:30px/1 Bangers,sans-serif;color:var(--blue)}
+.opening-story-header h1{margin:0;font:30px/1.45 var(--display);color:var(--ink);overflow-wrap:anywhere;text-wrap:balance}
+.opening-read,.opening-dialog-close{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:44px;padding:8px 14px;border:2px solid var(--ink);border-radius:0;background:var(--blue);color:var(--paper);font:600 16px/1.5 var(--body);white-space:nowrap}
+.opening-read:focus-visible,.opening-dialog-close:focus-visible{outline-color:var(--blue);outline-offset:4px}
+@media(hover:hover){.opening-read:hover,.opening-dialog-close:hover{background:var(--metal)}}
+.opening-read:active,.opening-dialog-close:active{background:var(--navy)}
+.opening-scene{margin:0 0 24px;padding:8px;background:var(--paper);border:2px solid var(--ink)}
+.opening-scene img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.opening-story-summary{font-size:16px;line-height:1.9;margin:0}
+.opening-story-quote{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:12px;margin:20px 0 0;font:32px/1.3 Pen,cursive;color:var(--blue)}
+.opening-story-quote .wave-mark{width:90px;height:24px}
+.opening-guide{margin-top:24px}
+.opening-guide h2{margin:0 0 18px;font:22px/1.5 var(--display);color:var(--blue)}
+.opening-guide .prose{font-size:16px;line-height:1.8}
+.opening-guide .prose .subnote{font-size:14px}
+.opening-dialog{width:min(720px,calc(100% - 40px));max-width:none;max-height:calc(100dvh - 48px);padding:0;border:2px solid var(--ink);border-radius:0;background:var(--paper) url('assets/paper-texture.png') repeat;color:var(--ink);overflow:hidden;scrollbar-color:var(--blue) var(--paper)}
+.opening-dialog[open]{display:grid;grid-template-rows:auto minmax(0,1fr)}
+.opening-dialog::backdrop{background:color-mix(in srgb,var(--navy) 25%,transparent)}
+.opening-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 24px;border-bottom:2px solid var(--blue);background:var(--paper)}
+.opening-dialog-header h2{margin:0;font:26px/1.5 var(--display);overflow-wrap:anywhere}
+.opening-dialog-close{flex-shrink:0}
+.opening-dialog-close span{font:24px/1 var(--body)}
+.opening-full-text{padding:28px 32px;overflow:auto;overscroll-behavior:contain;white-space:pre-wrap;overflow-wrap:anywhere;font:16px/1.95 var(--body);min-height:0;scrollbar-color:var(--blue) var(--paper)}
+.opening-full-text:focus-visible{outline:2px solid var(--blue);outline-offset:-6px}
+@media(max-width:600px){
+  .opening-story,.opening-guide{padding:24px 20px}
+  .opening-story-header{grid-template-columns:28px minmax(0,1fr);gap:10px 12px;margin-bottom:20px}
+  .opening-story-header h1{font-size:24px}
+  .opening-story-number{font-size:28px;align-self:start;padding-top:4px}
+  .opening-read{grid-column:2;justify-self:start}
+  .opening-scene{padding:5px;margin-bottom:20px}
+  .opening-story-quote{font-size:28px;gap:8px}
+  .opening-story-quote .wave-mark{width:64px;height:20px}
+  .opening-guide h2{font-size:20px}
+  .opening-dialog{width:calc(100% - 24px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);margin:auto}
+  .opening-dialog-header{gap:12px;padding:16px}
+  .opening-dialog-header h2{font-size:22px}
+  .opening-dialog-close{padding:8px 10px;gap:8px}
+  .opening-full-text{padding:24px 20px}
+}
+/* Entrance alignment and independent title cutouts; other routes retain their material system. */
+.intro-view{padding-inline:0}
+.intro-ticket{left:44%;padding:34px 45px 30px;transform:translateX(-50%) rotate(-6deg)}
+.intro-ticket .ticket-title{font-size:156px;line-height:.84}
+.intro-ticket .ticket-title:before{display:none}
+.intro-ticket .ticket-title>span{position:relative;isolation:isolate;width:max-content}
+.intro-ticket .ticket-title>span:before{content:'';position:absolute;z-index:-1;inset:.015em -.09em -.03em;background:var(--ink);clip-path:polygon(0 14%,20% 8%,20% 4%,35% 7%,58% 0,58% 4%,92% 0,94% 9%,100% 8%,98% 27%,100% 43%,97% 64%,100% 88%,83% 94%,80% 99%,56% 95%,34% 100%,31% 95%,5% 100%,4% 89%,0 90%,3% 60%,0 36%)}
+.intro-ticket .ticket-title .star-mark{width:70px;height:70px;right:-4px;top:27%;z-index:3}
+.intro-ticket.hero-ticket>.palm-mark{left:24px;top:41%;width:100px;height:145px}
+.intro-ticket .name-ticket{width:62%;margin:4px 0 14px auto;font-size:30px}
+.intro-ticket h1{margin-top:16px}
+.intro-ticket .admission-button{margin-top:24px}
+.intro-ticket .intro-wave{pointer-events:none}
+.intro-ticket .intro-wave .wave-back,.intro-ticket .intro-wave .wave-front{fill:var(--cyan)}
+.intro-wave-1{left:4%;top:36%;width:82px;height:34px;transform:rotate(-10deg)}
+.intro-wave-2{right:5%;top:34%;width:72px;height:30px;transform:rotate(8deg)}
+.intro-wave-3{left:5%;bottom:23%;width:96px;height:37px;transform:rotate(3deg)}
+.intro-wave-4{right:6%;bottom:31%;width:105px;height:40px;transform:rotate(-7deg)}
+@media(max-width:1050px) and (min-width:601px){
+  .intro-ticket .ticket-title{font-size:clamp(82px,10.83vw,128px)}
+}
+@media(max-width:600px){
+  .intro-view{padding-inline:20px}
+  .intro-ticket{left:50%;padding:29px 25px 24px;transform:translateX(-50%) rotate(-4deg)}
+  .intro-ticket .ticket-title{font-size:93px;line-height:.88}
+  .intro-ticket .ticket-title .star-mark{width:48px;height:48px}
+  .intro-ticket.hero-ticket>.palm-mark{left:10px;top:41%;width:66px;height:96px}
+  .intro-ticket .name-ticket{width:66%;font-size:21px;margin:2px 0 20px auto}
+  .intro-wave-1{left:3%;top:35%;width:48px;height:24px}
+  .intro-wave-2{right:3%;top:32%;width:45px;height:22px}
+  .intro-wave-3{left:4%;bottom:25%;width:52px;height:24px}
+  .intro-wave-4{right:4%;bottom:29%;width:54px;height:26px}
+}
+@media(max-width:390px){
+  .intro-ticket{padding:27px 23px 24px}
+  .intro-ticket .ticket-title{font-size:82px}
+  .intro-ticket .ticket-title .star-mark{width:43px;height:43px}
+  .intro-ticket .name-ticket{font-size:19px}
 }
