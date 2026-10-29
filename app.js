@@ -114,10 +114,27 @@
       <article class="intro-paper"><h2>소개</h2><div class="tag-row">${data.tags.flatMap(tag=>tag==='ALL'?['HL','BL']:[tag]).map(tag=>`<span class="tag">${escape(tag)}</span>`).join('')}</div>${prose(data.intro)}</article>
     </section>`;
   }
+  const profilePaper = id => `<svg class="profile-paper-frame" aria-hidden="true"><defs><pattern id="profile-paper-${id}" width="300" height="300" patternUnits="userSpaceOnUse"><rect width="300" height="300" fill="var(--paper)" stroke="none"/><image href="assets/paper-texture.png" width="300" height="300" opacity=".35" stroke="none"/></pattern></defs><path fill="url(#profile-paper-${id})"/></svg>`;
+  function drawProfilePaper(node) {
+    const svg=node.querySelector(':scope > .profile-paper-frame');if(!svg)return;
+    const w=node.clientWidth,h=node.clientHeight;if(!w||!h)return;
+    const right=w-1,bottom=h-1;let d=`M1 1H${right}`;
+    for(let y=23,i=0;y<bottom-14;y+=[35,41,32,38][i++%4]){const r=[7,6,8][i%3];d+=`V${y-r}Q${right-r*2} ${y} ${right} ${y+r}`;}
+    d+=`V${bottom}H1`;const cuts=[];
+    for(let y=29,i=0;y<bottom-14;y+=[39,33,43,35][i++%4])cuts.push([y,[6,8,7][i%3]]);
+    for(const [y,r] of cuts.reverse())d+=`V${y+r}Q${1+r*2} ${y} 1 ${y-r}`;
+    svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.querySelector('path').setAttribute('d',d+'V1Z');
+  }
+  let profilePaperObserver;
+  function mountProfilePapers(){
+    profilePaperObserver?.disconnect();if(route!=='profile')return;
+    profilePaperObserver=new ResizeObserver(entries=>entries.forEach(entry=>drawProfilePaper(entry.target)));
+    document.querySelectorAll('.profile-hero,.profile-body').forEach(node=>{drawProfilePaper(node);profilePaperObserver.observe(node);});
+  }
   const profileGroups = [[0,1],[2,4],[3,5]];
-  function profileContent() { return profileGroups[profileTab].map(index => `<h3>${escape(label(data.profile[index].title))}</h3>${prose(data.profile[index].text)}`).join(''); }
+  function profileContent() { return profilePaper('body')+profileGroups[profileTab].map(index => `<h3>${star}<span>${escape(label(data.profile[index].title))}</span>${waves}</h3>${prose(data.profile[index].text)}`).join(''); }
   function profile() {
-    return `<section class="view profile-view"><article class="profile-sheet"><div class="profile-hero">${portraitPhoto('profile-portrait')}<div class="profile-identity">${palm}<span class="profile-stamp" aria-hidden="true">FIRST<br>DREAM</span><h1 class="profile-title" aria-label="브렌든 헤일"><span>브렌든</span> <span>헤일</span>${star}</h1><p class="profile-nameplate">Brendan Hale</p><p class="profile-metadata">18세<span>·</span>캐나다 레스브리지<span>·</span>라이프가드</p><blockquote class="profile-quote">“끝나고 잠깐 보자.”${waves}</blockquote></div></div><div class="profile-tabs" role="tablist" aria-label="프로필 항목">${['기본 정보·외형','성격·버릇·특징','말투·취향'].map((name,i)=>`<button type="button" role="tab" id="profile-tab-${i}" data-profile="${i}" aria-selected="${profileTab===i}" aria-controls="profile-panel">${ticketFrame(profileTab===i?'blue':'paper','row')}<span>${name}</span>${waves}</button>`).join('')}</div><div id="profile-panel" class="profile-body" role="tabpanel" aria-labelledby="profile-tab-${profileTab}">${profileContent()}</div></article></section>`;
+    return `<section class="view profile-view"><article class="profile-sheet"><div class="profile-hero">${profilePaper('hero')}<div class="profile-photo">${portraitPhoto('profile-portrait')}${star}</div><div class="profile-identity">${palm}<span class="profile-stamp" aria-hidden="true">FIRST<br>DREAM</span><p class="profile-handwritten handwritten">언제나, 여름의 끝에서.</p><h1 class="profile-title" aria-label="브렌든 헤일"><span>브렌든</span> <span>헤일</span>${star}</h1><p class="profile-nameplate">Brendan Hale</p><p class="profile-metadata">18세<span>·</span>캐나다 레스브리지<span>·</span>라이프가드</p><blockquote class="profile-quote">“끝나고 잠깐 보자.”${waves}</blockquote></div></div><div class="profile-tabs" role="tablist" aria-label="프로필 항목">${['기본 정보·외형','성격·버릇·특징','말투·취향'].map((name,i)=>`<button type="button" role="tab" id="profile-tab-${i}" data-profile="${i}" aria-selected="${profileTab===i}" aria-controls="profile-panel">${ticketFrame(profileTab===i?'blue':'paper','row')}<span>${name.replaceAll('·','<span class="profile-separator">·</span>')}</span>${waves}</button>`).join('')}</div><div id="profile-panel" class="profile-body" role="tabpanel" aria-labelledby="profile-tab-${profileTab}">${profileContent()}</div></article></section>`;
   }
   const places = [
     {name:'입구',x:14,y:79,text:'매표소 직원은 표를 끊고 손목에 팔찌를 채웁니다.'},
@@ -155,6 +172,7 @@
       if(groupIndex!==-1){guideKey=key;guideGroup=groupIndex;}
     }
     main.innerHTML=views[route]();
+    mountProfilePapers();
     document.body.dataset.page=route;
     document.title=`${titles[route]} | 브렌든 헤일`;
     document.querySelectorAll('[data-route]').forEach(link=>{if(link.dataset.route===route)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
@@ -233,7 +251,7 @@
     if(button.hasAttribute('data-profile')){
       profileTab=Number(button.dataset.profile);
       document.querySelectorAll('[data-profile]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
-      const panel=document.getElementById('profile-panel');panel.innerHTML=profileContent();panel.setAttribute('aria-labelledby',button.id);
+      const panel=document.getElementById('profile-panel');panel.innerHTML=profileContent();panel.setAttribute('aria-labelledby',button.id);drawProfilePaper(panel);
     }
     if(button.hasAttribute('data-world')){
       worldTab=Number(button.dataset.world);document.querySelectorAll('[data-world]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
