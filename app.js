@@ -111,12 +111,13 @@
         <a class="start-link" href="#guide/명령어">${startFrame('cyan')}<b>03</b><span><strong>명령어<span class="middle-dot">·</span>상태창 <span aria-hidden="true">›</span></strong><small>기본 명령어와<br>상태창 구성을 확인합니다.</small></span></a>
       </div><div class="quick-links"><a href="#guide/플레이 팁">${railIcon('tip')}플레이 팁 <span aria-hidden="true">›</span></a><a href="#guide/로어북 예산 안내">${railIcon('book')}로어북 예산 <span aria-hidden="true">›</span></a><a href="#guide/채팅방 이전 안내">${railIcon('chat')}채팅방 이전 <span aria-hidden="true">›</span></a></div></section>
       <div class="disclosures"><div class="disclosure-buttons"><button type="button" data-disclose="tw" aria-expanded="false" aria-controls="tw-panel">${railIcon('chat')}TW <span aria-hidden="true">+</span></button><button type="button" data-disclose="motif" aria-expanded="false" aria-controls="motif-panel">${railIcon('book')}MOTIF <span aria-hidden="true">+</span></button></div><div id="tw-panel" class="disclosure-body" hidden>${prose(data.tw)}</div><div id="motif-panel" class="disclosure-body" hidden>${prose(sections['모티브'])}</div></div>
+      <article class="intro-paper"><h2>소개</h2><div class="tag-row">${data.tags.flatMap(tag=>tag==='ALL'?['HL','BL']:[tag]).map(tag=>`<span class="tag">${escape(tag)}</span>`).join('')}</div>${prose(data.intro)}</article>
     </section>`;
   }
   const profileGroups = [[0,1],[2,4],[3,5]];
   function profileContent() { return profileGroups[profileTab].map(index => `<h3>${escape(label(data.profile[index].title))}</h3>${prose(data.profile[index].text)}`).join(''); }
   function profile() {
-    return `<section class="view profile-view"><div class="album"><div class="album-photos">${poolPhoto()}${portraitPhoto()}${star}${waves}</div><div class="album-reading">${palm}<span class="album-stamp" aria-hidden="true">FIRST DREAM</span><h1 class="album-name">브렌든 헤일</h1><p class="english-name">Brendan Hale</p><p class="profile-metadata">18세<span>·</span>캐나다 레스브리지<span>·</span>라이프가드</p><blockquote class="album-quote">“끝나고 잠깐 보자.”</blockquote><div class="tab-row" role="tablist" aria-label="프로필 항목">${['기본 정보·외형','성격·버릇·특징','말투·취향'].map((name,i)=>`<button type="button" role="tab" id="profile-tab-${i}" data-profile="${i}" aria-selected="${profileTab===i}" aria-controls="profile-panel">${ticketFrame(profileTab===i?'blue':'paper','row')}${name}</button>`).join('')}</div><div id="profile-panel" class="album-panel" role="tabpanel" aria-labelledby="profile-tab-${profileTab}" tabindex="0">${profileContent()}</div></div></div><article class="intro-paper"><h2>소개</h2><div class="tag-row">${data.tags.flatMap(tag=>tag==='ALL'?['HL','BL']:[tag]).map(tag=>`<span class="tag">${escape(tag)}</span>`).join('')}</div>${prose(data.intro)}</article></section>`;
+    return `<section class="view profile-view"><article class="profile-sheet"><div class="profile-hero">${portraitPhoto('profile-portrait')}<div class="profile-identity">${palm}<span class="profile-stamp" aria-hidden="true">FIRST<br>DREAM</span><h1 class="profile-title" aria-label="브렌든 헤일"><span>브렌든</span> <span>헤일</span>${star}</h1><p class="profile-nameplate">Brendan Hale</p><p class="profile-metadata">18세<span>·</span>캐나다 레스브리지<span>·</span>라이프가드</p><blockquote class="profile-quote">“끝나고 잠깐 보자.”${waves}</blockquote></div></div><div class="profile-tabs" role="tablist" aria-label="프로필 항목">${['기본 정보·외형','성격·버릇·특징','말투·취향'].map((name,i)=>`<button type="button" role="tab" id="profile-tab-${i}" data-profile="${i}" aria-selected="${profileTab===i}" aria-controls="profile-panel">${ticketFrame(profileTab===i?'blue':'paper','row')}<span>${name}</span>${waves}</button>`).join('')}</div><div id="profile-panel" class="profile-body" role="tabpanel" aria-labelledby="profile-tab-${profileTab}">${profileContent()}</div></article></section>`;
   }
   const places = [
     {name:'입구',x:14,y:79,text:'매표소 직원은 표를 끊고 손목에 팔찌를 채웁니다.'},
@@ -155,25 +156,12 @@
     }
     main.innerHTML=views[route]();
     document.body.dataset.page=route;
-    if(route==='profile'){
-      const panel=document.getElementById('profile-panel');
-      panel.insertAdjacentHTML('afterend','<button type="button" class="profile-more" data-profile-scroll aria-controls="profile-panel">아래 내용 더 보기 <span aria-hidden="true">↓</span></button>');
-      panel.addEventListener('scroll',syncProfileScroll,{passive:true});
-      requestAnimationFrame(syncProfileScroll);
-    }
     document.title=`${titles[route]} | 브렌든 헤일`;
     document.querySelectorAll('[data-route]').forEach(link=>{if(link.dataset.route===route)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
     document.querySelector('[data-route][aria-current=page]')?.scrollIntoView({block:'nearest',inline:'nearest'});
     updateMusic();
     window.scrollTo({top:0,behavior:'instant'});
     if(route==='guide'&&rawKey)requestAnimationFrame(()=>document.getElementById('guide-content').scrollIntoView({block:'start',behavior:'instant'}));
-  }
-
-  function syncProfileScroll(){
-    const panel=document.getElementById('profile-panel'),button=document.querySelector('[data-profile-scroll]');
-    if(!panel||!button)return;
-    button.hidden=panel.scrollHeight<=panel.clientHeight+1;
-    button.disabled=panel.scrollTop+panel.clientHeight>=panel.scrollHeight-2;
   }
 
   const music = {index:0, player:null, loading:null, playing:false, volume:65, lastVolume:65, elapsed:0, duration:0};
@@ -245,10 +233,8 @@
     if(button.hasAttribute('data-profile')){
       profileTab=Number(button.dataset.profile);
       document.querySelectorAll('[data-profile]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
-      const panel=document.getElementById('profile-panel');panel.innerHTML=profileContent();panel.setAttribute('aria-labelledby',button.id);panel.scrollTop=0;
-      syncProfileScroll();
+      const panel=document.getElementById('profile-panel');panel.innerHTML=profileContent();panel.setAttribute('aria-labelledby',button.id);
     }
-    if(button.hasAttribute('data-profile-scroll'))document.getElementById('profile-panel').scrollBy({top:220,behavior:'instant'});
     if(button.hasAttribute('data-world')){
       worldTab=Number(button.dataset.world);document.querySelectorAll('[data-world]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
       const panel=document.getElementById('world-panel');panel.innerHTML=prose(sections[worldKeys[worldTab]]);panel.setAttribute('aria-labelledby',button.id);
