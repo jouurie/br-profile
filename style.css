@@ -840,6 +840,16 @@ html{scrollbar-color:auto}
 }
 
 /* WORLD: a folded park guide, followed by its reading sheets. */
+.place-dialog{width:min(420px,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 24px);margin:auto;padding:20px;border:2px solid var(--ink);border-radius:0;background:var(--paper) url('assets/paper-texture.png') repeat;color:var(--ink);overflow:auto;scrollbar-color:var(--blue) var(--paper)}
+.place-dialog::backdrop{background:color-mix(in srgb,var(--navy) 25%,transparent)}
+.place-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.place-dialog-header h2{margin:0;font:24px/1.5 var(--display);color:var(--blue)}
+.place-dialog-close{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;flex-shrink:0;padding:8px 12px;border:2px solid var(--ink);border-radius:0;background:var(--blue);color:var(--paper);font:600 16px/1.5 var(--body)}
+.place-dialog-close span{font:24px/1 var(--body)}
+.place-dialog-close:focus-visible{outline-color:var(--blue);outline-offset:4px}
+.place-dialog>p{font:16px/1.85 var(--body);margin:16px 0 0;overflow-wrap:break-word}
+@media(hover:hover){.place-dialog-close:hover{background:var(--metal)}}
+.place-dialog-close:active{background:var(--navy)}
 .world-view{padding-top:30px}
 .world-hero{position:relative;min-height:204px;padding:48px 0 26px;isolation:isolate;margin-bottom:28px}
 .world-hero h1{position:relative;z-index:1;width:max-content;max-width:100%;font-size:64px;line-height:1.2;color:var(--paper);letter-spacing:-.03em;transform:rotate(-6deg) skew(-7deg);text-shadow:3px 3px 0 var(--navy),5px 6px 0 var(--navy);padding:2px 4px 10px}
