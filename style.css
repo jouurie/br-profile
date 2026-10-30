@@ -1287,3 +1287,12 @@ body[data-page=opening]{background-image:linear-gradient(145deg,var(--blue),var(
  .flat-cassette{right:13px;top:152px;width:126px;height:76px;transform:rotate(13deg)}
  .flat-cassette>span{font-size:15px}
 }
+
+/* Requested two-line tape headings; all established type and ornament roles stay intact. */
+.section-heading .scrap-title-stepped>.scrap-title-line+span{margin-left:160px;margin-top:2px}
+.playlist-heading>.english{position:absolute;left:8px;top:152px;margin:0}
+@media(max-width:600px){
+ .section-heading .scrap-title-stepped>.scrap-title-line+span{margin-left:128px}
+ .playlist-heading>.english{top:96px}
+ .playlist-heading .flat-spark-b{top:147px;right:145px}
+}
