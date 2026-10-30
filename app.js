@@ -127,9 +127,26 @@
   }
   let profilePaperObserver;
   function mountProfilePapers(){
-    profilePaperObserver?.disconnect();if(route!=='profile'&&route!=='opening'&&route!=='world')return;
+    profilePaperObserver?.disconnect();
+    if(route==='world'){
+      profilePaperObserver=new ResizeObserver(entries=>entries.forEach(entry=>drawWorldPaper(entry.target)));
+      document.querySelectorAll('.world-map-paper,.world-reading').forEach(node=>{drawWorldPaper(node);profilePaperObserver.observe(node);});
+      return;
+    }
+    if(route!=='profile'&&route!=='opening')return;
     profilePaperObserver=new ResizeObserver(entries=>entries.forEach(entry=>drawProfilePaper(entry.target)));
-    document.querySelectorAll(route==='profile'?'.profile-hero,.profile-body':route==='world'?'.world-map-paper,.world-reading,.world-notes':'.opening-story,.opening-guide').forEach(node=>{drawProfilePaper(node);profilePaperObserver.observe(node);});
+    document.querySelectorAll(route==='profile'?'.profile-hero,.profile-body':'.opening-story,.opening-guide').forEach(node=>{drawProfilePaper(node);profilePaperObserver.observe(node);});
+  }
+  const worldPaper = id => `<svg class="world-paper-frame" preserveAspectRatio="none" aria-hidden="true"><defs><pattern id="world-paper-${id}" width="300" height="300" patternUnits="userSpaceOnUse"><rect width="300" height="300" fill="var(--paper)" stroke="none"/><image href="assets/paper-texture.png" width="300" height="300" opacity=".35" stroke="none"/></pattern></defs><path fill="url(#world-paper-${id})"/></svg>`;
+  function drawWorldPaper(node){
+    const svg=node.querySelector(':scope > .world-paper-frame');if(!svg)return;
+    const w=node.clientWidth,h=node.clientHeight;if(!w||!h)return;
+    const right=w-1,bottom=h-1;let d=`M1 1H${right}`;
+    if(node.classList.contains('world-reading'))for(let y=26;y<bottom-18;y+=38)d+=`V${y-7}a9 7 0 0 0 0 14`;
+    d+=`V${bottom}H1`;
+    const cuts=[];for(let y=27;y<bottom-18;y+=38)cuts.push(y);
+    for(const y of cuts.reverse())d+=`V${y+7}a9 7 0 0 0 0 -14`;
+    svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.querySelector('path').setAttribute('d',d+'V1Z');
   }
   const profileGroups = [[0,1],[2,4],[3,5]];
   function profileContent() { return profilePaper('body')+profileGroups[profileTab].map(index => `<h3>${star}<span>${escape(label(data.profile[index].title))}</span>${waves}</h3>${prose(data.profile[index].text)}`).join(''); }
@@ -147,44 +164,7 @@
   const worldKeys = ['세계관','꿈 회차','깨어나는 시간'];
   const noteKeys = ['1990s 캐나다 워터파크','브렌든','꿈의 워터파크','사라진 브렌든','꿈속 사람들','진행 소재'];
   function world() {
-    return `<section class="view world-view"><header class="world-hero">${palm}<span class="world-ticket" aria-hidden="true">${ticketFrame('yellow','row')}WORLD</span><h1>꿈의 워터파크</h1><span class="world-english" aria-hidden="true">Dream Waterpark</span><p class="world-quote">“끝나고<br>잠깐 보자.”</p>${waves}</header><div class="world-brochure"><section class="world-map-paper">${profilePaper('world-map')}<div class="world-backsheet" aria-hidden="true"><span>FIRST DREAM</span>${palm}</div><div class="map-page"><div class="map-wrap"><img src="assets/waterpark-map.png" alt="입구, 오락실, 푸드코트, 파도풀, 락커룸과 직원 복도로 구성된 워터파크 안내도" width="1536" height="1024">${places.map((place,i)=>`<button type="button" class="hotspot" data-place="${i}" aria-label="${place.name}" aria-pressed="${placeIndex===i}" aria-controls="place-panel" aria-haspopup="dialog" style="left:${place.x}%;top:${place.y}%"><span class="hotspot-tag">${pin}<span class="hotspot-name">${place.name}</span><span class="hotspot-number" aria-hidden="true">${i+1}</span></span></button>`).join('')}</div><div class="place-directory" aria-label="워터파크 장소">${places.map((place,i)=>`<button type="button" data-place="${i}" aria-pressed="${placeIndex===i}" aria-controls="place-panel" aria-haspopup="dialog">${ticketFrame('paper','row')}<b class="place-number" aria-hidden="true">${i+1}</b>${place.name}<span aria-hidden="true">›</span></button>`).join('')}</div><span class="world-map-signature" aria-hidden="true">Our Summer<br>Never Ends.</span>${waves}</div><span class="fold-corner" aria-hidden="true"></span></section><section class="world-reading">${profilePaper('world-reading')}<div class="tab-row" role="tablist" aria-label="세계관 항목">${worldKeys.map((name,i)=>`<button type="button" role="tab" id="world-tab-${i}" data-world="${i}" aria-selected="${worldTab===i}" aria-controls="world-panel">${ticketFrame(worldTab===i?'blue':'paper','row')}<span>${name}</span></button>`).join('')}</div><div class="world-reading-columns"><div class="world-copy"><div class="world-content" id="world-panel" role="tabpanel" aria-labelledby="world-tab-${worldTab}">${prose(sections[worldKeys[worldTab]])}${palm}</div><div id="place-panel" class="place-reading" aria-live="polite"><h3>${pin}${places[placeIndex].name}</h3><p>${places[placeIndex].text}</p></div></div><aside class="world-context"><div class="world-pool-memento">${poolPhoto('world-pool-photo')}${star}</div>${waves}</aside></div><span class="fold-corner" aria-hidden="true"></span></section><section class="world-notes">${profilePaper('world-notes')}<h2>워터파크에 남은 이야기</h2><div class="world-note-tabs" role="tablist" aria-label="세계관 상세">${noteKeys.map((key,i)=>`<button type="button" role="tab" id="note-tab-${i}" data-note="${i}" aria-selected="${noteTab===i}" aria-controls="note-panel">${key}</button>`).join('')}</div><div id="note-panel" role="tabpanel" aria-labelledby="note-tab-${noteTab}">${prose(sections[noteKeys[noteTab]])}</div></section></div></section>`;
-  }
-  let placeDialog = null;
-  function showPlace(trigger) {
-    if(placeDialog)return;
-    const place=places[placeIndex],dialog=document.createElement('dialog');
-    dialog.className='place-dialog';
-    dialog.setAttribute('aria-labelledby','place-dialog-title');
-    dialog.setAttribute('aria-describedby','place-dialog-text');
-    dialog.innerHTML=`<header class="place-dialog-header"><h2 id="place-dialog-title">${escape(place.name)}</h2><button type="button" class="place-dialog-close" aria-label="장소 설명 닫기">닫기 <span aria-hidden="true">×</span></button></header><p id="place-dialog-text">${escape(place.text)}</p>`;
-    const scrollY=window.scrollY,bodyStyle=document.body.style,root=document.documentElement,rootStyle=root.style;
-    const rootSaved=['min-height','overflow'].map(name=>[name,rootStyle.getPropertyValue(name),rootStyle.getPropertyPriority(name)]);
-    const rootHeight=Math.max(root.getBoundingClientRect().height,window.innerHeight);
-    const properties=['position','top','left','right','width','overflow'];
-    const saved=properties.map(name=>[name,bodyStyle.getPropertyValue(name),bodyStyle.getPropertyPriority(name)]);
-    let cleaned=false,backdropStart=false;
-    const close=(restoreFocus=true)=>{
-      if(cleaned)return;
-      cleaned=true;
-      if(dialog.open)dialog.close();
-      saved.forEach(([name,value,priority])=>{if(value)bodyStyle.setProperty(name,value,priority);else bodyStyle.removeProperty(name);});
-      dialog.remove();placeDialog=null;
-      rootSaved.forEach(([name,value,priority])=>{if(value)rootStyle.setProperty(name,value,priority);else rootStyle.removeProperty(name);});
-      window.scrollTo({top:scrollY,behavior:'instant'});
-      if(restoreFocus&&trigger.isConnected)trigger.focus({preventScroll:true});
-    };
-    placeDialog={close};
-    dialog.querySelector('button').addEventListener('click',()=>close());
-    dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
-    dialog.addEventListener('close',()=>close());
-    const outside=event=>{const box=dialog.getBoundingClientRect();return event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom;};
-    dialog.addEventListener('pointerdown',event=>{backdropStart=event.target===dialog&&outside(event);});
-    dialog.addEventListener('click',event=>{if(backdropStart&&event.target===dialog&&outside(event))close();backdropStart=false;});
-    document.body.append(dialog);
-    rootStyle.setProperty('min-height',`${rootHeight}px`);rootStyle.setProperty('overflow','hidden');
-    bodyStyle.position='fixed';bodyStyle.top=`-${scrollY}px`;bodyStyle.left='0';bodyStyle.right='0';bodyStyle.width='100%';bodyStyle.overflow='hidden';
-    dialog.showModal();
-    dialog.querySelector('button').focus({preventScroll:true});
+    return `<section class="view world-view"><div class="world-scenery" aria-hidden="true">${palm}${palm}${palm}${palm}${waves}${waves}</div><header class="world-hero">${palm}<span class="world-ticket" aria-hidden="true">${ticketFrame('yellow','row')}WORLD</span><h1><span class="world-title-extrude" aria-hidden="true">꿈의 워터파크</span><span class="world-title-side" aria-hidden="true">꿈의 워터파크</span><span class="world-title-keyline" aria-hidden="true">꿈의 워터파크</span><span class="world-title-face">꿈의 워터파크</span></h1><span class="world-english" aria-hidden="true">Dream Waterpark</span><p class="world-quote">“끝나고<br>잠깐 보자.”</p><span class="world-title-wave" aria-hidden="true">${waves}</span>${waves}</header><div class="world-brochure"><section class="world-map-paper">${worldPaper('map')}<div class="world-backsheet" aria-hidden="true"><span>FIRST DREAM</span>${palm}</div><div class="native-map"><img class="map-art" src="assets/waterpark-map.png" alt="입구, 오락실, 푸드코트, 파도풀, 락커룸과 직원 복도로 구성된 워터파크 안내도" width="1536" height="1024">${places.map((place,i)=>`<details class="map-place" name="world-place" style="--x:${place.x}%;--y:${place.y}%;--slot:${i+1};--mobile-slot:${i%3+1};--mobile-row:${Math.floor(i/3)+2}"${i===4?' open':''}><summary class="place-summary" aria-label="${place.name}" aria-controls="place-info-${i}"><span class="map-pin" aria-hidden="true"><span class="map-pin-tag">${pin}<span class="map-pin-name">${place.name}</span><span class="map-pin-number">${i+1}</span></span></span><span class="place-list-label" aria-hidden="true">${ticketFrame('paper','row')}<b class="place-number">${i+1}</b><span>${place.name}</span><span class="place-chevron">›</span></span></summary><div id="place-info-${i}" class="place-inline"><h3>${pin}${place.name}</h3><p>${place.text}</p></div></details>`).join('')}</div><div class="world-map-footer" aria-hidden="true"><span class="world-map-signature">Our Summer<br>Never Ends.</span>${waves}</div><span class="fold-corner" aria-hidden="true"></span></section><section class="world-reading">${worldPaper('reading')}<div class="tab-row" role="tablist" aria-label="세계관 항목">${worldKeys.map((name,i)=>`<button type="button" role="tab" id="world-tab-${i}" data-world="${i}" aria-selected="${worldTab===i}" aria-controls="world-panel">${ticketFrame(worldTab===i?'blue':'paper','row')}<span>${name}</span></button>`).join('')}</div><div class="world-reading-columns"><div class="world-copy"><div class="world-content${worldTab===0?' world-premise':''}" id="world-panel" role="tabpanel" aria-labelledby="world-tab-${worldTab}">${prose(sections[worldKeys[worldTab]])}${palm}</div><blockquote class="world-summer-note">Our Summer<br>Never Ends.</blockquote></div><aside class="world-context"><div class="world-pool-memento">${poolPhoto('world-pool-photo').replace('Our Summer<br>Never Ends.',places[4].name+waves)}${star}</div>${waves}</aside></div><section class="world-notes"><h2>워터파크에 남은 이야기</h2><div class="world-note-tabs" role="tablist" aria-label="세계관 상세">${noteKeys.map((key,i)=>`<button type="button" role="tab" id="note-tab-${i}" data-note="${i}" aria-selected="${noteTab===i}" aria-controls="note-panel">${key}</button>`).join('')}</div><div id="note-panel" role="tabpanel" aria-labelledby="note-tab-${noteTab}">${prose(sections[noteKeys[noteTab]])}</div></section><span class="fold-corner" aria-hidden="true"></span></section></div></section>`;
   }
   function opening() {
     return `<section class="view opening-view" aria-label="도입부"><div class="keepsake"><article class="opening-story">${profilePaper('opening-story')}<header class="opening-story-header"><span class="opening-story-number" aria-label="첫 번째 도입부">01</span><h1>졸업앨범을 펼친 밤</h1><button type="button" class="opening-read" data-opening-full aria-haspopup="dialog">전문 보기 <span aria-hidden="true">↗</span></button></header><figure class="opening-scene"><img src="assets/opening-album-night.png" alt="밤의 책상 위에 펼쳐진 오래된 졸업앨범" width="1536" height="864"></figure><p class="opening-story-summary">${escape(data.opening.replace(/^⑴\s*/,''))}</p><blockquote class="opening-story-quote">“끝나고 잠깐 보자.”${waves}</blockquote></article><section class="opening-guide" aria-labelledby="opening-guide-title">${profilePaper('opening-guide')}<h2 id="opening-guide-title">진행 안내</h2>${prose(sections['진행 안내'])}<p class="letter-signature">Brendan Hale ${smile}</p></section></div><div class="opening-setup">${ticketFrame()}<a class="button lime" href="#guide/추천 설정값">시작 전 설정 확인 <span aria-hidden="true">›</span></a></div></section>`;
@@ -232,7 +212,6 @@
   }
   const views = {intro,home,profile,world,opening,guide,playlist};
   function render() {
-    placeDialog?.close(false);
     openingDialog?.close(false);
     const [candidate, rawKey] = location.hash.slice(1).split('/');
     route = routes.includes(candidate) ? candidate : 'intro';
@@ -327,16 +306,11 @@
     }
     if(button.hasAttribute('data-world')){
       worldTab=Number(button.dataset.world);document.querySelectorAll('[data-world]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
-      const panel=document.getElementById('world-panel');panel.innerHTML=prose(sections[worldKeys[worldTab]]);panel.setAttribute('aria-labelledby',button.id);
+      const panel=document.getElementById('world-panel');panel.innerHTML=prose(sections[worldKeys[worldTab]]);panel.classList.toggle('world-premise',worldTab===0);panel.setAttribute('aria-labelledby',button.id);
     }
     if(button.hasAttribute('data-note')){
       noteTab=Number(button.dataset.note);document.querySelectorAll('[data-note]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
       const panel=document.getElementById('note-panel');panel.innerHTML=prose(sections[noteKeys[noteTab]]);panel.setAttribute('aria-labelledby',button.id);
-    }
-    if(button.hasAttribute('data-place')){
-      placeIndex=Number(button.dataset.place);document.querySelectorAll('[data-place]').forEach(node=>node.setAttribute('aria-pressed',Number(node.dataset.place)===placeIndex));
-      document.getElementById('place-panel').innerHTML=`<h3>${pin}${places[placeIndex].name}</h3><p>${places[placeIndex].text}</p>`;
-      showPlace(button);
     }
     if(button.hasAttribute('data-guide')){
       guideKey=button.dataset.guide;
