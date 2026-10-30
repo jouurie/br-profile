@@ -843,7 +843,7 @@ html{scrollbar-color:auto}
 body[data-page=world]{background-image:linear-gradient(145deg,var(--blue),var(--metal)),url('assets/paper-texture.png');background-size:auto,360px;background-blend-mode:multiply}
 .world-view{padding-top:28px;padding-bottom:68px}
 .world-view:before,.world-view:after{display:none}
-.world-scenery{position:absolute;z-index:-1;inset:0;pointer-events:none;overflow:hidden}
+.world-scenery{position:absolute;z-index:-1;inset:0;pointer-events:none;overflow:visible}
 .world-scenery>.palm-mark{background:var(--navy);opacity:.65;width:175px;height:250px}
 .world-scenery>.palm-mark:nth-child(1){right:105px;top:-6px;transform:rotate(8deg)}
 .world-scenery>.palm-mark:nth-child(2){right:-31px;top:44px;transform:rotate(-9deg)}
@@ -1124,4 +1124,166 @@ body[data-page=opening]{background-image:linear-gradient(145deg,var(--blue),var(
 @media(max-width:600px){
  .section-heading{min-height:190px;padding:52px 8px 26px;margin:0 0 20px}
  .section-heading .scrap-title{font-size:30px;line-height:1.05}
+}
+
+/* Approved flat ornament family: finite silhouettes, no cropped outer geometry. */
+.flat-header-decor{position:absolute;inset:0;z-index:0;pointer-events:none}
+.flat-header-decor svg{display:block;overflow:visible}
+.flat-palm,.flat-surf,.flat-spark,.flat-splash{position:absolute;display:block}
+.flat-palm>.palm-mark{position:static;width:100%;height:100%;background:var(--navy);opacity:1;transform:none}
+.flat-surf>.flat-wave-art{width:100%;height:100%;stroke:none}
+.flat-spark>.star-mark{width:100%;height:100%;stroke-width:2}
+.flat-splash>.flat-droplets{width:100%;height:100%;stroke:none}
+.flat-palm-a{left:10px;top:0;width:145px;height:195px}
+.flat-palm-b{right:18px;top:15px;width:145px;height:195px}
+.flat-surf-a{left:18px;bottom:12px;width:360px;height:88px}
+.flat-surf-b{right:18px;bottom:10px;width:190px;height:58px}
+.flat-spark-a{left:6px;bottom:48px;width:35px;height:35px}
+.flat-spark-b{right:5px;bottom:28px;width:39px;height:39px}
+.flat-splash{right:18px;top:15px;width:45px;height:65px}
+.section-heading{min-height:270px;padding:76px 8px 30px;margin-bottom:20px}
+.section-heading>.scrap-title,.section-heading>.english,.section-heading>.world-english{position:relative;z-index:2}
+.section-heading .scrap-title-line{white-space:nowrap}
+.world-hero>.palm-mark,.world-title-wave,.world-hero>.wave-mark{display:none}
+.flat-decor-world .flat-palm-a{left:auto;right:124px;top:0;width:178px;height:230px}
+.flat-decor-world .flat-palm-b{right:12px;top:69px;width:130px;height:180px}
+.flat-decor-world .flat-surf-a{width:410px;height:100px;bottom:0}
+.flat-decor-world .flat-surf-b{right:55px;bottom:74px;width:165px;height:48px}
+.flat-decor-world .flat-splash{right:250px;top:37px;width:38px;height:48px}
+.world-quote{right:22px;top:10px;z-index:2;font-size:38px}
+.world-ticket{z-index:3;top:8px}
+.world-scenery>.palm-mark:nth-child(1){right:118px;top:14px;transform:none}
+.world-scenery>.palm-mark:nth-child(2){right:22px;top:65px;transform:none}
+.world-scenery>.palm-mark:nth-child(3){left:24px;bottom:44px;transform:none}
+.world-scenery>.palm-mark:nth-child(4){right:24px;bottom:25px;transform:none}
+.world-scenery>.world-surf{left:24px;width:calc(100% - 48px)}
+.home-view .hero{position:relative;isolation:isolate;padding-top:75px}
+.home-view .hero>.hero-ticket{z-index:1}
+.home-view .home-handwritten{position:relative;z-index:2;margin:0 110px 28px;text-align:center}
+.flat-decor-home .flat-palm-a{left:10px;top:0;width:145px;height:195px}
+.flat-decor-home .flat-palm-b{right:18px;top:4px;width:145px;height:195px}
+.flat-decor-home .flat-surf-a{left:28px;top:100px;bottom:auto;width:240px;height:92px}
+.flat-decor-home .flat-surf-b{right:55px;top:65px;bottom:auto;width:235px;height:105px}
+.flat-decor-home .flat-spark-a{left:195px;top:111px;bottom:auto}
+.flat-decor-home .flat-spark-b{right:212px;top:35px;bottom:auto}
+.flat-decor-home .flat-splash{right:17px;top:177px}
+.profile-sheet{isolation:isolate;padding-top:72px}
+.profile-sheet>.flat-header-decor{height:155px}
+.profile-hero{z-index:1}
+.profile-photo,.profile-identity{z-index:1}
+.flat-decor-profile .flat-palm-a{left:5px;top:0;width:145px;height:180px}
+.flat-decor-profile .flat-palm-b{right:18px;top:3px;width:160px;height:190px}
+.flat-decor-profile .flat-surf-a{left:205px;top:0;bottom:auto;width:280px;height:88px}
+.flat-decor-profile .flat-surf-b{right:20px;bottom:0;width:180px;height:63px}
+.flat-decor-profile .flat-spark,.flat-decor-profile .flat-splash{display:none}
+.profile-rim-waves{position:absolute;inset:0;pointer-events:none;z-index:0}
+.profile-rim-waves>span{position:absolute;bottom:3px;left:7px;width:180px;height:50px}
+.profile-rim-waves>span+span{left:auto;right:10px;width:150px;height:55px}
+.profile-rim-waves svg{display:block;width:100%;height:100%;stroke:none}
+.profile-identity>.palm-mark{right:35px;top:0;width:130px;height:165px;opacity:.6}
+.flat-decor-opening .flat-palm-a{left:4px;top:0;width:130px;height:205px}
+.flat-decor-opening .flat-palm-b{right:6px;top:24px;width:130px;height:215px}
+.flat-decor-opening .flat-surf-a{left:22px;bottom:18px;width:285px;height:65px}
+.flat-decor-opening .flat-surf-b{display:none}
+.flat-decor-opening .flat-spark-a{left:0;bottom:25px}
+.flat-decor-opening .flat-spark-b{right:217px;bottom:29px;width:48px;height:48px}
+.flat-decor-opening .flat-splash{right:188px;top:45px;width:45px;height:58px}
+.opening-dream-ticket{top:8px;z-index:3}
+.opening-note{right:12px;bottom:16px;width:172px;background:var(--paper);box-shadow:none;z-index:3}
+.opening-note:before{content:'';position:absolute;left:30px;top:-9px;width:77px;height:20px;background:var(--cyan);transform:rotate(-5deg)}
+.opening-summer{right:24px;top:0;width:175px;height:95px;opacity:1;z-index:1}
+.opening-summer>.palm-mark{width:70px;height:95px;flex-basis:70px;background:var(--navy)}
+.opening-summer>span{font-size:20px}
+.opening-title-wave,.opening-story-header>.star-mark{display:none}
+.flat-decor-guide .flat-palm-a{left:12px;top:0;width:130px;height:210px}
+.flat-decor-guide .flat-palm-b{right:118px;top:5px;width:160px;height:205px}
+.flat-decor-guide .flat-surf-a{width:270px;height:55px;left:15px;bottom:15px}
+.flat-decor-guide .flat-surf-b{right:0;bottom:2px;width:300px;height:57px}
+.flat-decor-guide .flat-spark-a{left:0;top:38px;bottom:auto}
+.flat-decor-guide .flat-spark-b{right:295px;bottom:57px}
+.flat-decor-guide .flat-splash{right:115px;top:0}
+.flat-decor-ticket{position:absolute;right:130px;top:63px;width:94px;height:169px;transform:rotate(-18deg)}
+.flat-decor-ticket.lime{right:44px;top:46px;transform:rotate(-12deg)}
+.flat-decor-ticket>svg{width:100%;height:100%;stroke:none}
+.flat-decor-ticket>.palm-mark{left:17px;top:24px;width:62px;height:98px;background:var(--blue);z-index:1}
+.flat-decor-ticket>.wave-mark{position:absolute;left:14px;bottom:19px;width:69px;height:22px;z-index:1}
+.flat-pool-ladder{position:absolute;right:0;bottom:15px;width:65px;height:100px}
+.flat-pool-ladder>.ladder-mark{width:100%;height:100%;filter:none;stroke:var(--cyan);stroke-width:4}
+.flat-decor-playlist .flat-palm-a{left:4px;top:0;width:140px;height:210px}
+.flat-decor-playlist .flat-palm-b{right:23px;top:0;width:150px;height:210px}
+.flat-decor-playlist .flat-surf-a{left:200px;bottom:5px;width:225px;height:65px}
+.flat-decor-playlist .flat-surf-b{left:150px;right:auto;top:8px;bottom:auto;width:130px;height:40px}
+.flat-decor-playlist .flat-spark-a{left:115px;top:45px;bottom:auto;width:26px;height:26px}
+.flat-decor-playlist .flat-spark-b{right:193px;top:2px;bottom:auto;width:42px;height:42px}
+.flat-ribbon{position:absolute;left:302px;top:0;width:370px;height:260px;stroke:none}
+.flat-cassette{position:absolute;right:20px;top:85px;width:185px;height:112px;transform:rotate(15deg)}
+.flat-cassette>svg{display:block;width:100%;height:100%;stroke:none}
+.flat-cassette>span{position:absolute;left:8%;right:8%;top:15%;font:22px/1 Pen,cursive;color:var(--navy);text-align:center;white-space:nowrap}
+@media(max-width:600px){
+ .section-heading{min-height:280px;padding:52px 8px 26px}
+ .section-heading .english{font-size:20px}
+ .flat-palm-a{width:86px;height:135px}
+ .flat-palm-b{width:86px;height:135px;right:12px}
+ .flat-splash{width:30px;height:42px;right:8px;top:7px}
+ .flat-spark-a{width:25px;height:25px}
+ .flat-spark-b{width:27px;height:27px}
+ .home-view .hero{padding-top:56px}
+ .home-view .home-handwritten{font-size:24px;margin:0 42px 26px}
+ .flat-decor-home .flat-palm-a{left:4px;top:0;width:80px;height:125px}
+ .flat-decor-home .flat-palm-b{right:6px;top:0;width:80px;height:125px}
+ .flat-decor-home .flat-surf-a{left:12px;top:91px;width:122px;height:48px}
+ .flat-decor-home .flat-surf-b{right:17px;top:86px;width:136px;height:55px}
+ .flat-decor-home .flat-spark-a{left:98px;top:96px}
+ .flat-decor-home .flat-spark-b{right:85px;top:20px}
+ .flat-decor-home .flat-splash{right:2px;top:184px}
+ .profile-sheet{padding-top:57px}
+ .flat-decor-profile .flat-palm-a{width:90px;height:130px;left:0}
+ .flat-decor-profile .flat-palm-b{width:90px;height:130px;right:2px}
+ .flat-decor-profile .flat-surf-a{left:88px;top:10px;bottom:auto;width:150px;height:55px}
+ .flat-decor-profile .flat-surf-b{right:6px;top:85px;bottom:auto;width:100px;height:42px}
+ .profile-rim-waves>span{width:115px;height:30px}
+ .profile-rim-waves>span+span{width:100px;height:30px}
+ .profile-identity>.palm-mark{width:90px;height:120px;right:20px}
+ .flat-decor-world .flat-palm-a{right:56px;top:4px;width:115px;height:170px}
+ .flat-decor-world .flat-palm-b{right:7px;top:120px;width:90px;height:140px}
+ .flat-decor-world .flat-surf-a{width:245px;height:75px;left:0;bottom:5px}
+ .flat-decor-world .flat-surf-b{right:7px;bottom:60px;width:105px;height:35px}
+ .flat-decor-world .flat-splash{right:130px;top:125px;width:28px;height:40px}
+ .world-quote{top:128px;right:10px;font-size:27px}
+ .world-scenery>.palm-mark:nth-child(1){right:46px;top:40px;width:105px;height:165px}
+ .world-scenery>.palm-mark:nth-child(2){right:12px;top:95px;width:90px;height:135px}
+ .world-scenery>.palm-mark:nth-child(3){left:18px;width:100px;height:150px}
+ .world-scenery>.palm-mark:nth-child(4){right:18px;width:100px;height:150px}
+ .world-scenery>.world-surf{left:18px;width:calc(100% - 36px)}
+ .flat-decor-opening .flat-palm-a{left:0;top:0;width:85px;height:150px}
+ .flat-decor-opening .flat-palm-b{right:6px;top:99px;width:88px;height:160px}
+ .flat-decor-opening .flat-surf-a{left:5px;bottom:25px;width:170px;height:47px}
+ .flat-decor-opening .flat-spark-a{left:0;bottom:35px}
+ .flat-decor-opening .flat-spark-b{right:135px;bottom:70px;width:33px;height:33px}
+ .flat-decor-opening .flat-splash{right:16px;top:70px;width:28px;height:40px}
+ .opening-summer{right:15px;top:0;width:55px;height:72px}
+ .opening-summer>.palm-mark{width:54px;height:72px;flex-basis:54px}
+ .opening-note{right:10px;bottom:10px;width:113px;padding:12px 12px;font-size:23px}
+ .opening-note:before{left:21px;width:52px;height:15px;top:-7px}
+ .flat-decor-guide .flat-palm-a{left:0;width:85px;height:150px}
+ .flat-decor-guide .flat-palm-b{right:44px;top:75px;width:105px;height:160px}
+ .flat-decor-guide .flat-surf-a{left:5px;bottom:8px;width:165px;height:43px}
+ .flat-decor-guide .flat-surf-b{right:0;bottom:7px;width:190px;height:44px}
+ .flat-decor-guide .flat-spark-a{left:0;top:15px}
+ .flat-decor-guide .flat-spark-b{right:151px;bottom:80px}
+ .flat-decor-guide .flat-splash{right:44px;top:75px}
+ .flat-decor-ticket{width:60px;height:108px;right:96px;top:145px}
+ .flat-decor-ticket.lime{right:42px;top:129px}
+ .flat-decor-ticket>.palm-mark{width:39px;height:61px;left:11px;top:15px}
+ .flat-decor-ticket>.wave-mark{left:9px;bottom:12px;width:43px;height:14px}
+ .flat-pool-ladder{right:0;bottom:16px;width:43px;height:70px}
+ .flat-decor-playlist .flat-palm-a{left:0;top:0;width:90px;height:150px}
+ .flat-decor-playlist .flat-palm-b{right:10px;top:105px;width:100px;height:150px}
+ .flat-decor-playlist .flat-surf-a{left:20px;bottom:8px;width:160px;height:45px}
+ .flat-decor-playlist .flat-surf-b{left:105px;top:3px;width:90px;height:32px}
+ .flat-decor-playlist .flat-spark-a{left:75px;top:20px;width:22px;height:22px}
+ .flat-decor-playlist .flat-spark-b{right:130px;top:111px;width:31px;height:31px}
+ .flat-ribbon{left:82px;top:101px;width:232px;height:166px}
+ .flat-cassette{right:13px;top:152px;width:126px;height:76px;transform:rotate(13deg)}
+ .flat-cassette>span{font-size:15px}
 }
