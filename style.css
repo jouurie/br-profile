@@ -1303,7 +1303,7 @@ main:has(>.b-wide-stage){position:relative;isolation:isolate}
 .home-view,.playlist-view{padding:24px 20px 36px}
 .home-view .b-touch-pressed,.playlist-view .b-touch-pressed{filter:brightness(.85)}
 .home-view:before,.home-view:after,.playlist-view:before,.playlist-view:after{content:none}
-.b-wide-stage{position:absolute;z-index:-2;pointer-events:none;left:0;top:0;width:100%;height:900px;overflow:hidden;background:url('assets/b-wide-water.svg') center top/100% 900px no-repeat}
+.b-wide-stage{position:absolute;z-index:-2;pointer-events:none;left:0;top:0;width:100%;height:900px;overflow:hidden;background:url('assets/b-wide-water.svg?v=422a43f7e0ed') center top/100% 900px no-repeat}
 .b-wide-stage:before,.b-wide-stage:after{content:'';position:absolute;background:var(--navy);mask:url('assets/palm-silhouette.png') center/contain no-repeat;-webkit-mask:url('assets/palm-silhouette.png') center/contain no-repeat}
 .b-wide-stage:after{width:540px;height:690px;top:18px;left:calc(50% + 310px);transform:rotate(9deg)}
 .b-wide-stage:before{width:260px;height:370px;top:355px;left:calc(50% + 280px);transform:rotate(-9deg)}
@@ -1499,4 +1499,68 @@ main:has(>.b-wide-stage){position:relative;isolation:isolate}
  .playlist-view .playlist-layout{padding-inline:14px}
  .playlist-view .cassette-panel{padding-inline:10px}
  .playlist-view .deck-title{font-size:26px}
+}
+
+/* Approved six-route revision: outer scenery and cohesive title groups only. */
+body:not([data-page=intro]) main{position:relative;isolation:isolate}
+body:not([data-page=intro]) .view:before,body:not([data-page=intro]) .view:after{content:none}
+.b-wide-stage{height:1100px;background-position:center top;background-size:1920px 1100px;background-repeat:no-repeat}
+.b-home-stage{background-image:url('assets/b-wide-water.svg?v=422a43f7e0ed');background-size:100% 900px}
+.b-profile-stage{background-image:url('assets/b-profile-water.svg?v=de4cab50b4e4')}
+.b-world-stage{background-image:url('assets/b-world-water.svg?v=a9fceb140142')}
+.b-opening-stage{background-image:url('assets/b-opening-water.svg?v=7700b4e7864d')}
+.b-guide-stage{background-image:url('assets/b-guide-water.svg?v=31a4d090c938')}
+.b-playlist-stage{background-image:url('assets/b-playlist-water.svg?v=99638a1af5f0')}
+.b-wide-stage:before,.b-wide-stage:after{content:none}
+.b-home-stage:after{content:none}
+.flat-header-decor>.flat-palm,.world-scenery{display:none}
+.profile-title{font-size:52px;line-height:1.15;white-space:nowrap;transform:rotate(-4deg);width:max-content;max-width:100%}
+.profile-title>span{display:inline-block;padding:3px 2px;transform:none}
+.profile-title>span:nth-child(2){margin:0}
+.profile-title>.star-mark{right:-20px;top:70%}
+.profile-nameplate{position:relative;left:auto;top:auto;margin:14px 0 0 14px}
+.profile-identity .profile-metadata{margin-top:18px}
+.section-heading .scrap-title-stepped,.playlist-view .playlist-heading .scrap-title{transform:rotate(-4deg);transform-origin:left top;font-size:52px;line-height:1.05;display:table;max-width:100%;margin-top:0}
+.section-heading .scrap-title-stepped>.scrap-title-line,.playlist-view .playlist-heading .scrap-title-line{display:table;transform:none;padding:3px 7px;white-space:nowrap}
+.section-heading .scrap-title-stepped>.scrap-title-line+span,.playlist-view .playlist-heading .scrap-title-line+span{margin-left:24px;margin-top:-9px}
+.playlist-view .playlist-heading{height:225px;min-height:225px;padding:29px 20px 12px}
+.playlist-view .playlist-heading>.english{position:relative;left:auto;top:auto;display:table;margin:0 0 0 9px;transform:rotate(-4deg)}
+.playlist-view .flat-ribbon{right:0;top:4px;width:225px;height:145px}
+.playlist-view .flat-cassette{right:10px;top:60px}
+.opening-story-header .opening-english{font:25px/1.1 Bangers,sans-serif;color:var(--cyan);position:relative;inset:auto;display:table;width:auto;height:auto;margin:0 0 0 9px;opacity:1;transform:rotate(-4deg);z-index:2}
+.opening-story-header .opening-english>span{display:block;font:inherit;white-space:nowrap}
+.opening-note{top:103px;bottom:auto}
+.opening-story-header .flat-decor-opening .flat-surf-a{left:22px;top:220px;bottom:auto;width:220px;height:45px}
+@media(max-width:700px){
+ .b-wide-stage{height:1100px;background-size:1140px 1100px}
+ .b-home-stage{background-size:1140px 950px}
+ .b-home-stage:after{width:150px;height:85px;left:calc(50% + 125px);top:0;mask-size:150px 193px;-webkit-mask-size:150px 193px}
+ .b-profile-stage{background-size:900px 1100px}
+ .b-guide-stage{background-size:1100px 1100px}
+ .b-playlist-stage{background-size:1000px 1100px}
+ .playlist-view .playlist-heading{height:160px;min-height:160px;padding:22px 4px 12px}
+ .playlist-view .playlist-heading .scrap-title{font-size:30px}
+ .playlist-view .playlist-heading .scrap-title-line+span{margin-left:10px;margin-top:-6px}
+ .playlist-view .playlist-heading>.english{font-size:20px;margin-top:5px;margin-left:7px}
+ .playlist-view .flat-cassette{width:90px;height:55px;right:0;top:9px}
+ .playlist-view .flat-ribbon{right:0;top:3px;width:111px;height:75px}
+}
+@media(max-width:600px){
+ .profile-title{font-size:clamp(42px,12.5vw,49px);width:auto;transform:rotate(-3deg)}
+ .profile-title>.star-mark{right:-10px;top:calc(50% - 13px)}
+ .profile-nameplate{margin:6px 0 0 auto}
+ .profile-identity .profile-metadata{margin-top:12px}
+ .opening-story-header{min-height:245px;padding-top:67px}
+ .opening-story-header .flat-decor-opening .flat-surf-a{left:5px;top:190px;width:150px;height:34px}
+ .opening-story-header .scrap-title-stepped{font-size:30px}
+ .opening-story-header .scrap-title-stepped>.scrap-title-line+span{margin-left:10px;margin-top:-6px}
+ .opening-story-header .opening-english{font-size:20px;margin-top:5px}
+ .opening-note{right:8px;top:76px;width:108px;padding:12px 10px;font-size:23px}
+ .opening-story-header .flat-decor-opening .flat-spark-b{right:75px;bottom:24px}
+}
+@media(max-width:360px){
+ .opening-note{right:4px;top:14px;width:90px;padding:10px;font-size:21px}
+ .playlist-view .flat-cassette{right:0;top:-8px;width:70px;height:42px}
+ .playlist-view .flat-cassette>span{font-size:11px}
+ .playlist-view .flat-ribbon{right:0;top:-8px;width:90px;height:60px}
 }
