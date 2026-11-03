@@ -89,15 +89,21 @@
     close();
     return `<div class="prose">${html}</div>`;
   }
-  const copyUnit = (text, title) => `<div class="copy-unit"><pre>${escape(text)}</pre><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(text)}" aria-label="${escape(title)} 복사">COPY</button></div></div>`;
+  const copyUnit = (text, title, action='COPY') => `<div class="copy-unit"><pre>${escape(text)}</pre><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(text)}" aria-label="${escape(title)} 복사">${escape(action)}</button></div></div>`;
 
   // Guide roles follow the meaning of each item; shared profile/world prose stays unchanged.
   const guideDocument = html => `<div class="guide-document">${html}</div>`;
   const guideSection = (title, body, level=3) => `<section class="guide-section"><h${level}>${linkify(label(title.replace(/^🔗\s*/,'')))}</h${level}>${body}</section>`;
-  const guideNote = text => `<p class="guide-note">${linkify(text)}</p>`;
-  const guideList = lines => `<ul class="guide-list">${lines.map(line=>`<li>${linkify(line)}</li>`).join('')}</ul>`;
+  const guideText = text => text.split(/((?:하단\s*)?\[\s*⭐?\s*(?:모델 추천|출력 가이던스)\s*\]|플레이 팁(?=을 참고))/g).map(part=>{
+    const reference=part.match(/^(?:하단\s*)?\[\s*⭐?\s*(모델 추천|출력 가이던스)\s*\]$|^(플레이 팁)$/);
+    const key=reference?.[1]||reference?.[2];
+    return key?`<a href="#guide/${encodeURIComponent(key)}">${escape(key)}</a>`:linkify(part);
+  }).join('');
+  const guidePath = text => `<ol class="guide-path" aria-label="설정 입력 경로">${text.split(/\s*→\s*/).map((step,index,steps)=>`<li>${escape(step)}${index<steps.length-1?'<span aria-hidden="true">→</span>':''}</li>`).join('')}</ol>`;
+  const guideNote = text => `<p class="guide-note">${guideText(text)}</p>`;
+  const guideList = lines => `<ul class="guide-list">${lines.map(line=>`<li>${guideText(line)}</li>`).join('')}</ul>`;
   function guideRows(rows, kind='settings') {
-    return `<dl class="guide-rows guide-${kind}">${rows.map(row=>`<div class="guide-row"><dt>${linkify(row.term)}${row.separator?`<span class="guide-separator">${escape(row.separator)}</span>`:''}</dt><dd><p>${linkify(row.value)}</p>${(row.notes||[]).map(guideNote).join('')}</dd></div>`).join('')}</dl>`;
+    return `<dl class="guide-rows guide-${kind}">${rows.map(row=>`<div class="guide-row"><dt>${guideText(row.term)}${row.separator?`<span class="guide-separator">${escape(row.separator)}</span>`:''}</dt><dd><p>${guideText(row.value)}</p>${(row.notes||[]).map(guideNote).join('')}</dd></div>`).join('')}</dl>`;
   }
   function guideBlocks(text, nested=false) {
     const lines=text.split('\n').filter(line=>line.trim());
@@ -108,7 +114,10 @@
         const title=line.slice(2), body=[];
         index++;
         while(index<lines.length&&!lines[index].startsWith('▸ '))body.push(lines[index++]);
-        html+=guideSection(title,guideBlocks(body.join('\n'),nested),nested?4:3);
+        if(title.startsWith('🔗')&&body.length===1&&/^https:\/\/\S+$/.test(body[0])) {
+          const caption=label(title.replace(/^🔗\s*/,'').replace(/:\s*$/,''));
+          html+=`<p class="guide-resource"><a href="${escape(body[0])}" target="_blank" rel="noopener noreferrer">${escape(caption)} <span aria-hidden="true">↗</span></a></p>`;
+        } else html+=guideSection(title,guideBlocks(body.join('\n'),nested),nested?4:3);
       } else if(line.startsWith('· ')) {
         const entries=[];
         while(index<lines.length&&lines[index].startsWith('· ')) {
@@ -129,12 +138,12 @@
           while(end<entries.length&&entries[end].value.includes(': ')===paired)end++;
           const group=entries.slice(start,end);
           if(paired)html+=guideRows(group.map(entry=>{const at=entry.value.indexOf(': ');return {term:entry.value.slice(0,at),separator:':',value:entry.value.slice(at+2),notes:entry.notes};}));
-          else html+=`<ul class="guide-list">${group.map(entry=>`<li>${linkify(entry.value)}${entry.notes.map(guideNote).join('')}</li>`).join('')}</ul>`;
+          else html+=`<ul class="guide-list">${group.map(entry=>`<li>${guideText(entry.value)}${entry.notes.map(guideNote).join('')}</li>`).join('')}</ul>`;
           start=end;
         }
         if(sectionNotes.length)html+=`<aside class="guide-notes">${sectionNotes.map(guideNote).join('')}</aside>`;
       } else if(line.startsWith('↳ ')) { html+=guideNote(line.slice(2));index++; }
-      else {html+=`<p>${linkify(line)}</p>`;index++;}
+      else {html+=`<p>${guideText(line)}</p>`;index++;}
     }
     return html;
   }
@@ -166,25 +175,26 @@
     }
     if (key === '출력 가이던스') {
       const split = text.split('▸ ');
+      const [location,...intro]=split.shift().trim().split('\n');
       let optionalNext=false;
-      return guideDocument(guideBlocks(split.shift()) + split.map(part => {
+      return guideDocument(guidePath(location)+guideBlocks(intro.join('\n')) + split.map(part => {
         const lines = part.trim().split('\n');
         const title = lines.shift().trim();
         const optional = lines.indexOf('(선택 사항)');
         if (optional !== -1) lines.splice(optional, 1);
         const note=optionalNext?guideNote('(선택 사항)'):'';
         optionalNext=optional!==-1;
-        return guideSection(title,note+copyUnit(lines.join('\n').trim(),title));
+        return guideSection(title,note+copyUnit(lines.join('\n').trim(),title,'내용 복사'));
       }).join(''));
     }
     if (key === '추가 요약 지침') {
       const [location, ...body] = text.split('\n\n');
-      return guideDocument(guideBlocks(location) + copyUnit(body.join('\n\n'), key));
+      return guideDocument(guidePath(location) + copyUnit(body.join('\n\n'), key,'지침 복사'));
     }
     if (key === '상태창') {
       return guideDocument(text.split(/(?=^▸ )/m).filter(part=>part.trim()).map(part=>{
         const lines=part.trim().split('\n'),title=lines.shift().slice(2),body=lines.join('\n');
-        if(body.trim().startsWith('<BrenStatus'))return guideSection(title,copyUnit(body.trim(),'상태창 예시'));
+        if(body.trim().startsWith('<BrenStatus'))return guideSection(title,copyUnit(body.trim(),'상태창 '+title,title+' 복사'));
         const groups=body.split(/(?=^· )/m).filter(part=>part.trim());
         return guideSection(title,groups.map(group=>{
           const entries=group.trim().split('\n'),subject=entries.shift().slice(2);

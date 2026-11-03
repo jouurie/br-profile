@@ -1836,6 +1836,16 @@ main:has(.mature-view){container-type:inline-size;container-name:br-host}
 .mature-view .guide-document h4{margin:0 0 10px;font:600 18px/1.5 var(--body);color:var(--navy)}
 .mature-view .guide-document .guide-section .guide-section+.guide-section{margin-top:24px}
 .mature-view .guide-document a{font:inherit;color:var(--blue);overflow-wrap:anywhere;text-underline-offset:3px}
+.mature-view .guide-document a:hover,.mature-view .guide-document a:active{color:var(--navy);text-decoration-thickness:2px}
+.mature-view .guide-document a:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.mature-view .guide-document .guide-resource{margin-top:24px}
+.mature-view .guide-document .guide-resource a{display:inline-block;min-height:44px;padding:8px 0;font-weight:600}
+.mature-view .guide-document .guide-path{display:flex;flex-wrap:wrap;gap:6px 10px;list-style:none;margin:0;padding:0;color:var(--navy);font:400 16px/1.75 var(--body)}
+.mature-view .guide-document .guide-path li{display:flex;gap:10px;min-width:0;max-width:100%}
+.mature-view .guide-document .guide-path li>span{flex:none}
+.mature-view .guide-document .guide-path+p{margin-top:16px}
+.mature-view .guide-document .guide-path+.copy-unit{margin-top:20px}
+.mature-view.guide-view .guide-platform-label{font-size:14px}
 .mature-view .guide-document .guide-list{padding-left:20px}
 .mature-view .guide-document .guide-list>li{padding-left:2px}
 .mature-view .guide-document .guide-list>li+li{margin-top:10px}
