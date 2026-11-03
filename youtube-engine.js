@@ -55,7 +55,7 @@
       playerVars:{playsinline:1,autoplay:0,controls:1,origin:window.location.origin},
       events:{
         onReady:()=>{if(dead)return;hooks.ready();timer=setInterval(()=>{if(!dead){hooks.progress(player.getCurrentTime()*1000,player.getDuration()*1000);hooks.volume?.(player.getVolume(),player.isMuted());}},500);},
-        onStateChange:event=>{if(dead)return;if(event.data===1)hooks.play();else if(event.data===2||event.data===5)hooks.pause();else if(event.data===0)hooks.finish();},
+        onStateChange:event=>{if(dead)return;if(event.data===1)hooks.play();else if(event.data===3)hooks.buffering?.();else if(event.data===2||event.data===5)hooks.pause();else if(event.data===0)hooks.finish();},
         onError:event=>{if(dead)return;hooks.pause();hooks.error(event.data);},
         onAutoplayBlocked:()=>{if(!dead){hooks.pause();hooks.blocked();}}
       }

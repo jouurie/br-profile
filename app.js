@@ -21,6 +21,9 @@
     pause:'<path d="M8 5v14M16 5v14" stroke-width="5"/>',
     prev:'<path d="M5 5v14M19 5 8 12l11 7z" fill="currentColor"/>',
     next:'<path d="M19 5v14M5 5l11 7-11 7z" fill="currentColor"/>',
+    repeat:'<path d="m17 3 4 4-4 4M21 7H8a5 5 0 0 0-5 5m4 9-4-4 4-4M3 17h13a5 5 0 0 0 5-5"/><path d="m10 10 2-1v6m-2 0h4"/>',
+    shuffle:'<path d="M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2 0 4-3 6-6s4-6 6-6h3m-4-4 4 4-4 4"/>',
+    muted:'<path d="m3 9 4 0 5-4v14l-5-4H3zM17 9l5 6m0-6-5 6"/>',
     volume:'<path d="m3 9 4 0 5-4v14l-5-4H3zM16 8c3 2 3 6 0 8M19 5c5 4 5 10 0 14"/>'
   };
   const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name]}</svg>`;
@@ -328,7 +331,7 @@
   }
   const screws = className => `<div class="${className}" aria-hidden="true">${'<i class="screw"></i>'.repeat(4)}</div>`;
   function playlist() {
-    return `<section class="view playlist-view mature-view">${heading('여름밤의 플레이리스트','Dream Playlist','playlist',['여름밤의','플레이리스트'])}<div class="playlist-layout">${ticketFrame()}<section class="cassette-panel" aria-label="카세트 재생기">${screws('deck-screws')}<span class="speaker-holes" aria-hidden="true"></span><div class="deck-title" aria-hidden="true">DREAM PLAYLIST ${star}</div><div class="deck-window"><div class="cassette-art" aria-hidden="true"><img src="assets/cassette.png" alt="" width="1536" height="1024"><span class="cassette-art-title">DREAM PLAYLIST</span><span class="cassette-art-caption">Same summer. Same mixtape.</span></div></div><p id="track-current" class="track-current"></p><div class="range-row"><span id="elapsed" class="seek-time">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치"><span id="duration" class="seek-time">0:00</span></div><div class="player-controls"><button type="button" data-music="prev" aria-label="이전 곡">${icon('prev')}</button><button type="button" data-music="toggle" aria-label="재생">${icon('play')}</button><button type="button" data-music="next" aria-label="다음 곡">${icon('next')}</button></div><div class="range-row volume-row"><button type="button" data-mute aria-label="음소거" aria-pressed="${music.volume===0}">${icon('volume')}</button><input type="range" id="volume" min="0" max="100" value="${music.volume}" aria-label="음량"></div><p id="music-message" class="music-message" role="status" ${music.message?'':'hidden'}>${escape(music.message)}</p><div class="deck-decoration" aria-hidden="true">${waves}${ladder}</div></section><ol class="track-list" aria-label="곡 목록">${data.playlist.map((track,i)=>`<li>${ticketFrame('paper','compact')}<button type="button" class="track-pick" data-track="${i}" aria-pressed="${music.index===i}"><span>${track.name.includes(' - ')?`<strong>${escape(track.name.split(' - ')[0])}</strong><span class="track-divider" aria-hidden="true"> — </span>${escape(track.name.split(' - ').slice(1).join(' - '))}`:escape(track.name)}</span></button><a class="track-external" href="${escape(track.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(track.name)} YouTube에서 열기">↗</a></li>`).join('')}</ol></div></section>`;
+    return `<section class="view playlist-view mature-view">${heading('여름밤의 플레이리스트','Dream Playlist','playlist',['여름밤의','플레이리스트'])}<div class="playlist-layout"><section class="cassette-panel mixtape-console" aria-label="카세트 재생기"><div class="deck-window"><div class="cassette-art" aria-hidden="true"><img src="assets/cassette.png" alt="" width="1536" height="1024"><span class="cassette-art-title">DREAM PLAYLIST</span><span class="cassette-art-caption">Same summer. Same mixtape.</span></div></div><div class="console-controls"><div class="console-display"><p id="track-current" class="track-current"></p><div class="range-row"><span id="elapsed" class="seek-time">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치"><span id="duration" class="seek-time">0:00</span></div></div><div class="player-controls" role="group" aria-label="재생 제어"><button type="button" data-music="prev" aria-label="이전 곡">${icon('prev')}</button><button type="button" data-music="toggle" aria-label="재생">${icon('play')}</button><button type="button" data-music="next" aria-label="다음 곡">${icon('next')}</button><button type="button" data-music="repeat" aria-label="한 곡 반복" aria-pressed="${music.repeatOne}">${icon('repeat')}</button><button type="button" data-music="shuffle" aria-label="셔플" aria-pressed="${music.shuffled}">${icon('shuffle')}</button></div><div class="range-row volume-row"><button type="button" data-mute aria-label="음소거" aria-pressed="${music.volume===0}">${icon('volume')}</button><input type="range" id="volume" min="0" max="100" value="${music.volume}" aria-label="음량"></div></div><p id="music-message" class="music-message" role="status" ${music.message?'':'hidden'}>${escape(music.message)}</p><div class="deck-decoration" aria-hidden="true">${waves}<span class="console-current"></span><span class="console-trim"></span></div></section><ol class="track-list" aria-label="곡 목록">${data.playlist.map((track,i)=>`<li>${ticketFrame('paper','compact')}<button type="button" class="track-pick" data-track="${i}" aria-pressed="${music.index===i}"><span>${track.name.includes(' - ')?`<strong>${escape(track.name.split(' - ')[0])}</strong><span class="track-divider" aria-hidden="true"> — </span>${escape(track.name.split(' - ').slice(1).join(' - '))}`:escape(track.name)}</span></button><a class="track-external" href="${escape(track.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(track.name)} YouTube에서 열기">↗</a></li>`).join('')}</ol></div></section>`;
   }
   const views = {intro,home,profile,world,opening,guide,playlist};
   // Reserve each sibling set from its real rendered copy at the current width.
@@ -408,7 +411,7 @@
     if(route==='guide'&&rawKey)requestAnimationFrame(()=>document.getElementById('guide-content').scrollIntoView({block:'start',behavior:'instant'}));
   }
 
-  const music = {index:0, player:null, loading:null, playing:false, volume:65, lastVolume:65, elapsed:0, duration:0, message:''};
+  const music = {index:0, player:null, loading:null, pending:false, request:0, playing:false, repeatOne:false, shuffled:false, volume:65, lastVolume:65, elapsed:0, duration:0, message:''};
   function message(text='') { music.message=text;const node=document.getElementById('music-message');if(node){node.textContent=text;node.hidden=!text;} }
   function time(ms) { const seconds=Math.max(0,Math.floor(ms/1000));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`; }
   function updateMusic() {
@@ -418,15 +421,16 @@
       const type=button.dataset.music;
       button.innerHTML=icon(type==='toggle'?(music.playing?'pause':'play'):type);
       if(type==='toggle')button.setAttribute('aria-label',music.playing?'일시정지':'재생');
-      button.disabled=Boolean(music.loading);
+      if(type==='repeat'||type==='shuffle')button.setAttribute('aria-pressed',type==='repeat'?music.repeatOne:music.shuffled);
+      button.disabled=Boolean(music.loading)&&type==='toggle';
     });
     const current=document.getElementById('track-current');if(current)current.textContent=title;
-    document.querySelectorAll('[data-track]').forEach(button=>{button.setAttribute('aria-pressed',Number(button.dataset.track)===music.index);button.disabled=Boolean(music.loading);});
+    document.querySelectorAll('[data-track]').forEach(button=>{button.setAttribute('aria-pressed',Number(button.dataset.track)===music.index);});
     const elapsed=document.getElementById('elapsed');if(elapsed)elapsed.textContent=time(music.elapsed);
     const duration=document.getElementById('duration');if(duration)duration.textContent=time(music.duration);
     const seek=document.getElementById('seek');if(seek&&document.activeElement!==seek)seek.value=music.duration?Math.round(music.elapsed/music.duration*1000):0;
     const volume=document.getElementById('volume');if(volume&&document.activeElement!==volume)volume.value=music.volume;
-    const mute=document.querySelector('[data-mute]');if(mute){mute.setAttribute('aria-pressed',music.volume===0);mute.setAttribute('aria-label',music.volume===0?'음소거 해제':'음소거');}
+    const mute=document.querySelector('[data-mute]');if(mute){mute.innerHTML=icon(music.volume===0?'muted':'volume');mute.setAttribute('aria-pressed',music.volume===0);mute.setAttribute('aria-label',music.volume===0?'음소거 해제':'음소거');}
   }
   async function ensurePlayer() {
     if(music.player)return music.player;
@@ -437,27 +441,32 @@
       return await new Promise(resolve=>{
         let player;
         player=window.RieYouTube.create('youtube-player',data.playlist[music.index].url,{
-          ready(){music.player=player;player.setVolume(music.volume);message();resolve(player);},
-          play(){music.playing=true;message();updateMusic();},
-          pause(){music.playing=false;updateMusic();},
-          progress(elapsed,duration){music.elapsed=elapsed;music.duration=duration;updateMusic();},
+          ready(){music.player=player;player.setVolume(music.volume);if(!music.pending)message();resolve(player);},
+          play(){music.pending=false;music.playing=true;message();updateMusic();},
+          pause(){music.pending=false;music.playing=false;message();updateMusic();},
+          buffering(){music.pending=true;music.playing=false;message('곡을 불러오는 중입니다.');updateMusic();},
+          progress(elapsed,duration){if(music.pending)return;music.elapsed=elapsed;music.duration=duration;updateMusic();},
           volume(value,muted){music.volume=muted?0:value;if(music.volume)music.lastVolume=music.volume;updateMusic();},
-          finish(){selectTrack((music.index+1)%data.playlist.length,true);},
-          error(code){message(`이 곡을 재생할 수 없습니다 (${code}). 다른 곡을 선택하거나 YouTube에서 열어 주세요.`);},
-          blocked(){message('재생 버튼을 한 번 더 눌러 주세요.');}
+          finish(){selectTrack(music.repeatOne?music.index:nextTrackIndex(),true);},
+          error(code){music.pending=false;music.playing=false;updateMusic();message(`이 곡을 재생할 수 없습니다 (${code}). 다른 곡을 선택하거나 YouTube에서 열어 주세요.`);},
+          blocked(){music.pending=false;music.playing=false;updateMusic();message('재생 버튼을 한 번 더 눌러 주세요.');}
         });
       });
     })();
     updateMusic();
     try { return await music.loading; }
-    catch(error){message(error.message);throw error;}
+    catch(error){music.pending=false;music.playing=false;message(error.message);throw error;}
     finally {music.loading=null;updateMusic();}
   }
+  function nextTrackIndex(){return (music.index+1+(music.shuffled?Math.floor(Math.random()*(data.playlist.length-1)):0))%data.playlist.length;}
   async function selectTrack(index,autoPlay=true) {
+    const request=++music.request;
     music.index=(index+data.playlist.length)%data.playlist.length;
-    music.elapsed=0;music.duration=0;message();updateMusic();
+    music.pending=autoPlay;music.playing=false;music.elapsed=0;music.duration=0;message(autoPlay?'곡을 불러오는 중입니다.':'');updateMusic();
     try {
       const player=await ensurePlayer();
+      if(request!==music.request)return;
+      message('곡을 불러오는 중입니다.');
       player.load(data.playlist[music.index].url,{auto_play:autoPlay});
     } catch { /* The shared status provides recovery. */ }
   }
@@ -515,7 +524,9 @@
     if(button.hasAttribute('data-mute'))setVolume(music.volume?0:music.lastVolume||65);
     if(button.hasAttribute('data-music')){
       const action=button.dataset.music;
-      if(action==='prev'||action==='next')await selectTrack(music.index+(action==='next'?1:-1));
+      if(action==='repeat'){music.repeatOne=!music.repeatOne;updateMusic();}
+      else if(action==='shuffle'){music.shuffled=!music.shuffled;updateMusic();}
+      else if(action==='prev'||action==='next')await selectTrack(action==='next'?nextTrackIndex():music.index-1);
       else try{const existed=Boolean(music.player);const player=await ensurePlayer();if(existed)player.toggle();else player.play();}catch{}
     }
   });
