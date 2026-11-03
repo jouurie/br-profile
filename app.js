@@ -240,7 +240,7 @@
   }
   const screws = className => `<div class="${className}" aria-hidden="true">${'<i class="screw"></i>'.repeat(4)}</div>`;
   function playlist() {
-    return `<section class="view playlist-view mature-view">${heading('여름밤의 플레이리스트','Dream Playlist','playlist',['여름밤의','플레이리스트'])}<div class="playlist-layout">${ticketFrame()}<section class="cassette-panel" aria-label="카세트 재생기">${screws('deck-screws')}<span class="speaker-holes" aria-hidden="true"></span><div class="deck-title" aria-hidden="true">DREAM PLAYLIST ${star}</div><div class="deck-window"><div class="cassette-art" aria-hidden="true"><img src="assets/cassette.png" alt="" width="1536" height="1024"><span class="cassette-art-title">DREAM PLAYLIST</span><span class="cassette-art-caption">Same summer. Same mixtape.</span></div></div><p id="track-current" class="track-current"></p><div class="range-row"><span id="elapsed" class="seek-time">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치"><span id="duration" class="seek-time">0:00</span></div><div class="player-controls"><button type="button" data-music="prev" aria-label="이전 곡">${icon('prev')}</button><button type="button" data-music="toggle" aria-label="재생">${icon('play')}</button><button type="button" data-music="next" aria-label="다음 곡">${icon('next')}</button></div><div class="range-row volume-row"><button type="button" data-mute aria-label="음소거" aria-pressed="${music.volume===0}">${icon('volume')}</button><input type="range" id="volume" min="0" max="100" value="${music.volume}" aria-label="음량"></div><div class="deck-decoration" aria-hidden="true">${waves}${ladder}</div></section><ol class="track-list" aria-label="곡 목록">${data.playlist.map((track,i)=>`<li>${ticketFrame('paper','compact')}<button type="button" class="track-pick" data-track="${i}" aria-pressed="${music.index===i}"><span>${track.name.includes(' - ')?`<strong>${escape(track.name.split(' - ')[0])}</strong><span class="track-divider" aria-hidden="true"> — </span>${escape(track.name.split(' - ').slice(1).join(' - '))}`:escape(track.name)}</span></button><a class="track-external" href="${escape(track.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(track.name)} YouTube에서 열기">↗</a></li>`).join('')}</ol></div></section>`;
+    return `<section class="view playlist-view mature-view">${heading('여름밤의 플레이리스트','Dream Playlist','playlist',['여름밤의','플레이리스트'])}<div class="playlist-layout">${ticketFrame()}<section class="cassette-panel" aria-label="카세트 재생기">${screws('deck-screws')}<span class="speaker-holes" aria-hidden="true"></span><div class="deck-title" aria-hidden="true">DREAM PLAYLIST ${star}</div><div class="deck-window"><div class="cassette-art" aria-hidden="true"><img src="assets/cassette.png" alt="" width="1536" height="1024"><span class="cassette-art-title">DREAM PLAYLIST</span><span class="cassette-art-caption">Same summer. Same mixtape.</span></div></div><p id="track-current" class="track-current"></p><div class="range-row"><span id="elapsed" class="seek-time">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치"><span id="duration" class="seek-time">0:00</span></div><div class="player-controls"><button type="button" data-music="prev" aria-label="이전 곡">${icon('prev')}</button><button type="button" data-music="toggle" aria-label="재생">${icon('play')}</button><button type="button" data-music="next" aria-label="다음 곡">${icon('next')}</button></div><div class="range-row volume-row"><button type="button" data-mute aria-label="음소거" aria-pressed="${music.volume===0}">${icon('volume')}</button><input type="range" id="volume" min="0" max="100" value="${music.volume}" aria-label="음량"></div><p id="music-message" class="music-message" role="status" ${music.message?'':'hidden'}>${escape(music.message)}</p><div class="deck-decoration" aria-hidden="true">${waves}${ladder}</div></section><ol class="track-list" aria-label="곡 목록">${data.playlist.map((track,i)=>`<li>${ticketFrame('paper','compact')}<button type="button" class="track-pick" data-track="${i}" aria-pressed="${music.index===i}"><span>${track.name.includes(' - ')?`<strong>${escape(track.name.split(' - ')[0])}</strong><span class="track-divider" aria-hidden="true"> — </span>${escape(track.name.split(' - ').slice(1).join(' - '))}`:escape(track.name)}</span></button><a class="track-external" href="${escape(track.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(track.name)} YouTube에서 열기">↗</a></li>`).join('')}</ol></div></section>`;
   }
   const views = {intro,home,profile,world,opening,guide,playlist};
   // Reserve each sibling set from its real rendered copy at the current width.
@@ -296,11 +296,17 @@
     openingDialog?.close(false);
     const [candidate, rawKey] = location.hash.slice(1).split('/');
     route = routes.includes(candidate) ? candidate : 'intro';
+    history.scrollRestoration=route==='guide'?'manual':'auto';
+    if(route==='guide'){
+      guideGroup=0;guideKey=guideGroups[0].items[0];settingsPlatform='elyn';
+    }
     if (route==='guide' && rawKey) {
       let key;
       try { key = decodeURIComponent(rawKey); } catch { key = ''; }
       const groupIndex=guideGroups.findIndex(group=>group.items.includes(key));
       if(groupIndex!==-1){guideKey=key;guideGroup=groupIndex;}
+      // Explicit shortcuts open once; reload and main-menu visits start fresh.
+      history.replaceState(null,'','#guide');
     }
     main.innerHTML=(route==='intro'?'':`<div class="b-wide-stage b-${route}-stage" aria-hidden="true"></div>`)+views[route]();
     mountProfilePapers();
@@ -314,13 +320,12 @@
     if(route==='guide'&&rawKey)requestAnimationFrame(()=>document.getElementById('guide-content').scrollIntoView({block:'start',behavior:'instant'}));
   }
 
-  const music = {index:0, player:null, loading:null, playing:false, volume:65, lastVolume:65, elapsed:0, duration:0};
-  function message(text='') { const node=document.getElementById('music-message');node.textContent=text;node.hidden=!text; }
+  const music = {index:0, player:null, loading:null, playing:false, volume:65, lastVolume:65, elapsed:0, duration:0, message:''};
+  function message(text='') { music.message=text;const node=document.getElementById('music-message');if(node){node.textContent=text;node.hidden=!text;} }
   function time(ms) { const seconds=Math.max(0,Math.floor(ms/1000));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`; }
   function updateMusic() {
     const title=data.playlist[music.index].name;
     document.body.classList.toggle('playing',music.playing);
-    document.getElementById('dock-title').textContent=music.player||music.loading?title:'여름밤의 플레이리스트';
     document.querySelectorAll('[data-music]').forEach(button=>{
       const type=button.dataset.music;
       button.innerHTML=icon(type==='toggle'?(music.playing?'pause':'play'):type);
@@ -372,11 +377,13 @@
     const button=event.target.closest('button');
     if(!button)return;
     if(button.hasAttribute('data-opening-full'))showOpeningFull(button);
-    if(button.hasAttribute('data-top'))window.scrollTo({top:0,behavior:'instant'});
+    if(button.hasAttribute('data-top')){
+      main.querySelectorAll('.compact-reader,.guide-content').forEach(panel=>{panel.scrollTop=0;});
+      window.scrollTo({top:0,behavior:'instant'});
+    }
     if(button.hasAttribute('data-nav-step'))document.getElementById('main-navigation').scrollBy({left:Number(button.dataset.navStep)*180,behavior:'smooth'});
     if(button.hasAttribute('data-guide-group')){
       guideGroup=Number(button.dataset.guideGroup);guideKey=guideGroups[guideGroup].items[0];
-      history.replaceState(null,'',`#guide/${encodeURIComponent(guideKey)}`);
       document.querySelectorAll('[data-guide-group]').forEach(node=>node.setAttribute('aria-selected',node===button));
       const directory=document.getElementById('guide-item-directory');directory.innerHTML=guideItems();directory.setAttribute('aria-labelledby',button.id);
       document.getElementById('guide-content').innerHTML=guideReading();
@@ -403,7 +410,6 @@
     }
     if(button.hasAttribute('data-guide')){
       guideKey=button.dataset.guide;
-      history.replaceState(null,'',`#guide/${encodeURIComponent(guideKey)}`);
       document.querySelectorAll('[data-guide]').forEach(node=>node.setAttribute('aria-current',node===button));
       document.getElementById('guide-content').innerHTML=guideReading();
       document.getElementById('guide-content').scrollTop=0;sizeStablePanels();
@@ -452,7 +458,10 @@
     event.preventDefault();tabs[index].focus();tabs[index].click();
   });
   window.addEventListener('hashchange',render);
-  document.querySelector('.site-footer').insertAdjacentHTML('beforeend',palm+waves);
+  document.querySelector('[data-route="guide"]').addEventListener('click',event=>{
+    if(route!=='guide')return;
+    event.preventDefault();history.replaceState(null,'','#guide');render();
+  });
   new ResizeObserver(()=>document.documentElement.style.setProperty('--header',`${document.querySelector('.site-header').getBoundingClientRect().height}px`)).observe(document.querySelector('.site-header'));
   render();
 })();
