@@ -9,7 +9,7 @@
   const sections = data.sections;
   const routes = ['intro', 'home', 'profile', 'world', 'opening', 'guide', 'playlist'];
   const titles = {intro:'꿈으로 입장',home:'홈',profile:'프로필',world:'세계관',opening:'도입부',guide:'이용 가이드',playlist:'플레이리스트'};
-  let route = 'intro', profileTab = 0, worldTab = 0, noteTab = 0, placeIndex = 0, guideKey = '진행 안내', guideGroup = 0;
+  let route = 'intro', profileTab = 0, worldTab = 0, noteTab = 0, placeIndex = 0, guideKey = '진행 안내', guideGroup = 0, settingsPlatform = 'elyn';
   const guideGroups = [
     {title:'시작과 진행',items:['진행 안내','플레이 팁','추천 플레이','로어북 예산 안내','채팅방 이전 안내']},
     {title:'설정과 출력',items:['추천 설정값','모델 추천','출력 가이던스','추가 요약 지침']},
@@ -43,7 +43,7 @@
     const surf='<span class="flat-surf flat-surf-a">'+flatWave+'</span><span class="flat-surf flat-surf-b">'+flatWave+'</span>';
     const sparks='<span class="flat-spark flat-spark-a">'+star+'</span><span class="flat-spark flat-spark-b">'+star+'</span><span class="flat-splash">'+flatDroplets+'</span>';
     let extra='';
-    if(kind==='guide')extra=flatTicket('paper')+flatTicket('lime')+'<span class="flat-pool-ladder">'+ladder+'</span>';
+    if(kind==='guide')extra='<span class="flat-pool-ladder">'+ladder.replace('<path','<path class="ladder-outline"')+ladder+'</span>'+flatTicket('paper')+flatTicket('lime');
     if(kind==='playlist')extra=flatRibbon+flatCassette;
     return '<div class="flat-header-decor flat-decor-'+kind+'" aria-hidden="true">'+palms+surf+sparks+extra+'</div>';
   }
@@ -93,6 +93,10 @@
 
   function guideBody(key) {
     const text = sections[key];
+    if (key === '추천 설정값') {
+      const selected = settingsPlatform === 'elyn' ? text : data.nodySettings;
+      return `<div class="guide-platform-tabs" role="tablist" aria-label="추천 설정 플랫폼">${['elyn','nody'].map(platform=>`<button type="button" role="tab" id="settings-tab-${platform}" data-settings-platform="${platform}" aria-selected="${settingsPlatform===platform}" aria-controls="settings-platform-content">${platform.toUpperCase()}</button>`).join('')}</div><div id="settings-platform-content" role="tabpanel" aria-labelledby="settings-tab-${settingsPlatform}">${prose(selected)}<div class="copy-unit settings-copy"><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(selected)}" aria-label="${settingsPlatform.toUpperCase()} 추천 설정값 전체 복사">설정값 복사</button></div></div></div>`;
+    }
     if (key === '출력 가이던스') {
       const split = text.split('▸ ');
       return prose(split.shift()) + split.map(part => {
@@ -116,17 +120,14 @@
     return `<section class="intro-view" aria-label="꿈으로 입장"><img class="intro-scene" src="assets/waterpark.png" alt="푸른 물빛과 워터슬라이드가 있는 실내 워터파크" width="1536" height="1024" fetchpriority="high"><div class="intro-stage"><div class="hero-ticket intro-ticket">${ticketFrame()}${titleMark()}${[1,2,3,4].map(i=>`<span class="wave-fragment intro-wave intro-wave-${i}" aria-hidden="true"><svg class="wave-mark" viewBox="0 0 160 56" aria-hidden="true"><path class="wave-front" stroke="none" d="M3 31C8 22 9 12 21 13C35 15 34 24 46 23C61 21 58 5 73 5C89 5 83 24 98 25C114 26 112 13 127 14C142 15 134 29 149 31C158 32 159 42 151 47C141 53 129 43 118 46C104 51 97 40 85 43C71 48 63 53 51 47C39 41 32 50 20 47C10 46 0 42 3 31Z"/></svg></span>`).join('')}<h1>죽은 소꿉친구가 돌아왔다.</h1><p class="hook-sub">꿈에서만 허락된 재회로.</p>${palm}<div class="ticket-pool" aria-hidden="true">${waves}${ladder}</div><a class="button admission-button ticket-button" href="#home">${buttonTicket()}입장하기 <span aria-hidden="true">→</span></a></div><p class="intro-quote">“끝나고<br>잠깐 보자.”</p></div></section>`;
   }
   function home() {
-    return `<section class="home-view view" aria-label="브렌든 소개">
-      <div class="hero">${flatHeaderDecor('home')}<p class="home-handwritten handwritten">언제나, 여름의 끝에서.</p><div class="hero-ticket">${ticketFrame()}${palm}<div class="ticket-copy">${titleMark()}</div><div class="home-photos">${poolPhoto()}${portraitPhoto()}${star}</div><div class="hero-story"><span class="wave-fragment wave-one" aria-hidden="true">${waves}</span><h1>죽은 소꿉친구가 돌아왔다.</h1><p class="hook-sub">꿈에서만 허락된 재회로.</p><div class="ticket-pool" aria-hidden="true">${waves}${ladder}</div></div>
-          <div class="hero-actions"><a class="button ticket-button" href="#profile">${buttonTicket()}브렌든 알아보기 <span aria-hidden="true">›</span></a><a class="button light ticket-button" href="#guide">${buttonTicket('paper')}시작 전 안내 <span aria-hidden="true">›</span></a></div>
-          <p class="hero-genre">1990s CANADA / DREAMCORE / MYSTERY</p>
-          <p class="hero-quote">“끝나고<br>잠깐 보자.”</p></div>
+    return `<section class="home-view view mature-view" aria-label="브렌든 소개">
+      <div class="home-book-hero">
+        <header class="home-book-identity"><h1>SEE YOU<br>AFTER.</h1><p class="home-book-name">BRENDAN HALE</p><p class="home-book-genre">1990s CANADA / DREAMCORE / MYSTERY</p></header>
+        <div class="home-book-portrait">${portraitPhoto('home-book-photo')}${star}</div>
+        <div class="home-book-story"><h2>죽은 소꿉친구가 돌아왔다.</h2><p>꿈에서만 허락된 재회로.</p><blockquote>“끝나고 잠깐 보자.”</blockquote></div>
+        <div class="home-book-actions"><a class="button" href="#profile">브렌든 알아보기 <span aria-hidden="true">›</span></a><a class="button light" href="#guide">시작 전 안내 <span aria-hidden="true">›</span></a></div>
+        <div class="home-book-pool">${poolPhoto('home-book-pool-photo')}<p class="handwritten">언제나, 여름의 끝에서.</p></div>
       </div>
-      <section class="start-strip" aria-labelledby="before-title">${ticketFrame()}<div class="start-main"><div class="start-title">${star}<h2 id="before-title">시작하기 전에</h2>${waves}<p>진행 방식과 설정을 확인하세요.</p></div>
-        <a class="start-link" href="#guide/진행 안내">${startFrame('cyan')}<b>01</b><span><strong>진행 안내 <span aria-hidden="true">›</span></strong><small>꿈의 진행 방식과<br>기본 규칙을 소개합니다.</small></span></a>
-        <a class="start-link" href="#guide/추천 설정값">${startFrame('lime')}<b>02</b><span><strong>추천 설정 <span aria-hidden="true">›</span></strong><small>플레이 방식에 맞는<br>설정값을 확인합니다.</small></span></a>
-        <a class="start-link" href="#guide/명령어">${startFrame('cyan')}<b>03</b><span><strong>명령어<span class="middle-dot">·</span>상태창 <span aria-hidden="true">›</span></strong><small>기본 명령어와<br>상태창 구성을 확인합니다.</small></span></a>
-      </div><div class="quick-links"><a href="#guide/플레이 팁">${railIcon('tip')}플레이 팁 <span aria-hidden="true">›</span></a><a href="#guide/로어북 예산 안내">${railIcon('book')}로어북 예산 <span aria-hidden="true">›</span></a><a href="#guide/채팅방 이전 안내">${railIcon('chat')}채팅방 이전 <span aria-hidden="true">›</span></a></div></section>
       <div class="disclosures"><div class="disclosure-buttons"><button type="button" data-disclose="tw" aria-expanded="false" aria-controls="tw-panel">${railIcon('chat')}TW <span aria-hidden="true">+</span></button><button type="button" data-disclose="motif" aria-expanded="false" aria-controls="motif-panel">${railIcon('book')}MOTIF <span aria-hidden="true">+</span></button></div><div id="tw-panel" class="disclosure-body" hidden>${prose(data.tw)}</div><div id="motif-panel" class="disclosure-body" hidden>${prose(sections['모티브'])}</div></div>
       <article class="intro-paper"><h2>소개</h2><div class="tag-row">${data.tags.flatMap(tag=>tag==='ALL'?['HL','BL']:[tag]).map(tag=>`<span class="tag">${escape(tag)}</span>`).join('')}</div>${prose(data.intro)}</article>
     </section>`;
@@ -166,9 +167,9 @@
     svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.querySelector('path').setAttribute('d',d+'V1Z');
   }
   const profileGroups = [[0,1],[2,4],[3,5]];
-  function profileContent() { return profilePaper('body')+profileGroups[profileTab].map(index => `<h3>${star}<span>${escape(label(data.profile[index].title))}</span>${waves}</h3>${prose(data.profile[index].text)}`).join(''); }
+  function profileContent(tab=profileTab) { return profilePaper('body')+profileGroups[tab].map(index => `<h3>${star}<span>${escape(label(data.profile[index].title))}</span>${waves}</h3>${prose(data.profile[index].text)}`).join(''); }
   function profile() {
-    return `<section class="view profile-view"><article class="profile-sheet">${flatHeaderDecor('profile')}<div class="profile-hero">${profilePaper('hero')}<div class="profile-rim-waves" aria-hidden="true"><span>${flatWave}</span><span>${flatWave}</span></div><div class="profile-photo">${portraitPhoto('profile-portrait')}${star}</div><div class="profile-identity">${palm}<span class="profile-stamp" aria-hidden="true">FIRST<br>DREAM</span><p class="profile-handwritten handwritten">언제나, 여름의 끝에서.</p><h1 class="profile-title" aria-label="브렌든 헤일"><span>브렌든</span> <span>헤일</span>${star}</h1><p class="profile-nameplate">Brendan Hale</p><p class="profile-metadata">18세<span>·</span>캐나다 레스브리지<span>·</span>라이프가드</p><blockquote class="profile-quote">“끝나고 잠깐 보자.”${waves}</blockquote></div></div><div class="profile-tabs" role="tablist" aria-label="프로필 항목">${['기본 정보·외형','성격·버릇·특징','말투·취향'].map((name,i)=>`<button type="button" role="tab" id="profile-tab-${i}" data-profile="${i}" aria-selected="${profileTab===i}" aria-controls="profile-panel">${ticketFrame(profileTab===i?'blue':'paper','row')}<span>${name.replaceAll('·','<span class="profile-separator">·</span>')}</span>${waves}</button>`).join('')}</div><div id="profile-panel" class="profile-body" role="tabpanel" aria-labelledby="profile-tab-${profileTab}">${profileContent()}</div></article></section>`;
+    return `<section class="view profile-view mature-view"><article class="profile-sheet">${flatHeaderDecor('profile')}<div class="profile-hero">${profilePaper('hero')}<div class="profile-rim-waves" aria-hidden="true"><span>${flatWave}</span><span>${flatWave}</span></div><div class="profile-photo">${portraitPhoto('profile-portrait')}${star}</div><div class="profile-identity">${palm}<span class="profile-stamp" aria-hidden="true">FIRST<br>DREAM</span><p class="profile-handwritten handwritten">언제나, 여름의 끝에서.</p><h1 class="profile-title" aria-label="브렌든 헤일"><span>브렌든</span> <span>헤일</span>${star}</h1><p class="profile-nameplate">Brendan Hale</p><p class="profile-metadata">18세<span>·</span>캐나다 레스브리지<span>·</span>라이프가드</p></div></div><div class="profile-tabs" role="tablist" aria-label="프로필 항목">${['기본 정보·외형','성격·버릇·특징','말투·취향'].map((name,i)=>`<button type="button" role="tab" id="profile-tab-${i}" data-profile="${i}" aria-selected="${profileTab===i}" aria-controls="profile-panel">${ticketFrame(profileTab===i?'blue':'paper','row')}<span>${name.replaceAll('·','<span class="profile-separator">·</span>')}</span>${waves}</button>`).join('')}</div><div id="profile-panel" class="profile-body" role="tabpanel" aria-labelledby="profile-tab-${profileTab}">${profileContent()}</div></article></section>`;
   }
   const places = [
     {name:'입구',x:14,y:65,text:'매표소 직원은 표를 끊고 손목에 팔찌를 채웁니다.'},
@@ -193,11 +194,11 @@
     return `<div class="prose">${lines.map((line,i)=>`<h3>${escape(noteHeadings[key][i])}</h3><ul><li>${linkify(line.slice(2))}</li></ul>`).join('')}</div>`;
   }
   function world() {
-    return `<section class="view world-view"><div class="world-scenery" aria-hidden="true">${palm}${palm}${palm}${palm}${worldSurf}</div><header class="world-hero section-heading">${flatHeaderDecor('world')}<svg class="world-title-rays" viewBox="0 0 420 160" aria-hidden="true"><path d="m128 7 6-8m-4 15 9-4M0 81l8-7m-7 16 5-5"/></svg>${palm}<span class="world-ticket" aria-hidden="true">${ticketFrame('lime','row')}WORLD</span><h1 class="scrap-title"><span class="scrap-title-line">꿈의 워터파크</span></h1><span class="world-english" aria-hidden="true">Dream Waterpark</span><p class="world-quote">“끝나고<br>잠깐 보자.”</p><span class="world-title-wave" aria-hidden="true">${worldWaves}</span>${worldWaves}</header><div class="world-brochure"><section class="world-map-paper">${worldPaper('map')}<div class="world-backsheet" aria-hidden="true"><span>FIRST DREAM</span>${palm}</div><div class="native-map"><img class="map-art" src="assets/waterpark-map.png" alt="입구, 오락실, 푸드코트, 파도풀, 락커룸과 직원 복도로 구성된 워터파크 안내도" width="1536" height="1024">${places.map((place,i)=>`<details class="map-place" name="world-place" style="--x:${place.x}%;--y:${place.y}%;--slot:${i+1};--mobile-slot:${i%3+1};--mobile-row:${Math.floor(i/3)+2}"><summary class="place-summary" aria-label="${place.name}" aria-controls="place-info-${i}"><span class="map-pin" aria-hidden="true"><span class="map-pin-tag${i===4?' map-pin-ticket':''}">${i===4?ticketFrame('paper','row'):''}${pin}<span class="map-pin-name">${place.name}</span><span class="map-pin-number">${i+1}</span></span></span><span class="place-list-label" aria-hidden="true">${ticketFrame('paper','row')}<b class="place-number">${i+1}</b><span>${place.name}</span><span class="place-chevron">›</span></span></summary><div id="place-info-${i}" class="place-inline"><h3>${pin}${place.name}</h3><p>${place.text}</p></div></details>`).join('')}</div><div class="world-map-footer" aria-hidden="true"><span class="world-map-signature">Our Summer<br>Never Ends.</span>${worldWaves}</div><span class="fold-corner" aria-hidden="true"></span></section><section class="world-reading">${worldPaper('reading')}<div class="tab-row" role="tablist" aria-label="세계관 항목">${worldKeys.map((name,i)=>`<button type="button" role="tab" id="world-tab-${i}" data-world="${i}" aria-selected="${worldTab===i}" aria-controls="world-panel">${ticketFrame(worldTab===i?'blue':'paper','row')}<span>${name}</span></button>`).join('')}</div><div class="world-reading-columns"><div class="world-copy"><div class="world-content${worldTab===0?' world-premise':''}" id="world-panel" role="tabpanel" aria-labelledby="world-tab-${worldTab}">${prose(sections[worldKeys[worldTab]])}${palm}</div><blockquote class="world-summer-note">Our Summer<br>Never Ends.</blockquote></div><aside class="world-context"><div class="world-pool-memento">${poolPhoto('world-pool-photo').replace('Our Summer<br>Never Ends.',places[4].name+waves)}${star}</div>${worldWaves}</aside></div><section class="world-notes"><h2>워터파크에 남은 이야기</h2><div class="world-note-tabs" role="tablist" aria-label="세계관 상세">${noteKeys.map((key,i)=>`<button type="button" role="tab" id="note-tab-${i}" data-note="${i}" aria-selected="${noteTab===i}" aria-controls="note-panel">${key}</button>`).join('')}</div><div id="note-panel" role="tabpanel" aria-labelledby="note-tab-${noteTab}">${worldNotes(noteKeys[noteTab])}</div></section><span class="fold-corner" aria-hidden="true"></span></section></div></section>`;
+    return `<section class="view world-view mature-view"><div class="world-scenery" aria-hidden="true">${palm}${palm}${palm}${palm}${worldSurf}</div><header class="world-hero section-heading">${flatHeaderDecor('world')}<svg class="world-title-rays" viewBox="0 0 420 160" aria-hidden="true"><path d="m128 7 6-8m-4 15 9-4M0 81l8-7m-7 16 5-5"/></svg>${palm}<span class="world-ticket" aria-hidden="true">${ticketFrame('lime','row')}WORLD</span><h1 class="scrap-title"><span class="scrap-title-line">꿈의 워터파크</span></h1><span class="world-english" aria-hidden="true">Dream Waterpark</span><span class="world-title-wave" aria-hidden="true">${worldWaves}</span>${worldWaves}</header><div class="world-brochure"><section class="world-map-paper">${worldPaper('map')}<div class="world-backsheet" aria-hidden="true"><span>FIRST DREAM</span>${palm}</div><div class="native-map"><img class="map-art" src="assets/waterpark-map.png" alt="입구, 오락실, 푸드코트, 파도풀, 락커룸과 직원 복도로 구성된 워터파크 안내도" width="1536" height="1024">${places.map((place,i)=>`<details class="map-place" name="world-place" style="--x:${place.x}%;--y:${place.y}%;--slot:${i+1};--mobile-slot:${i%3+1};--mobile-row:${Math.floor(i/3)+2}"><summary class="place-summary" aria-label="${place.name}" aria-controls="place-info-${i}"><span class="map-pin" aria-hidden="true"><span class="map-pin-tag${i===4?' map-pin-ticket':''}">${i===4?ticketFrame('paper','row'):''}${pin}<span class="map-pin-name">${place.name}</span><span class="map-pin-number">${i+1}</span></span></span><span class="place-list-label" aria-hidden="true">${ticketFrame('paper','row')}<b class="place-number">${i+1}</b><span>${place.name}</span><span class="place-chevron">›</span></span></summary><div id="place-info-${i}" class="place-inline"><h3>${pin}${place.name}</h3><p>${place.text}</p></div></details>`).join('')}</div><div class="world-map-footer" aria-hidden="true"><span class="world-map-signature">Our Summer<br>Never Ends.</span>${worldWaves}</div><span class="fold-corner" aria-hidden="true"></span></section><section class="world-reading">${worldPaper('reading')}<div class="tab-row" role="tablist" aria-label="세계관 항목">${worldKeys.map((name,i)=>`<button type="button" role="tab" id="world-tab-${i}" data-world="${i}" aria-selected="${worldTab===i}" aria-controls="world-panel">${ticketFrame(worldTab===i?'blue':'paper','row')}<span>${name}</span></button>`).join('')}</div><div class="world-reading-columns"><div class="world-copy"><div class="world-content${worldTab===0?' world-premise':''}" id="world-panel" role="tabpanel" aria-labelledby="world-tab-${worldTab}">${prose(sections[worldKeys[worldTab]])}${palm}</div><blockquote class="world-summer-note">Our Summer<br>Never Ends.</blockquote></div><aside class="world-context"><div class="world-pool-memento">${poolPhoto('world-pool-photo').replace('Our Summer<br>Never Ends.',places[4].name+waves)}${star}</div>${worldWaves}</aside></div><section class="world-notes"><h2>워터파크에 남은 이야기</h2><div class="world-note-tabs" role="tablist" aria-label="세계관 상세">${noteKeys.map((key,i)=>`<button type="button" role="tab" id="note-tab-${i}" data-note="${i}" aria-selected="${noteTab===i}" aria-controls="note-panel">${key}</button>`).join('')}</div><div id="note-panel" role="tabpanel" aria-labelledby="note-tab-${noteTab}">${worldNotes(noteKeys[noteTab])}</div></section><span class="fold-corner" aria-hidden="true"></span></section></div></section>`;
   }
   function opening() {
     const title='<span class="scrap-title-line">졸업앨범을</span> <span class="scrap-title-line">펼친 밤</span>';
-    return `<section class="view opening-view" aria-label="도입부"><div class="keepsake"><header class="opening-story-header section-heading">${flatHeaderDecor('opening')}<span class="opening-dream-ticket">${ticketFrame('blue','row')}<span>01<span class="middle-dot">·</span>첫 번째 꿈</span>${star}</span><h1 class="opening-display scrap-title scrap-title-stepped" aria-label="졸업앨범을 펼친 밤">${title}</h1><div class="opening-summer opening-english" aria-hidden="true"><span>Our Summer Never Ends.</span></div><blockquote class="opening-note">“끝나고<br>잠깐 보자.”${waves}</blockquote><span class="opening-title-wave" aria-hidden="true">${waves}</span>${star}</header><article class="opening-story"><div class="opening-photo-sheet"><figure class="opening-scene"><img src="assets/opening-album-night.png" alt="밤의 책상 위에 펼쳐진 오래된 졸업앨범" width="1536" height="864"></figure><div class="opening-caption"><p class="opening-story-summary">${escape(data.opening.replace(/^⑴\s*/,''))}</p><button type="button" class="opening-read" data-opening-full aria-haspopup="dialog">전문 보기 <span aria-hidden="true">↗</span></button></div></div><div class="opening-letter-layout"><div class="opening-letter"><p class="opening-letter-to">To. You ${waves}</p><p>여기는, 여름이 끝나지 않는 곳이야.</p><p>너도 그날을 기억해?</p><p>끝나고 잠깐 보자.</p><p>이번에는, 내가 기다리고 있을게.</p><p class="letter-signature">Brendan Hale ${smile}</p>${palm}${star}</div><div class="opening-portrait">${portraitPhoto('opening-letter-portrait')}${star}</div></div></article><section class="opening-guide" aria-labelledby="opening-guide-title">${profilePaper('opening-guide')}<h2 id="opening-guide-title">${star}<span>진행 안내</span>${waves}</h2><div class="opening-guide-columns">${sections['진행 안내'].split(/\n\s*\n/).map(part=>`<div class="opening-guide-part">${prose(part)}</div>`).join('')}</div><div class="opening-setup"><a class="button lime" href="#guide/추천 설정값">${ticketFrame('lime','row')}<span>시작 전 설정 확인 <span aria-hidden="true">›</span></span></a></div></section></div></section>`;
+    return `<section class="view opening-view mature-view" aria-label="도입부"><div class="keepsake"><header class="opening-story-header section-heading">${flatHeaderDecor('opening')}<span class="opening-dream-ticket">${ticketFrame('blue','row')}<span>01<span class="middle-dot">·</span>첫 번째 꿈</span>${star}</span><h1 class="opening-display scrap-title scrap-title-stepped" aria-label="졸업앨범을 펼친 밤">${title}</h1><div class="opening-summer opening-english" aria-hidden="true"><span>Our Summer Never Ends.</span></div><span class="opening-title-wave" aria-hidden="true">${waves}</span>${star}</header><article class="opening-story"><div class="opening-photo-sheet"><figure class="opening-scene"><img src="assets/opening-album-night.png" alt="밤의 책상 위에 펼쳐진 오래된 졸업앨범" width="1536" height="864"></figure><div class="opening-caption"><p class="opening-story-summary">${escape(data.opening.replace(/^⑴\s*/,''))}</p><button type="button" class="opening-read" data-opening-full aria-haspopup="dialog">전문 보기 <span aria-hidden="true">↗</span></button></div></div><div class="opening-letter-layout"><div class="opening-letter"><p class="opening-letter-to">To. You ${waves}</p><p>여기는, 여름이 끝나지 않는 곳이야.</p><p>너도 그날을 기억해?</p><p>이번에는, 내가 기다리고 있을게.</p><p class="letter-signature">Brendan Hale ${smile}</p>${palm}${star}</div><div class="opening-portrait">${portraitPhoto('opening-letter-portrait')}${star}</div></div></article><section class="opening-guide" aria-labelledby="opening-guide-title">${profilePaper('opening-guide')}<h2 id="opening-guide-title">${star}<span>진행 안내</span>${waves}</h2><div class="opening-guide-columns">${sections['진행 안내'].split(/\n\s*\n/).map(part=>`<div class="opening-guide-part">${prose(part)}</div>`).join('')}</div><div class="opening-setup"><a class="button lime" href="#guide/추천 설정값">${ticketFrame('lime','row')}<span>시작 전 설정 확인 <span aria-hidden="true">›</span></span></a></div></section></div></section>`;
   }
   let openingDialog = null;
   function showOpeningFull(trigger) {
@@ -232,15 +233,65 @@
     dialog.querySelector('button').focus({preventScroll:true});
   }
   const guideItems = () => `<div class="guide-items">${guideGroups[guideGroup].items.map(key=>`<button type="button" class="guide-item" data-guide="${escape(key)}" aria-current="${guideKey===key}">${ticketFrame('paper','row')}${escape(label(key))}<span class="item-chevron" aria-hidden="true">›</span></button>`).join('')}</div><div class="guide-pool" aria-hidden="true">${palm}${ladder}${waves}</div>`;
-  const guideReading = () => `<h2>${escape(label(guideKey))}</h2><div class="prose">${guideBody(guideKey)}</div>`;
+  const guideTitle = key => escape(label(key))+(key==='모델 추천'?'<span class="guide-platform-label">ELYN</span>':'');
+  const guideReading = () => `<h2 id="guide-reading-title">${guideTitle(guideKey)}</h2><div class="prose">${guideBody(guideKey)}</div>`;
   function guide() {
-    return `<section class="view guide-view">${heading('이용 가이드','Before You Dream')}<div class="guide-categories" role="tablist" aria-label="가이드 분류">${guideGroups.map((group,i)=>`<button type="button" role="tab" id="guide-group-${i}" data-guide-group="${i}" aria-selected="${guideGroup===i}" aria-controls="guide-item-directory">${group.title}</button>`).join('')}</div><div class="guide-layout"><aside id="guide-item-directory" class="guide-directory" role="tabpanel" aria-labelledby="guide-group-${guideGroup}" aria-label="가이드 항목">${guideItems()}</aside><article class="guide-content" id="guide-content" tabindex="-1">${guideReading()}</article></div></section>`;
+    return `<section class="view guide-view mature-view">${heading('이용 가이드','Before You Dream')}<div class="guide-categories" role="tablist" aria-label="가이드 분류">${guideGroups.map((group,i)=>`<button type="button" role="tab" id="guide-group-${i}" data-guide-group="${i}" aria-selected="${guideGroup===i}" aria-controls="guide-item-directory">${group.title}</button>`).join('')}</div><div class="guide-layout"><aside id="guide-item-directory" class="guide-directory" role="tabpanel" aria-labelledby="guide-group-${guideGroup}" aria-label="가이드 항목">${guideItems()}</aside><article class="guide-content" id="guide-content" aria-labelledby="guide-reading-title" tabindex="0">${guideReading()}</article></div></section>`;
   }
   const screws = className => `<div class="${className}" aria-hidden="true">${'<i class="screw"></i>'.repeat(4)}</div>`;
   function playlist() {
-    return `<section class="view playlist-view">${heading('여름밤의 플레이리스트','Dream Playlist','playlist',['여름밤의','플레이리스트'])}<div class="playlist-layout">${ticketFrame()}<section class="cassette-panel" aria-label="카세트 재생기">${screws('deck-screws')}<span class="speaker-holes" aria-hidden="true"></span><div class="deck-title" aria-hidden="true">DREAM PLAYLIST ${star}</div><div class="deck-window"><div class="cassette-art" aria-hidden="true"><img src="assets/cassette.png" alt="" width="1536" height="1024"><span class="cassette-art-title">DREAM PLAYLIST</span><span class="cassette-art-caption">Same summer. Same mixtape.</span></div></div><p id="track-current" class="track-current"></p><div class="range-row"><span id="elapsed" class="seek-time">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치"><span id="duration" class="seek-time">0:00</span></div><div class="player-controls"><button type="button" data-music="prev" aria-label="이전 곡">${icon('prev')}</button><button type="button" data-music="toggle" aria-label="재생">${icon('play')}</button><button type="button" data-music="next" aria-label="다음 곡">${icon('next')}</button></div><div class="range-row volume-row"><button type="button" data-mute aria-label="음소거" aria-pressed="${music.volume===0}">${icon('volume')}</button><input type="range" id="volume" min="0" max="100" value="${music.volume}" aria-label="음량"></div><div class="deck-decoration" aria-hidden="true">${waves}${ladder}</div></section><ol class="track-list" aria-label="곡 목록">${data.playlist.map((track,i)=>`<li>${ticketFrame('paper','compact')}<button type="button" class="track-pick" data-track="${i}" aria-pressed="${music.index===i}"><span>${track.name.includes(' - ')?`<strong>${escape(track.name.split(' - ')[0])}</strong><span class="track-divider" aria-hidden="true"> — </span>${escape(track.name.split(' - ').slice(1).join(' - '))}`:escape(track.name)}</span></button><a class="track-external" href="${escape(track.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(track.name)} YouTube에서 열기">↗</a></li>`).join('')}</ol></div></section>`;
+    return `<section class="view playlist-view mature-view">${heading('여름밤의 플레이리스트','Dream Playlist','playlist',['여름밤의','플레이리스트'])}<div class="playlist-layout">${ticketFrame()}<section class="cassette-panel" aria-label="카세트 재생기">${screws('deck-screws')}<span class="speaker-holes" aria-hidden="true"></span><div class="deck-title" aria-hidden="true">DREAM PLAYLIST ${star}</div><div class="deck-window"><div class="cassette-art" aria-hidden="true"><img src="assets/cassette.png" alt="" width="1536" height="1024"><span class="cassette-art-title">DREAM PLAYLIST</span><span class="cassette-art-caption">Same summer. Same mixtape.</span></div></div><p id="track-current" class="track-current"></p><div class="range-row"><span id="elapsed" class="seek-time">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치"><span id="duration" class="seek-time">0:00</span></div><div class="player-controls"><button type="button" data-music="prev" aria-label="이전 곡">${icon('prev')}</button><button type="button" data-music="toggle" aria-label="재생">${icon('play')}</button><button type="button" data-music="next" aria-label="다음 곡">${icon('next')}</button></div><div class="range-row volume-row"><button type="button" data-mute aria-label="음소거" aria-pressed="${music.volume===0}">${icon('volume')}</button><input type="range" id="volume" min="0" max="100" value="${music.volume}" aria-label="음량"></div><div class="deck-decoration" aria-hidden="true">${waves}${ladder}</div></section><ol class="track-list" aria-label="곡 목록">${data.playlist.map((track,i)=>`<li>${ticketFrame('paper','compact')}<button type="button" class="track-pick" data-track="${i}" aria-pressed="${music.index===i}"><span>${track.name.includes(' - ')?`<strong>${escape(track.name.split(' - ')[0])}</strong><span class="track-divider" aria-hidden="true"> — </span>${escape(track.name.split(' - ').slice(1).join(' - '))}`:escape(track.name)}</span></button><a class="track-external" href="${escape(track.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(track.name)} YouTube에서 열기">↗</a></li>`).join('')}</ol></div></section>`;
   }
   const views = {intro,home,profile,world,opening,guide,playlist};
+  // Reserve each sibling set from its real rendered copy at the current width.
+  function reservePanel(selector, variants) {
+    const panel=main.querySelector(selector);if(!panel)return;
+    const probe=panel.cloneNode(false);probe.removeAttribute('id');
+    Object.assign(probe.style,{position:'absolute',visibility:'hidden',pointerEvents:'none',left:'0',top:'0',width:`${panel.offsetWidth}px`,minHeight:'0',height:'auto',transform:'none'});
+    panel.parentElement.append(probe);
+    let height=0;
+    for(const variant of variants){probe.innerHTML=variant.html??variant;probe.className=variant.className??panel.className;height=Math.max(height,Math.ceil(parseFloat(getComputedStyle(probe).height)));}
+    probe.remove();panel.style.minHeight=`${height}px`;
+  }
+  // Keep tab geometry stable without reserving the longest tab's empty paper.
+  function sizeReadingViewport(selector, firstVariant, ceiling) {
+    const panel=main.querySelector(selector);if(!panel)return;
+    panel.classList.add('compact-reader');panel.tabIndex=0;
+    const probe=panel.cloneNode(false);probe.removeAttribute('id');
+    probe.innerHTML=firstVariant.html??firstVariant;
+    if(firstVariant.className)probe.className=firstVariant.className+' compact-reader';
+    Object.assign(probe.style,{position:'absolute',visibility:'hidden',pointerEvents:'none',left:'0',top:'0',width:`${panel.offsetWidth}px`,minHeight:'0',height:'auto',maxHeight:'none',overflow:'auto',transform:'none'});
+    panel.parentElement.append(probe);
+    const height=Math.min(ceiling,Math.ceil(probe.getBoundingClientRect().height));
+    probe.remove();panel.style.minHeight='0';panel.style.height=`${height}px`;
+  }
+  let stableWidthObserver,stableWidth=0,stableFrame=0;
+  function sizeStablePanels(){
+    const narrow=(main.querySelector('.view')?.clientWidth??770)<=650;
+    if(route==='profile'){
+      sizeReadingViewport('#profile-panel',profileContent(0),narrow?600:520);
+      drawProfilePaper(document.getElementById('profile-panel'));
+    }
+    if(route==='world'){
+      sizeReadingViewport('#world-panel',{html:prose(sections[worldKeys[0]]),className:'world-content world-premise'},narrow?300:240);
+      sizeReadingViewport('#note-panel',worldNotes(noteKeys[0]),narrow?480:400);
+      const map=main.querySelector('.native-map'),probe=document.createElement('div');
+      probe.className='place-inline';Object.assign(probe.style,{position:'absolute',visibility:'hidden',pointerEvents:'none',width:`${map.clientWidth}px`,left:'0',top:'0'});map.append(probe);
+      let height=0;for(const place of places){probe.innerHTML=`<h3>${pin}${escape(place.name)}</h3><p>${escape(place.text)}</p>`;height=Math.max(height,Math.ceil(parseFloat(getComputedStyle(probe).height)));}
+      probe.remove();map.style.setProperty('--place-reading-height',`${height}px`);
+    }
+    if(route==='guide'){
+      reservePanel('.guide-content>h2',guideGroups.flatMap(group=>group.items).map(guideTitle));
+    }
+  }
+  function mountStablePanels(){
+    stableWidthObserver?.disconnect();cancelAnimationFrame(stableFrame);stableWidth=0;
+    sizeStablePanels();
+    const view=main.querySelector('.view');if(!view)return;
+    stableWidthObserver=new ResizeObserver(entries=>{const width=entries[0].contentRect.width;if(Math.abs(width-stableWidth)<.5)return;stableWidth=width;cancelAnimationFrame(stableFrame);stableFrame=requestAnimationFrame(sizeStablePanels);});
+    stableWidthObserver.observe(view);
+    document.fonts.ready.then(()=>{if(view.isConnected)sizeStablePanels();});
+  }
   function render() {
     openingDialog?.close(false);
     const [candidate, rawKey] = location.hash.slice(1).split('/');
@@ -253,6 +304,7 @@
     }
     main.innerHTML=(route==='intro'?'':`<div class="b-wide-stage b-${route}-stage" aria-hidden="true"></div>`)+views[route]();
     mountProfilePapers();
+    mountStablePanels();
     document.body.dataset.page=route;
     document.title=`${titles[route]} | 브렌든 헤일`;
     document.querySelectorAll('[data-route]').forEach(link=>{if(link.dataset.route===route)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
@@ -328,25 +380,33 @@
       document.querySelectorAll('[data-guide-group]').forEach(node=>node.setAttribute('aria-selected',node===button));
       const directory=document.getElementById('guide-item-directory');directory.innerHTML=guideItems();directory.setAttribute('aria-labelledby',button.id);
       document.getElementById('guide-content').innerHTML=guideReading();
+      document.getElementById('guide-content').scrollTop=0;sizeStablePanels();
+    }
+    if(button.hasAttribute('data-settings-platform')){
+      settingsPlatform=button.dataset.settingsPlatform;
+      const panel=document.getElementById('guide-content');
+      panel.innerHTML=guideReading();panel.scrollTop=0;sizeStablePanels();
+      panel.querySelector(`[data-settings-platform="${settingsPlatform}"]`).focus({preventScroll:true});
     }
     if(button.hasAttribute('data-profile')){
       profileTab=Number(button.dataset.profile);
       document.querySelectorAll('[data-profile]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
-      const panel=document.getElementById('profile-panel');panel.innerHTML=profileContent();panel.setAttribute('aria-labelledby',button.id);drawProfilePaper(panel);
+      const panel=document.getElementById('profile-panel');panel.innerHTML=profileContent();panel.scrollTop=0;panel.setAttribute('aria-labelledby',button.id);drawProfilePaper(panel);
     }
     if(button.hasAttribute('data-world')){
       worldTab=Number(button.dataset.world);document.querySelectorAll('[data-world]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
-      const panel=document.getElementById('world-panel');panel.innerHTML=prose(sections[worldKeys[worldTab]]);panel.classList.toggle('world-premise',worldTab===0);panel.setAttribute('aria-labelledby',button.id);
+      const panel=document.getElementById('world-panel');panel.innerHTML=prose(sections[worldKeys[worldTab]]);panel.scrollTop=0;panel.classList.toggle('world-premise',worldTab===0);panel.setAttribute('aria-labelledby',button.id);
     }
     if(button.hasAttribute('data-note')){
       noteTab=Number(button.dataset.note);document.querySelectorAll('[data-note]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
-      const panel=document.getElementById('note-panel');panel.innerHTML=worldNotes(noteKeys[noteTab]);panel.setAttribute('aria-labelledby',button.id);
+      const panel=document.getElementById('note-panel');panel.innerHTML=worldNotes(noteKeys[noteTab]);panel.scrollTop=0;panel.setAttribute('aria-labelledby',button.id);
     }
     if(button.hasAttribute('data-guide')){
       guideKey=button.dataset.guide;
       history.replaceState(null,'',`#guide/${encodeURIComponent(guideKey)}`);
       document.querySelectorAll('[data-guide]').forEach(node=>node.setAttribute('aria-current',node===button));
       document.getElementById('guide-content').innerHTML=guideReading();
+      document.getElementById('guide-content').scrollTop=0;sizeStablePanels();
     }
     if(button.hasAttribute('data-disclose')){
       const panel=document.getElementById(`${button.dataset.disclose}-panel`),open=button.getAttribute('aria-expanded')==='true';
@@ -355,7 +415,7 @@
     }
     if(button.hasAttribute('data-copy')){
       const status=button.parentElement.querySelector('.copy-result');
-      try{await navigator.clipboard.writeText(button.dataset.copy);status.textContent='복사했습니다.';}catch{status.textContent='복사할 텍스트를 선택해 주세요.';const range=document.createRange();range.selectNodeContents(button.closest('.copy-unit').querySelector('pre'));const selection=getSelection();selection.removeAllRanges();selection.addRange(range);}
+      try{await navigator.clipboard.writeText(button.dataset.copy);status.textContent='복사했습니다.';}catch{status.textContent='복사할 텍스트를 선택해 주세요.';const range=document.createRange();range.selectNodeContents(button.closest('.settings-copy')?document.getElementById('settings-platform-content').querySelector('.prose'):button.closest('.copy-unit').querySelector('pre'));const selection=getSelection();selection.removeAllRanges();selection.addRange(range);}
     }
     if(button.hasAttribute('data-track'))await selectTrack(Number(button.dataset.track));
     if(button.hasAttribute('data-mute'))setVolume(music.volume?0:music.lastVolume||65);
