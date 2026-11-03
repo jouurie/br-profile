@@ -19,23 +19,26 @@ body:not([data-page="intro"]) .b-wide-stage {
   overflow: hidden;
   pointer-events: none;
   background: none;
-  --tree-mask: url('assets/tropical-tree-mask.svg');
-  mask: linear-gradient(#000 0 0) center top / 100% calc(100% - 350px) no-repeat,
-    var(--tree-mask) center bottom / max(1440px, 100%) 350px no-repeat;
-  -webkit-mask: linear-gradient(#000 0 0) center top / 100% calc(100% - 350px) no-repeat,
-    var(--tree-mask) center bottom / max(1440px, 100%) 350px no-repeat;
+  mask: none;
+  -webkit-mask: none;
 }
-/* Foam paints above the trunks but below the untouched live paper. */
+/* The same responsive waterline meets the fixed footer on every reading route. */
 body:not([data-page="intro"]) main::before {
+  --footer-height: calc(48px + env(safe-area-inset-bottom, 0px));
+  --wave-height: clamp(180px, 30svh, 300px);
+  --surf-art: url('assets/tropical-surf.svg');
+  --surf-position: center top;
+  --surf-width: max(1440px, 100%);
   content: '';
-  position: absolute;
+  position: fixed;
   z-index: -1;
   pointer-events: none;
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 350px;
-  background: url('assets/tropical-surf.svg') center bottom / max(1440px, 100%) 350px no-repeat;
+  height: calc(var(--wave-height) + var(--footer-height));
+  background: var(--surf-art) var(--surf-position) / var(--surf-width) var(--wave-height) no-repeat,
+    linear-gradient(#0b255f 0 0) center bottom / 100% calc(var(--footer-height) + 1px) no-repeat;
 }
 body:not([data-page="intro"]) .b-wide-stage::before,
 body:not([data-page="intro"]) .b-wide-stage::after {
@@ -91,13 +94,7 @@ body[data-page="playlist"] .b-wide-stage {
   --left-rotate: -7deg; --right-rotate: 6deg;
 }
 body:is([data-page="profile"], [data-page="opening"], [data-page="playlist"]) main::before {
-  background-image: url('assets/tropical-surf-wide.svg');
-}
-body:is([data-page="profile"], [data-page="opening"], [data-page="playlist"]) .b-wide-stage { --tree-mask: url('assets/tropical-tree-mask-wide.svg'); }
-body[data-page="playlist"] main::before { height: 390px; background-size: max(1440px, 100%) 390px; }
-body[data-page="playlist"] .b-wide-stage {
-  mask-size: 100% calc(100% - 390px), max(1440px, 100%) 390px;
-  -webkit-mask-size: 100% calc(100% - 390px), max(1440px, 100%) 390px;
+  --surf-art: url('assets/tropical-surf-wide.svg');
 }
 @media (max-width: 850px) {
   body:not([data-page="intro"]) .b-wide-stage {
@@ -107,18 +104,17 @@ body[data-page="playlist"] .b-wide-stage {
     --right-top: 160px;
     --left-x: calc(50% - 530px);
     --right-x: calc(50% + 100px);
-    mask-size: 100% calc(100% - 300px), 1000px 300px;
-    -webkit-mask-size: 100% calc(100% - 300px), 1000px 300px;
   }
-  body:not([data-page="intro"]) main::before { height: 300px; background-size: 1000px 300px; }
+  body:not([data-page="intro"]) main::before {
+    --surf-width: max(720px, 100%);
+    --surf-position: left top;
+  }
+  body:is([data-page="profile"], [data-page="opening"], [data-page="playlist"]) main::before {
+    --surf-position: right top;
+  }
   body[data-page="profile"] .b-wide-stage { --right-height: 570px; --right-top: 345px; }
   body[data-page="world"] .b-wide-stage { --left-top: 85px; --right-top: 0px; }
   body[data-page="opening"] .b-wide-stage { --left-top: -100px; --right-top: 240px; }
   body[data-page="guide"] .b-wide-stage { --left-top: -65px; --right-top: 35px; }
   body[data-page="playlist"] .b-wide-stage { --left-height: 790px; --right-height: 820px; --left-top: 190px; --right-top: 170px; }
-  body[data-page="playlist"] main::before { height: 340px; background-size: 1000px 340px; }
-  body[data-page="playlist"] .b-wide-stage {
-    mask-size: 100% calc(100% - 340px), 1000px 340px;
-    -webkit-mask-size: 100% calc(100% - 340px), 1000px 340px;
-  }
 }
