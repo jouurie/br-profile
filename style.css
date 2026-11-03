@@ -2113,7 +2113,7 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  input[type=range]{cursor:auto}
  button:disabled,input:disabled,select:disabled,textarea:disabled,[aria-disabled=true]{cursor:not-allowed}
 }
-/* 2026-11-04 approved hierarchy: A home, B reading surfaces. */
+/* 2026-11-04 hierarchy correction: restrained headings and continuous reading. */
 .home-book-hero{grid-template-columns:minmax(0,55fr) minmax(0,45fr);grid-template-areas:'identity portrait' 'story portrait' 'actions portrait' 'pool portrait';gap:20px 24px}
 .home-book-actions{gap:12px;margin:0}
 .home-book-actions .button{min-width:0;padding-inline:12px;font-size:16px}
@@ -2121,13 +2121,14 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .mature-view .profile-portrait img{height:210px;aspect-ratio:4/5}
 .mature-view .profile-handwritten{font-size:20px;margin-bottom:10px}
 .mature-view .profile-identity .profile-metadata{margin-top:12px}
-.mature-view :is(.profile-body>h3,.world-notes>h2,.opening-guide>h2,.guide-context>h2){display:flex;align-items:center;gap:10px;min-height:44px;margin:28px 0 16px;padding:6px 16px;border:0;background:var(--navy);color:var(--paper);font:600 26px/1.4 var(--label);text-wrap:pretty}
+.mature-view :is(.profile-body>h3,.world-notes>h2,.opening-guide>h2,.guide-context>h2){display:flex;align-items:center;gap:8px;min-height:0;margin:20px 0 8px;padding:0 0 8px;border:0;border-bottom:1px solid var(--cyan);background:none;color:var(--navy);font:600 18px/1.5 var(--label);text-wrap:pretty}
 .mature-view :is(.profile-body>h3:first-of-type,.world-notes>h2,.opening-guide>h2,.guide-context>h2){margin-top:0}
-.mature-view .profile-body>h3>.star-mark,.mature-view .opening-guide>h2>.star-mark{fill:var(--yellow);color:var(--yellow)}
-.mature-view .reading-row{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;margin:0;padding:16px 0;border-bottom:1px solid var(--cyan)}
+.mature-view .profile-body>h3:after{content:none}
+.mature-view .profile-body>h3>.star-mark,.mature-view .opening-guide>h2>.star-mark{fill:var(--yellow);color:var(--navy)}
+.mature-view .reading-row{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin:0;padding:12px 0;border:0}
 .mature-view .reading-row:first-child{padding-top:0}
 .mature-view .reading-row:last-child{padding-bottom:0;border-bottom:0}
-.mature-view .reading-row>h4{margin:0;padding:0;font:600 18px/1.5 var(--label);color:var(--navy);text-wrap:pretty;overflow-wrap:anywhere}
+.mature-view .reading-row>h4{margin:0;padding:0;font:600 16px/1.75 var(--label);color:var(--navy);text-wrap:pretty;overflow-wrap:anywhere}
 .mature-view .reading-value{min-width:0}
 .mature-view .reading-value>p,.mature-view .reading-value>ul{margin:0;font:400 16px/1.75 var(--body)}
 .mature-view .reading-value>ul{padding-left:20px}
@@ -2135,45 +2136,54 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .mature-view .reading-value>ul>li+li{margin-top:6px}
 .mature-view .reading-value>p+p{margin-top:6px}
 .mature-view .reading-value>.subnote{margin:6px 0 0 16px;font:400 14px/1.75 var(--body)}
-.mature-view .world-content .reading-row{grid-template-columns:minmax(0,1fr);gap:8px}
-.mature-view .world-content .reading-value{padding-left:16px}
+.mature-view .world-content .reading-row{grid-template-columns:minmax(0,1fr);gap:6px}
+.mature-view .world-content .reading-value{padding-left:0}
 .mature-view .world-notes{padding-top:0;border-top:0}
 .mature-view .opening-guide-columns{display:block}
-.mature-view .opening-guide-part+.opening-guide-part{margin:0;padding:16px 0 0;border:0}
-.mature-view .opening-guide-part:not(:last-child){padding-bottom:16px;border-bottom:1px solid var(--cyan)}
+.mature-view .opening-guide-part .reading-row{grid-template-columns:120px minmax(0,1fr);gap:16px}
+.mature-view .opening-guide-part+.opening-guide-part{margin:0;padding:12px 0 0;border:0}
+.mature-view .opening-guide-part:not(:last-child){padding-bottom:12px;border-bottom:1px solid var(--cyan)}
 .mature-view .opening-guide{padding-top:0;border-top:0}
-.mature-view .guide-layout{height:890px;grid-template-columns:minmax(0,1fr);grid-template-rows:110px 760px;gap:20px}
-.mature-view .guide-directory{height:110px;padding:0;border:0}
-.mature-view .guide-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:52px;gap:6px}
-.mature-view .guide-item{display:flex;align-items:center;justify-content:space-between;gap:8px;height:52px;min-height:52px;padding:8px 12px;border:1px solid var(--cyan);font:400 16px/1.5 var(--button)}
+.mature-view .guide-categories{margin-bottom:12px}
+.mature-view .guide-layout{height:calc(var(--guide-directory-height,38px) + 16px + 760px);grid-template-columns:minmax(0,1fr);grid-template-rows:var(--guide-directory-height,38px) 760px;gap:16px}
+.mature-view .guide-directory{height:var(--guide-directory-height,38px);padding:0;border:0}
+.mature-view .guide-items{display:flex;flex-wrap:wrap;align-content:flex-start;align-items:stretch;gap:4px 8px}
+.mature-view .guide-item{display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;gap:0;width:auto;max-width:100%;height:auto;min-height:38px;padding:6px 10px;border:0;border-bottom:2px solid transparent;border-radius:0;background:none;color:var(--navy);font:400 14px/1.5 var(--button);transition:color .15s,border-color .15s}
+.mature-view .guide-item[aria-current=true]{background:none;color:var(--blue);border-bottom-color:var(--blue)}
+.mature-view .guide-item:hover,.mature-view .guide-item[aria-current=true]:hover{background:none;color:var(--blue);filter:none}
 .mature-view .guide-pool{display:none}
 .mature-view .guide-item.b-touch-pressed{filter:brightness(.9)}
-.mature-view .guide-item.b-touch-pressed{background:var(--cyan);color:var(--navy)}
-.mature-view .guide-item[aria-current=true].b-touch-pressed{background:var(--navy);color:var(--paper)}
+.mature-view .guide-item.b-touch-pressed{background:none;color:var(--blue)}
+.mature-view .guide-item[aria-current=true].b-touch-pressed{background:none;color:var(--blue)}
 .mature-view .guide-item.b-touch-rest:hover{background:none;color:var(--navy)}
-.mature-view .guide-item[aria-current=true].b-touch-rest:hover{background:var(--blue);color:var(--paper)}
+.mature-view .guide-item[aria-current=true].b-touch-rest:hover{background:none;color:var(--blue)}
 .mature-view .guide-content{height:760px;padding:0 10px 24px 0}
-.mature-view .guide-context{position:sticky;top:0;z-index:2;display:flow-root;margin:0 0 16px;background:var(--paper);border-bottom:1px solid var(--cyan)}
-.mature-view .guide-context>h2{margin:0;min-height:52px}
-.mature-view .guide-context .guide-platform-label{color:var(--paper);margin-left:auto;font:400 14px/1.75 var(--body)}
-.mature-view .guide-context .guide-platform-tabs{display:flex;gap:8px;margin:8px 0}
-.mature-view .guide-document h3{margin:0 0 10px;font:600 18px/1.5 var(--label);color:var(--navy)}
-.mature-view .guide-document h4{margin:0 0 8px;font:600 17px/1.5 var(--label);color:var(--navy)}
-.mature-view .guide-document>.guide-section:has(>.guide-section)>h3{padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--cyan)}
-.mature-view .guide-document .guide-section .guide-section{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px}
-.mature-view .guide-document .guide-section .guide-section>h4{margin:0}
-.mature-view .guide-document .guide-section .guide-section>:not(h4){grid-column:2}
-.mature-view .guide-document .guide-section+.guide-section{margin-top:28px}
-.mature-view .guide-document .guide-section .guide-section+.guide-section{margin-top:20px}
+.mature-view .guide-context{position:sticky;top:0;z-index:2;display:flow-root;margin:0 0 12px;background:var(--paper);border:0}
+.mature-view .guide-context>h2{margin:0;min-height:0}
+.mature-view .guide-context .guide-platform-label{color:var(--navy);margin-left:auto;font:400 14px/1.75 var(--body)}
+.mature-view .guide-context .guide-platform-tabs{display:flex;gap:8px;margin:6px 0 0}
+.mature-view .guide-platform-tabs button{flex:0 0 auto;min-width:64px;min-height:38px;width:auto;padding:6px 12px;border:0;border-bottom:2px solid transparent;border-radius:0;background:var(--paper);color:var(--navy);font:400 14px/1.5 var(--button);box-shadow:none}
+.mature-view .guide-platform-tabs button[aria-selected=true]{border-bottom-color:var(--blue);background:var(--paper);color:var(--blue)}
+.mature-view .guide-platform-tabs button:hover{background:var(--paper);color:var(--blue)}
+.mature-view :is(.guide-item,.guide-platform-tabs button):focus:not(:focus-visible){outline:none}
+.mature-view :is(.guide-item,.guide-platform-tabs button):focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.mature-view .guide-document h3{margin:0 0 8px;font:600 16px/1.75 var(--label);color:var(--navy)}
+.mature-view .guide-document h4{margin:0 0 6px;font:600 16px/1.75 var(--label);color:var(--navy)}
+.mature-view .guide-document>.guide-section:has(>.guide-section)>h3{padding-bottom:8px;margin-bottom:12px;border-bottom:1px solid var(--cyan)}
+.mature-view .guide-document .guide-section .guide-section{display:flow-root}
+.mature-view .guide-document .guide-section .guide-section>h4{margin:0 0 6px}
+.mature-view .guide-document .guide-section .guide-section>:not(h4){grid-column:auto;margin-left:0}
+.mature-view .guide-document .guide-section+.guide-section{margin-top:20px}
+.mature-view .guide-document .guide-section .guide-section+.guide-section{margin-top:12px}
 .mature-view .guide-document .guide-row{grid-template-columns:120px minmax(0,1fr);padding:12px 0;gap:16px}
 .mature-view .guide-document .guide-tips .guide-row{grid-template-columns:minmax(0,40%) minmax(0,1fr)}
 .mature-view .guide-document .guide-props .guide-row{grid-template-columns:120px minmax(0,1fr)}
-.mature-view .guide-document .guide-tips dt{font:600 18px/1.5 var(--label);color:var(--navy)}
+.mature-view .guide-document .guide-tips dt{font:600 16px/1.75 var(--label);color:var(--navy)}
 .mature-view .guide-document .guide-note{margin-left:16px;font:400 14px/1.75 var(--body)}
 .mature-view .guide-document .guide-note :is(a,strong,span){font:inherit}
 .mature-view .guide-document .copy-unit pre{background:var(--paper);font:400 16px/1.75 var(--body)}
 .mature-view .track-directory{min-width:0}
-.mature-view .track-list-title{margin:0 0 12px;padding:5px 16px;background:var(--navy);color:var(--paper);font:400 22px/1.3 Bangers,system-ui,sans-serif}
+.mature-view .track-list-title{margin:0 0 8px;padding:0 0 6px;border-bottom:1px solid var(--cyan);background:none;color:var(--navy);font:400 18px/1.5 Bangers,system-ui,sans-serif}
 .playlist-view.mature-view .track-pick>span{display:block;min-width:0;font:400 16px/1.45 var(--body)}
 .playlist-view.mature-view .track-pick strong{display:block;font:600 16px/1.45 var(--body)}
 .playlist-view.mature-view .track-divider{display:none}
@@ -2189,19 +2199,148 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .mature-view .profile-handwritten{font-size:20px;margin-bottom:8px}
  .mature-view .profile-nameplate{margin-top:6px;font-size:17px}
  .mature-view .profile-identity .profile-metadata{margin-top:8px;font:400 14px/1.75 var(--body)}
- .mature-view :is(.profile-body>h3,.world-notes>h2,.opening-guide>h2,.guide-context>h2){font-size:24px;padding-inline:12px}
- .mature-view .reading-row{grid-template-columns:minmax(0,1fr);gap:8px}
- .mature-view .reading-value{padding-left:16px}
- .mature-view .reading-row>h4{font-size:18px}
- .mature-view .opening-guide-part+.opening-guide-part{padding-top:16px}
- .mature-view .guide-categories{margin-bottom:20px}
- .mature-view .guide-layout{height:766px;grid-template-rows:168px 578px;gap:20px}
- .mature-view .guide-directory{height:168px}
- .mature-view .guide-items{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:52px;gap:6px}
- .mature-view .guide-item{height:52px;font-size:14px;padding:6px 8px}
+ .mature-view :is(.profile-body>h3,.world-notes>h2,.opening-guide>h2,.guide-context>h2){font-size:18px;padding-inline:0}
+ .mature-view .reading-row{grid-template-columns:minmax(0,1fr);gap:6px}
+ .mature-view .reading-value{padding-left:0}
+ .mature-view .reading-row>h4{font-size:16px}
+ .mature-view .opening-guide-part .reading-row{grid-template-columns:minmax(0,1fr);gap:6px}
+ .mature-view .opening-guide-part+.opening-guide-part{padding-top:12px}
+ .mature-view .guide-categories{margin-bottom:12px}
+ .mature-view .guide-layout{height:calc(var(--guide-directory-height,92px) + 16px + 578px);grid-template-rows:var(--guide-directory-height,92px) 578px;gap:16px}
+ .mature-view .guide-directory{height:var(--guide-directory-height,92px)}
+ .mature-view .guide-item{height:auto;min-height:44px;font-size:14px;padding:8px}
+ .mature-view .guide-platform-tabs button{min-height:44px}
  .mature-view .guide-content{height:578px;padding:0 10px 20px 0}
  .mature-view .guide-document :is(.guide-row,.guide-tips .guide-row,.guide-props .guide-row){grid-template-columns:minmax(0,1fr);gap:6px}
  .mature-view .guide-document .guide-row dd{padding-left:16px}
- .mature-view .guide-document .guide-section .guide-section{grid-template-columns:minmax(0,1fr);gap:8px}
- .mature-view .guide-document .guide-section .guide-section>:not(h4){grid-column:1;margin-left:16px}
+ .mature-view .guide-document .guide-section .guide-section{display:flow-root}
+ .mature-view .guide-document .guide-section .guide-section>:not(h4){grid-column:auto;margin-left:0}
+}
+
+
+/* Approved modular v2: independent rectangular papers, compatible section bounds.
+   Shared navigation, footer, scenery and player ownership remain outside these papers. */
+.modular-view{
+ --page-title:32px;
+ --section-title:18px;
+ --reading-label:16px;
+ --reading-note:14px;
+ border:0;border-radius:0;
+}
+.modular-view .section-heading :is(.scrap-title,.opening-display){font-size:var(--page-title);line-height:1.3;letter-spacing:0}
+.modular-view .section-heading :is(.english,.world-english,.opening-english){margin-top:8px;font-size:16px}
+
+/* Home: the two actions precede the pool, with the portrait and its quote paired. */
+.modular-view .home-book-hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px 24px}
+.modular-view .home-book-identity{position:relative;padding-right:16px}
+.modular-view .home-book-identity h1{font-size:64px;line-height:1.04;font-weight:400}
+.modular-view .home-book-name{font-size:22px;font-weight:400}
+.modular-view .home-book-genre{font-size:12px}
+.modular-view .home-book-story{padding-top:20px}
+.modular-view .home-book-story h2{font-size:24px;line-height:1.4}
+.modular-view .home-book-story>p{font-size:16px;line-height:1.75}
+.modular-view .home-book-actions .button{justify-content:center;padding-inline:10px;min-height:48px}
+.modular-view .home-book-actions .button>span{display:none}
+.modular-view .home-book-portrait{display:flex;flex-direction:column;align-self:start;gap:20px}
+.modular-view .home-book-portrait>.polaroid{height:auto;flex:none}
+.modular-view .home-book-portrait .portrait img{height:510px;min-height:0;max-height:none;flex:none;object-position:50% 22%}
+.modular-view .home-book-quote{position:relative;align-self:center;margin:0;padding:0 0 10px;color:var(--navy);font:30px/1.3 var(--hand);text-align:center;transform:rotate(-3deg)}
+.modular-view .home-book-quote:after{content:'';position:absolute;left:16%;right:12%;bottom:0;border-bottom:2px solid var(--cyan);transform:rotate(-1deg)}
+.modular-view .home-book-pool .polaroid{padding:4px 4px 0;box-shadow:0 2px 7px color-mix(in srgb,var(--navy) 20%,transparent);transform:rotate(-2deg)}
+.modular-view .home-book-pool .pool-photo img{aspect-ratio:1.65}
+.modular-view .home-book-pool .polaroid figcaption{padding:7px 8px;font-size:20px}
+.modular-view .home-book-pool>.handwritten{margin-top:12px;font-size:22px}
+.modular-view .disclosure-buttons button{min-height:44px;font-size:14px}
+.modular-view .intro-paper h2{font-size:18px;line-height:1.5;margin-bottom:12px}
+.modular-view .tag{font:400 14px/1.5 var(--body);padding:3px 8px}
+
+/* A small portrait identifies the profile; the body is continuous reading paper. */
+.modular-view .profile-identity{padding-top:20px;border-top:1px solid var(--cyan)}
+.modular-view .profile-identity:before{content:'';position:absolute;top:-6px;left:0;width:50px;height:10px;background:linear-gradient(90deg,var(--cyan) 0 25%,transparent 25% 33%,var(--cyan) 33% 58%,transparent 58% 66%,var(--cyan) 66% 91%,transparent 91%);transform:skew(-20deg)}
+.modular-view .profile-title{font-size:32px;line-height:1.3}
+.modular-view .profile-nameplate{font-size:20px;line-height:1.4}
+.modular-view .profile-tabs button{font-size:14px}
+.modular-view :is(.profile-body>h3,.world-notes>h2,.opening-guide>h2,.guide-context>h2){font-size:var(--section-title)}
+.modular-view .reading-row>h4{font-size:var(--reading-label)}
+.modular-view .reading-value>.subnote{font-size:var(--reading-note)}
+
+/* The map remains a complete inner object. Its photograph sits with the premise. */
+.modular-view .world-reading{padding-top:0;border-top:0}
+.modular-view .world-reading-columns{grid-template-columns:250px minmax(0,1fr);gap:24px;align-items:start}
+.modular-view .world-copy{grid-column:2;grid-row:1}
+.modular-view .world-context{grid-column:1;grid-row:1;width:auto;margin:0}
+.modular-view .world-content.world-premise .prose>p:first-child{font:400 16px/1.75 var(--body)}
+.modular-view .place-inline h3{font-size:18px}
+.modular-view .world-note-tabs{gap:4px 8px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--cyan)}
+.modular-view .world-note-tabs button{min-height:44px;padding:8px;border:0;border-bottom:2px solid transparent;background:none;color:var(--navy);font:400 14px/1.5 var(--button)}
+.modular-view .world-note-tabs button[aria-selected=true]{background:none;color:var(--blue);border-bottom-color:var(--yellow)}
+.modular-view .world-note-tabs button:hover{background:none;color:var(--blue)}
+
+/* Album, small letter and original portrait live inside the ordinary paper. */
+.modular-view .opening-story-header{margin-bottom:24px}
+.modular-view .opening-story-summary{font:400 16px/1.75 var(--body)}
+.modular-view .opening-letter-layout{gap:24px;margin-top:32px;grid-template-columns:minmax(0,1fr) 168px}
+.modular-view .opening-letter{min-height:0;padding:22px 18px 18px 28px;background:repeating-linear-gradient(transparent 0 33px,color-mix(in srgb,var(--blue) 10%,transparent) 33px 34px),linear-gradient(color-mix(in srgb,var(--paper) 88%,transparent),color-mix(in srgb,var(--paper) 88%,transparent)),url('assets/paper-texture.png');transform:rotate(-1deg);box-shadow:0 2px 7px color-mix(in srgb,var(--navy) 20%,transparent)}
+.modular-view .opening-letter:before{display:block;left:24px;top:-8px;width:80px;height:20px}
+.modular-view .opening-letter p{font:24px/1.4 var(--hand)}
+.modular-view .opening-letter p+p{margin-top:8px}
+.modular-view .opening-letter-to{margin-bottom:12px}
+.modular-view .opening-letter .letter-signature{margin-top:14px;font-size:24px}
+.modular-view .opening-guide{margin-top:32px}
+.modular-view .opening-guide-part .reading-row>h4{align-self:start;width:fit-content;background:linear-gradient(transparent 30%,var(--yellow) 30% 85%,transparent 85%)}
+
+/* True categories and bookmark items, followed by one fixed-height reader. */
+.modular-view .guide-categories{margin-bottom:12px}
+.modular-view .guide-items{column-gap:8px;row-gap:4px}
+.modular-view .guide-item{position:relative;min-height:44px;padding:8px 10px 8px 24px;font:400 14px/1.5 var(--button)}
+.modular-view .guide-item:after{content:none}
+.modular-view .guide-item:before{content:'';position:absolute;left:8px;top:13px;width:9px;height:15px;background:transparent;clip-path:polygon(0 0,100% 0,100% 100%,50% 74%,0 100%)}
+.modular-view .guide-item[aria-current=true]:before{background:var(--blue)}
+.modular-view .guide-context{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:24px;padding:8px 0 12px;border-bottom:1px solid var(--cyan)}
+.modular-view .guide-context>h2{margin:0;padding:0;border:0;color:var(--blue);font:600 18px/1.5 var(--label)}
+.modular-view .guide-context .guide-platform-tabs{margin:0;gap:8px}
+.modular-view .guide-platform-tabs button{min-width:96px;min-height:44px;padding:8px 14px;border:1px solid var(--blue);border-radius:0;background:var(--paper);color:var(--blue);font:400 14px/1.5 var(--button)}
+.modular-view .guide-platform-tabs button[aria-selected=true]{border-color:var(--blue);background:var(--lime);color:var(--ink)}
+.modular-view .guide-platform-tabs button:hover{background:var(--paper);color:var(--navy)}
+.modular-view .guide-platform-tabs button[aria-selected=true]:hover{background:var(--lime);color:var(--ink)}
+.modular-view .guide-document :is(h3,h4){font-size:16px;line-height:1.75}
+.modular-view .guide-document .guide-row{padding:12px 0}
+.modular-view .guide-document .guide-note{font-size:14px;line-height:1.75}
+.modular-view .guide-document :is(p,li,dd,pre){word-break:keep-all;overflow-wrap:break-word}
+
+/* The accepted five-key console keeps its complete silhouette inside the paper. */
+.modular-view .playlist-layout{gap:28px}
+.modular-view .track-list-title{color:var(--blue)}
+.modular-view .track-list .track-pick{word-break:normal;overflow-wrap:break-word;font-size:16px}
+.playlist-view.modular-view .track-pick strong{display:inline}
+.playlist-view.modular-view .track-divider{display:inline}
+.playlist-view.modular-view .track-song{display:inline}
+.modular-view :is(button,a,summary).b-touch-pressed{filter:brightness(.9)}
+
+@container br-host (max-width:650px){
+ .modular-view{--page-title:28px}
+ .modular-view .home-book-hero{grid-template-columns:minmax(0,1fr);gap:20px}
+ .modular-view .home-book-identity h1{font-size:52px}
+ .modular-view .home-book-story h2{font-size:23px}
+ .modular-view .home-book-portrait{width:min(100%,300px);justify-self:center}
+ .modular-view .home-book-portrait .portrait img{height:auto;aspect-ratio:4/5}
+ .modular-view .home-book-actions{grid-template-columns:minmax(0,1fr);gap:10px}
+ .modular-view .home-book-pool{margin-top:4px}
+ .modular-view .profile-identity{padding-top:16px}
+ .modular-view .profile-title{font-size:28px}
+ .modular-view .profile-nameplate{font-size:18px}
+ .modular-view .profile-tabs button{padding:10px 4px;min-height:62px;line-height:1.6}
+ .modular-view .world-reading-columns{display:flex;flex-direction:column;gap:24px}
+ .modular-view .world-copy{width:100%}
+ .modular-view .world-context{width:min(280px,100%);margin-inline:auto}
+ .modular-view .world-note-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 8px}
+ .modular-view .world-note-tabs button{min-height:52px}
+ .modular-view .opening-letter-layout{grid-template-columns:minmax(0,1fr);gap:24px}
+ .modular-view .opening-letter{padding:20px 16px 18px 22px}
+ .modular-view .opening-letter p{font-size:24px}
+ .modular-view .opening-portrait{width:150px}
+ .modular-view .guide-item{padding:8px 10px 8px 24px}
+ .modular-view .guide-context{grid-template-columns:minmax(0,1fr);gap:12px;margin-bottom:20px}
+ .modular-view .guide-context .guide-platform-tabs{width:100%}
+ .modular-view .guide-platform-tabs button{flex:1;min-width:0}
 }
