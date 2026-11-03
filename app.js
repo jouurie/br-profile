@@ -21,8 +21,8 @@
     pause:'<path d="M8 5v14M16 5v14" stroke-width="5"/>',
     prev:'<path d="M5 5v14M19 5 8 12l11 7z" fill="currentColor"/>',
     next:'<path d="M19 5v14M5 5l11 7-11 7z" fill="currentColor"/>',
-    repeat:'<path d="m17 3 4 4-4 4M21 7H8a5 5 0 0 0-5 5m4 9-4-4 4-4M3 17h13a5 5 0 0 0 5-5"/><path d="m10 10 2-1v6m-2 0h4"/>',
-    shuffle:'<path d="M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2 0 4-3 6-6s4-6 6-6h3m-4-4 4 4-4 4"/>',
+    repeat:'<path d="M3 11V7a3 3 0 0 1 3-3h14m-3-3 3 3-3 3M21 13v4a3 3 0 0 1-3 3H4m3 3-3-3 3-3"/><text x="12" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="currentColor" stroke="none">1</text>',
+    original:'<path d="M14 3h7v7m0-7L10 14M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/>',
     muted:'<path d="m3 9 4 0 5-4v14l-5-4H3zM17 9l5 6m0-6-5 6"/>',
     volume:'<path d="m3 9 4 0 5-4v14l-5-4H3zM16 8c3 2 3 6 0 8M19 5c5 4 5 10 0 14"/>'
   };
@@ -208,14 +208,14 @@
     return guideDocument(guideBlocks(text));
   }
   function intro() {
-    return `<section class="intro-view" aria-label="꿈으로 입장"><img class="intro-scene" src="assets/waterpark.png" alt="푸른 물빛과 워터슬라이드가 있는 실내 워터파크" width="1536" height="1024" fetchpriority="high"><div class="intro-stage"><div class="hero-ticket intro-ticket">${ticketFrame()}${titleMark()}${[1,2,3,4].map(i=>`<span class="wave-fragment intro-wave intro-wave-${i}" aria-hidden="true"><svg class="wave-mark" viewBox="0 0 160 56" aria-hidden="true"><path class="wave-front" stroke="none" d="M3 31C8 22 9 12 21 13C35 15 34 24 46 23C61 21 58 5 73 5C89 5 83 24 98 25C114 26 112 13 127 14C142 15 134 29 149 31C158 32 159 42 151 47C141 53 129 43 118 46C104 51 97 40 85 43C71 48 63 53 51 47C39 41 32 50 20 47C10 46 0 42 3 31Z"/></svg></span>`).join('')}<h1>죽은 소꿉친구가 돌아왔다.</h1><p class="hook-sub">꿈에서만 허락된 재회로.</p>${palm}<div class="ticket-pool" aria-hidden="true">${waves}${ladder}</div><a class="button admission-button ticket-button" href="#home">${buttonTicket()}입장하기 <span aria-hidden="true">→</span></a></div><p class="intro-quote">“끝나고<br>잠깐 보자.”</p></div></section>`;
+    return `<section class="intro-view" aria-label="꿈으로 입장"><img class="intro-scene" src="assets/waterpark.png" alt="푸른 물빛과 워터슬라이드가 있는 실내 워터파크" width="1536" height="1024" fetchpriority="high"><div class="intro-stage"><div class="hero-ticket intro-ticket">${ticketFrame()}${titleMark()}${[1,2,3,4].map(i=>`<span class="wave-fragment intro-wave intro-wave-${i}" aria-hidden="true"><svg class="wave-mark" viewBox="0 0 160 56" aria-hidden="true"><path class="wave-front" stroke="none" d="M3 31C8 22 9 12 21 13C35 15 34 24 46 23C61 21 58 5 73 5C89 5 83 24 98 25C114 26 112 13 127 14C142 15 134 29 149 31C158 32 159 42 151 47C141 53 129 43 118 46C104 51 97 40 85 43C71 48 63 53 51 47C39 41 32 50 20 47C10 46 0 42 3 31Z"/></svg></span>`).join('')}<h1>죽은 소꿉친구가 돌아왔다.</h1><p class="hook-sub">다시 만날 수 있는 곳은 꿈속뿐.</p>${palm}<div class="ticket-pool" aria-hidden="true">${waves}${ladder}</div><a class="button admission-button ticket-button" href="#home">${buttonTicket()}입장하기 <span aria-hidden="true">→</span></a></div><p class="intro-quote">“끝나고<br>잠깐 보자.”</p></div></section>`;
   }
   function home() {
     return `<section class="home-view view mature-view" aria-label="브렌든 소개">
       <div class="home-book-hero">
         <header class="home-book-identity"><h1>SEE YOU<br>AFTER.</h1><p class="home-book-name">BRENDAN HALE</p><p class="home-book-genre">1990s CANADA / DREAMCORE / MYSTERY</p></header>
         <div class="home-book-portrait">${portraitPhoto('home-book-photo')}${star}</div>
-        <div class="home-book-story"><h2>죽은 소꿉친구가 돌아왔다.</h2><p>꿈에서만 허락된 재회로.</p><blockquote>“끝나고 잠깐 보자.”</blockquote></div>
+        <div class="home-book-story"><h2>죽은 소꿉친구가 돌아왔다.</h2><p>다시 만날 수 있는 곳은 꿈속뿐.</p><blockquote>“끝나고 잠깐 보자.”</blockquote></div>
         <div class="home-book-actions"><a class="button" href="#profile">브렌든 알아보기 <span aria-hidden="true">›</span></a><a class="button light" href="#guide">시작 전 안내 <span aria-hidden="true">›</span></a></div>
         <div class="home-book-pool">${poolPhoto('home-book-pool-photo')}<p class="handwritten">언제나, 여름의 끝에서.</p></div>
       </div>
@@ -265,10 +265,10 @@
   const places = [
     {name:'입구',x:14,y:65,text:'매표소 직원은 표를 끊고 손목에 팔찌를 채웁니다.'},
     {name:'푸드코트',x:44,y:4,text:'푸드코트 직원은 닫힌 카운터 안에서 주문을 받습니다.'},
-    {name:'오락실',x:15,y:9,text:'꺼진 오락기와 푸드코트 간판에 불이 들어오고, 낯선 출입문이 나타납니다.'},
-    {name:'락커룸',x:54,y:67,text:'졸업파티나 사고 얘기가 나오면 브렌든이 피하던 락커룸이나 직원 복도 문이 열립니다.'},
-    {name:'파도풀',x:69,y:39,text:'파도풀 가장자리에 앉아 물에 발을 담그기'},
-    {name:'직원 복도',x:87,y:72,text:'브렌든이 사라져도 푸드코트의 조명은 켜져 있고, 직원 복도 쪽에는 젖은 발자국이 남습니다.'}
+    {name:'오락실',x:15,y:9,text:'꺼져 있던 오락기와 푸드코트 간판이 켜집니다. 낯선 출입문도 나타납니다.'},
+    {name:'락커룸',x:54,y:67,text:'졸업파티나 사고 얘기를 꺼내면 브렌든이 피해 다니던 락커룸이나 직원 복도의 문이 열립니다.'},
+    {name:'파도풀',x:69,y:39,text:'파도풀 가장자리에 앉아 물에 발을 담글 수 있습니다.'},
+    {name:'직원 복도',x:87,y:72,text:'브렌든이 사라진 뒤에도 푸드코트에는 불이 켜져 있습니다. 직원 복도 쪽에는 젖은 발자국이 남습니다.'}
   ];
   const worldKeys = ['세계관','꿈 회차','깨어나는 시간'];
   const noteKeys = ['1990s 캐나다 워터파크','브렌든','꿈의 워터파크','사라진 브렌든','꿈속 사람들','진행 소재'];
@@ -289,7 +289,7 @@
   }
   function opening() {
     const title='<span class="scrap-title-line">졸업앨범을</span> <span class="scrap-title-line">펼친 밤</span>';
-    return `<section class="view opening-view mature-view" aria-label="도입부"><div class="keepsake"><header class="opening-story-header section-heading">${flatHeaderDecor('opening')}<span class="opening-dream-ticket">${ticketFrame('blue','row')}<span>01<span class="middle-dot">·</span>첫 번째 꿈</span>${star}</span><h1 class="opening-display scrap-title scrap-title-stepped" aria-label="졸업앨범을 펼친 밤">${title}</h1><div class="opening-summer opening-english" aria-hidden="true"><span>Our Summer Never Ends.</span></div><span class="opening-title-wave" aria-hidden="true">${waves}</span>${star}</header><article class="opening-story"><div class="opening-photo-sheet"><figure class="opening-scene"><img src="assets/opening-album-night.png" alt="밤의 책상 위에 펼쳐진 오래된 졸업앨범" width="1536" height="864"></figure><div class="opening-caption"><p class="opening-story-summary">${escape(data.opening.replace(/^⑴\s*/,''))}</p><button type="button" class="opening-read" data-opening-full aria-haspopup="dialog">전문 보기 <span aria-hidden="true">↗</span></button></div></div><div class="opening-letter-layout"><div class="opening-letter"><p class="opening-letter-to">To. You ${waves}</p><p>여기는, 여름이 끝나지 않는 곳이야.</p><p>너도 그날을 기억해?</p><p>이번에는, 내가 기다리고 있을게.</p><p class="letter-signature">Brendan Hale ${smile}</p>${palm}${star}</div><div class="opening-portrait">${portraitPhoto('opening-letter-portrait')}${star}</div></div></article><section class="opening-guide" aria-labelledby="opening-guide-title">${profilePaper('opening-guide')}<h2 id="opening-guide-title">${star}<span>진행 안내</span>${waves}</h2><div class="opening-guide-columns">${sections['진행 안내'].split(/\n\s*\n/).map(part=>`<div class="opening-guide-part">${prose(part)}</div>`).join('')}</div><div class="opening-setup"><a class="button lime" href="#guide/추천 설정값">${ticketFrame('lime','row')}<span>시작 전 설정 확인 <span aria-hidden="true">›</span></span></a></div></section></div></section>`;
+    return `<section class="view opening-view mature-view" aria-label="도입부"><div class="keepsake"><header class="opening-story-header section-heading">${flatHeaderDecor('opening')}<span class="opening-dream-ticket">${ticketFrame('blue','row')}<span>01<span class="middle-dot">·</span>첫 번째 꿈</span>${star}</span><h1 class="opening-display scrap-title scrap-title-stepped" aria-label="졸업앨범을 펼친 밤">${title}</h1><div class="opening-summer opening-english" aria-hidden="true"><span>Our Summer Never Ends.</span></div><span class="opening-title-wave" aria-hidden="true">${waves}</span>${star}</header><article class="opening-story"><div class="opening-photo-sheet"><figure class="opening-scene"><img src="assets/opening-album-night.png" alt="밤의 책상 위에 펼쳐진 오래된 졸업앨범" width="1536" height="864"></figure><div class="opening-caption"><p class="opening-story-summary">${escape(data.opening.replace(/^⑴\s*/,''))}</p><button type="button" class="opening-read" data-opening-full aria-haspopup="dialog">전문 보기 <span aria-hidden="true">↗</span></button></div></div><div class="opening-letter-layout"><div class="opening-letter"><p class="opening-letter-to">To. You ${waves}</p><p>여기는 여름이 끝나지 않는 곳이야.</p><p>너도 그날을 기억해?</p><p>이번에는 내가 기다리고 있을게.</p><p class="letter-signature">Brendan Hale ${smile}</p>${palm}${star}</div><div class="opening-portrait">${portraitPhoto('opening-letter-portrait')}${star}</div></div></article><section class="opening-guide" aria-labelledby="opening-guide-title">${profilePaper('opening-guide')}<h2 id="opening-guide-title">${star}<span>진행 안내</span>${waves}</h2><div class="opening-guide-columns">${sections['진행 안내'].split(/\n\s*\n/).map(part=>`<div class="opening-guide-part">${prose(part)}</div>`).join('')}</div><div class="opening-setup"><a class="button lime" href="#guide/추천 설정값">${ticketFrame('lime','row')}<span>시작 전 설정 확인 <span aria-hidden="true">›</span></span></a></div></section></div></section>`;
   }
   let openingDialog = null;
   function showOpeningFull(trigger) {
@@ -331,7 +331,7 @@
   }
   const screws = className => `<div class="${className}" aria-hidden="true">${'<i class="screw"></i>'.repeat(4)}</div>`;
   function playlist() {
-    return `<section class="view playlist-view mature-view">${heading('여름밤의 플레이리스트','Dream Playlist','playlist',['여름밤의','플레이리스트'])}<div class="playlist-layout"><section class="cassette-panel mixtape-console" aria-label="카세트 재생기"><div class="deck-window"><div class="cassette-art" aria-hidden="true"><img src="assets/cassette.png" alt="" width="1536" height="1024"><span class="cassette-art-title">DREAM PLAYLIST</span><span class="cassette-art-caption">Same summer. Same mixtape.</span></div></div><div class="console-controls"><div class="console-display"><p id="track-current" class="track-current"></p><div class="range-row"><span id="elapsed" class="seek-time">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치"><span id="duration" class="seek-time">0:00</span></div></div><div class="player-controls" role="group" aria-label="재생 제어"><button type="button" data-music="prev" aria-label="이전 곡">${icon('prev')}</button><button type="button" data-music="toggle" aria-label="재생">${icon('play')}</button><button type="button" data-music="next" aria-label="다음 곡">${icon('next')}</button><button type="button" data-music="repeat" aria-label="한 곡 반복" aria-pressed="${music.repeatOne}">${icon('repeat')}</button><button type="button" data-music="shuffle" aria-label="셔플" aria-pressed="${music.shuffled}">${icon('shuffle')}</button></div><div class="range-row volume-row"><button type="button" data-mute aria-label="음소거" aria-pressed="${music.volume===0}">${icon('volume')}</button><input type="range" id="volume" min="0" max="100" value="${music.volume}" aria-label="음량"></div></div><p id="music-message" class="music-message" role="status" ${music.message?'':'hidden'}>${escape(music.message)}</p><div class="deck-decoration" aria-hidden="true">${waves}<span class="console-current"></span><span class="console-trim"></span></div></section><ol class="track-list" aria-label="곡 목록">${data.playlist.map((track,i)=>`<li>${ticketFrame('paper','compact')}<button type="button" class="track-pick" data-track="${i}" aria-pressed="${music.index===i}"><span>${track.name.includes(' - ')?`<strong>${escape(track.name.split(' - ')[0])}</strong><span class="track-divider" aria-hidden="true"> — </span>${escape(track.name.split(' - ').slice(1).join(' - '))}`:escape(track.name)}</span></button><a class="track-external" href="${escape(track.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(track.name)} YouTube에서 열기">↗</a></li>`).join('')}</ol></div></section>`;
+    return `<section class="view playlist-view mature-view">${heading('여름밤의 플레이리스트','Dream Playlist','playlist',['여름밤의','플레이리스트'])}<div class="playlist-layout"><section class="cassette-panel mixtape-console" aria-label="카세트 재생기"><div class="deck-window"><div class="cassette-art" aria-hidden="true"><img src="assets/cassette.png" alt="" width="1536" height="1024"><span class="cassette-art-title">DREAM PLAYLIST</span><span class="cassette-art-caption">Same summer. Same mixtape.</span></div></div><div class="console-controls"><div class="console-display"><p id="track-current" class="track-current"></p><div class="range-row"><span id="elapsed" class="seek-time">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치"><span id="duration" class="seek-time">0:00</span></div></div><div class="player-controls" role="group" aria-label="재생 제어"><button type="button" data-music="prev" aria-label="이전 곡">${icon('prev')}</button><button type="button" data-music="toggle" aria-label="재생">${icon('play')}</button><button type="button" data-music="next" aria-label="다음 곡">${icon('next')}</button><button type="button" data-music="repeat" aria-label="한 곡 반복" aria-pressed="${music.repeatOne}">${icon('repeat')}</button><a data-original href="${escape(data.playlist[music.index].url)}" target="_blank" rel="noopener noreferrer" aria-label="현재 곡 원곡 페이지 열기">${icon('original')}</a></div><div class="range-row volume-row"><button type="button" data-mute aria-label="음소거" aria-pressed="${music.volume===0}">${icon('volume')}</button><input type="range" id="volume" min="0" max="100" value="${music.volume}" aria-label="음량"></div></div><p id="music-message" class="music-message" role="status" ${music.message?'':'hidden'}>${escape(music.message)}</p><div class="deck-decoration" aria-hidden="true">${waves}<span class="console-current"></span><span class="console-trim"></span></div></section><ol class="track-list" aria-label="곡 목록">${data.playlist.map((track,i)=>`<li>${ticketFrame('paper','compact')}<button type="button" class="track-pick" data-track="${i}" aria-pressed="${music.index===i}"><span>${track.name.includes(' - ')?`<strong>${escape(track.name.split(' - ')[0])}</strong><span class="track-divider" aria-hidden="true"> — </span>${escape(track.name.split(' - ').slice(1).join(' - '))}`:escape(track.name)}</span></button><a class="track-external" href="${escape(track.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escape(track.name)} YouTube에서 열기">↗</a></li>`).join('')}</ol></div></section>`;
   }
   const views = {intro,home,profile,world,opening,guide,playlist};
   // Reserve each sibling set from its real rendered copy at the current width.
@@ -411,7 +411,7 @@
     if(route==='guide'&&rawKey)requestAnimationFrame(()=>document.getElementById('guide-content').scrollIntoView({block:'start',behavior:'instant'}));
   }
 
-  const music = {index:0, player:null, loading:null, pending:false, request:0, playing:false, repeatOne:false, shuffled:false, volume:65, lastVolume:65, elapsed:0, duration:0, message:''};
+  const music = {index:0, player:null, loading:null, pending:false, request:0, playing:false, repeatOne:false, volume:65, lastVolume:65, elapsed:0, duration:0, message:''};
   function message(text='') { music.message=text;const node=document.getElementById('music-message');if(node){node.textContent=text;node.hidden=!text;} }
   function time(ms) { const seconds=Math.max(0,Math.floor(ms/1000));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`; }
   function updateMusic() {
@@ -421,9 +421,10 @@
       const type=button.dataset.music;
       button.innerHTML=icon(type==='toggle'?(music.playing?'pause':'play'):type);
       if(type==='toggle')button.setAttribute('aria-label',music.playing?'일시정지':'재생');
-      if(type==='repeat'||type==='shuffle')button.setAttribute('aria-pressed',type==='repeat'?music.repeatOne:music.shuffled);
+      if(type==='repeat')button.setAttribute('aria-pressed',music.repeatOne);
       button.disabled=Boolean(music.loading)&&type==='toggle';
     });
+    const original=document.querySelector('[data-original]');if(original){original.href=data.playlist[music.index].url;original.setAttribute('aria-label',title+' 원곡 페이지 열기');}
     const current=document.getElementById('track-current');if(current)current.textContent=title;
     document.querySelectorAll('[data-track]').forEach(button=>{button.setAttribute('aria-pressed',Number(button.dataset.track)===music.index);});
     const elapsed=document.getElementById('elapsed');if(elapsed)elapsed.textContent=time(music.elapsed);
@@ -458,7 +459,7 @@
     catch(error){music.pending=false;music.playing=false;message(error.message);throw error;}
     finally {music.loading=null;updateMusic();}
   }
-  function nextTrackIndex(){return (music.index+1+(music.shuffled?Math.floor(Math.random()*(data.playlist.length-1)):0))%data.playlist.length;}
+  function nextTrackIndex(){return (music.index+1)%data.playlist.length;}
   async function selectTrack(index,autoPlay=true) {
     const request=++music.request;
     music.index=(index+data.playlist.length)%data.playlist.length;
@@ -525,7 +526,6 @@
     if(button.hasAttribute('data-music')){
       const action=button.dataset.music;
       if(action==='repeat'){music.repeatOne=!music.repeatOne;updateMusic();}
-      else if(action==='shuffle'){music.shuffled=!music.shuffled;updateMusic();}
       else if(action==='prev'||action==='next')await selectTrack(action==='next'?nextTrackIndex():music.index-1);
       else try{const existed=Boolean(music.player);const player=await ensurePlayer();if(existed)player.toggle();else player.play();}catch{}
     }
@@ -556,7 +556,12 @@
     if(event.key==='Home')index=0;else if(event.key==='End')index=tabs.length-1;else index=(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
     event.preventDefault();tabs[index].focus();tabs[index].click();
   });
-  window.addEventListener('hashchange',render);
+  const characters=document.querySelector('.characters');
+  const closeCharacters=()=>{characters.open=false;};
+  document.addEventListener('click',event=>{if(!characters.contains(event.target))closeCharacters();});
+  characters.addEventListener('click',event=>{if(event.target.closest('a'))closeCharacters();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&characters.open){closeCharacters();characters.querySelector('summary').focus();}});
+  window.addEventListener('hashchange',()=>{closeCharacters();render();});
   document.querySelector('[data-route="guide"]').addEventListener('click',event=>{
     if(route!=='guide')return;
     event.preventDefault();history.replaceState(null,'','#guide');render();

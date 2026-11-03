@@ -2072,3 +2072,44 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .playlist-view .mixtape-console .console-display{padding-inline:7px}
  .playlist-view .mixtape-console .track-current{min-height:68px}
 }
+
+/* 2026-11-03 requested readable navigation and BR-only character switch. */
+.site-header #main-navigation{min-width:0;overflow-x:auto;overflow-y:hidden}
+.site-header #main-navigation a{flex:0 0 auto;font-size:16px;font-weight:400;letter-spacing:0;min-height:44px;padding:8px 12px}
+.site-header-inner>.characters{position:relative;flex:0 0 auto;min-width:0;grid-column:3/5;grid-row:1;justify-self:end}
+.site-header .characters>summary.admit{display:flex;align-items:center;justify-content:center;list-style:none;min-height:44px;padding:8px 10px;gap:8px;cursor:pointer;font:400 16px/1.5 var(--button);letter-spacing:0}
+.site-header .characters>summary::-webkit-details-marker{display:none}
+.site-header .characters>summary>span{font:inherit}
+.site-header .characters>summary>svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.site-header .characters>summary>.character-chevron{width:16px;height:16px}
+.site-header .characters[open] .character-chevron{transform:rotate(180deg)}
+.site-header .character-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:40;display:flex;flex-direction:column;align-items:stretch;gap:0;width:240px;height:auto;max-width:calc(100vw - 24px);max-height:calc(100dvh - var(--header) - 16px);overflow:auto;padding:4px;border:1px solid var(--navy);background:var(--paper);box-shadow:0 4px 8px color-mix(in srgb,var(--navy) 25%,transparent)}
+.site-header .character-menu a{display:flex;flex:0 0 auto;align-items:center;justify-content:space-between;gap:12px;height:auto;min-height:48px;padding:10px 8px;border:0;font:400 16px/1.5 var(--body);white-space:normal;text-decoration:none}
+.site-header .character-menu a small{flex:none;font:400 12px/1.5 var(--body)}
+.site-header .character-menu a[aria-current=page]{background:var(--cyan);color:var(--navy)}
+.site-header .character-menu a:hover,.site-header .character-menu a:active{background:var(--blue);color:var(--paper)}
+.site-header .characters :is(summary,a):focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.site-header .characters>summary:active{filter:brightness(.92)}
+.playlist-view .mixtape-console .player-controls [data-original]{display:flex;align-items:center;justify-content:center;width:100%;height:54px;min-width:44px;min-height:44px;padding:8px;border:2px solid var(--blue);border-radius:15px;background:var(--paper);color:var(--blue);box-shadow:inset 0 2px 1px var(--paper),inset 0 -3px 2px var(--cyan),0 3px 2px var(--navy);text-decoration:none}
+.playlist-view .mixtape-console .player-controls [data-original] svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.playlist-view .mixtape-console .player-controls [data-original]:hover{border-color:var(--navy);box-shadow:inset 0 0 0 2px var(--cyan),0 3px 2px var(--navy)}
+.playlist-view .mixtape-console .player-controls [data-original]:active,.playlist-view .mixtape-console .player-controls [data-original].b-touch-pressed{box-shadow:inset 0 3px 4px var(--blue);border-color:var(--navy)}
+.playlist-view .mixtape-console [data-original]:focus-visible{outline:2px solid var(--navy);outline-offset:3px}
+@media(max-width:600px){
+ .site-header #main-navigation a{font-size:14px}
+ .site-header .characters>summary.admit{font-size:14px;padding-inline:8px;gap:6px}
+}
+@container (max-width:680px){
+ .playlist-view .mixtape-console .player-controls [data-original]{height:48px;padding:6px;border-radius:12px}
+}
+@container (max-width:350px){
+ .playlist-view .mixtape-console .player-controls [data-original]{border-radius:10px}
+}
+/* Compact waterpark pointer; one silhouette and hotspot across both states. */
+@media (hover:hover) and (pointer:fine){
+ body{cursor:url('assets/br-cursor-default.svg') 2 2,default}
+ a[href],button:not(:disabled):not([aria-disabled=true]),summary,select:not(:disabled),label[for],[role=button]:not([aria-disabled=true]){cursor:url('assets/br-cursor-link.svg') 2 2,pointer}
+ input:not([type=range]):not([type=button]):not([type=submit]):not([type=reset]):not([type=checkbox]):not([type=radio]),textarea,[contenteditable=true]{cursor:text}
+ input[type=range]{cursor:auto}
+ button:disabled,input:disabled,select:disabled,textarea:disabled,[aria-disabled=true]{cursor:not-allowed}
+}
