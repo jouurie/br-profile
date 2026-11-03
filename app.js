@@ -91,30 +91,108 @@
   }
   const copyUnit = (text, title) => `<div class="copy-unit"><pre>${escape(text)}</pre><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(text)}" aria-label="${escape(title)} 복사">COPY</button></div></div>`;
 
+  // Guide roles follow the meaning of each item; shared profile/world prose stays unchanged.
+  const guideDocument = html => `<div class="guide-document">${html}</div>`;
+  const guideSection = (title, body, level=3) => `<section class="guide-section"><h${level}>${linkify(label(title.replace(/^🔗\s*/,'')))}</h${level}>${body}</section>`;
+  const guideNote = text => `<p class="guide-note">${linkify(text)}</p>`;
+  const guideList = lines => `<ul class="guide-list">${lines.map(line=>`<li>${linkify(line)}</li>`).join('')}</ul>`;
+  function guideRows(rows, kind='settings') {
+    return `<dl class="guide-rows guide-${kind}">${rows.map(row=>`<div class="guide-row"><dt>${linkify(row.term)}${row.separator?`<span class="guide-separator">${escape(row.separator)}</span>`:''}</dt><dd><p>${linkify(row.value)}</p>${(row.notes||[]).map(guideNote).join('')}</dd></div>`).join('')}</dl>`;
+  }
+  function guideBlocks(text, nested=false) {
+    const lines=text.split('\n').filter(line=>line.trim());
+    let html='', index=0;
+    while(index<lines.length) {
+      const line=lines[index];
+      if(line.startsWith('▸ ')) {
+        const title=line.slice(2), body=[];
+        index++;
+        while(index<lines.length&&!lines[index].startsWith('▸ '))body.push(lines[index++]);
+        html+=guideSection(title,guideBlocks(body.join('\n'),nested),nested?4:3);
+      } else if(line.startsWith('· ')) {
+        const entries=[];
+        while(index<lines.length&&lines[index].startsWith('· ')) {
+          const value=lines[index++].slice(2),notes=[];
+          while(index<lines.length&&lines[index].startsWith('↳ '))notes.push(lines[index++].slice(2));
+          entries.push({value,notes});
+        }
+        // Notes naming another setting explain this section, not the final table value.
+        const sectionNotes=[];
+        entries.forEach(entry=>{entry.notes=entry.notes.filter(note=>{
+          if(entries.some(other=>{if(other===entry||!other.value.includes(': '))return false;const term=other.value.split(': ')[0];return note.startsWith(term+'은 ')||note.startsWith(term+'는 ');})){sectionNotes.push(note);return false;}
+          return true;
+        });});
+        // A plain recommendation does not erase the label/value roles beside it.
+        let start=0;
+        while(start<entries.length) {
+          const paired=entries[start].value.includes(': ');let end=start+1;
+          while(end<entries.length&&entries[end].value.includes(': ')===paired)end++;
+          const group=entries.slice(start,end);
+          if(paired)html+=guideRows(group.map(entry=>{const at=entry.value.indexOf(': ');return {term:entry.value.slice(0,at),separator:':',value:entry.value.slice(at+2),notes:entry.notes};}));
+          else html+=`<ul class="guide-list">${group.map(entry=>`<li>${linkify(entry.value)}${entry.notes.map(guideNote).join('')}</li>`).join('')}</ul>`;
+          start=end;
+        }
+        if(sectionNotes.length)html+=`<aside class="guide-notes">${sectionNotes.map(guideNote).join('')}</aside>`;
+      } else if(line.startsWith('↳ ')) { html+=guideNote(line.slice(2));index++; }
+      else {html+=`<p>${linkify(line)}</p>`;index++;}
+    }
+    return html;
+  }
+  function guideSettings(text) {
+    // NODY has two real setting locations, with subject headings nested beneath each.
+    if(settingsPlatform!=='nody')return guideBlocks(text);
+    const groups=text.split(/(?=^▸ 채팅방 설정 → )/m).filter(part=>part.trim());
+    return groups.map(part=>{const lines=part.trim().split('\n');return guideSection(lines.shift().slice(2),guideBlocks(lines.join('\n'),true));}).join('');
+  }
   function guideBody(key) {
     const text = sections[key];
+    if(key==='플레이 팁') {
+      return guideDocument(guideRows(text.split('\n').filter(Boolean).map(line=>{const [term,...value]=line.slice(2).split(' → ');return {term,separator:'→',value:value.join(' → ')};}),'tips'));
+    }
+    if(key==='추천 플레이') {
+      const lines=text.split('\n').filter(Boolean).map(line=>line.slice(2));
+      return guideDocument(guideSection('먼저 다가가기',guideList(lines.slice(0,15)))+guideSection('거리와 반응 살피기',guideList(lines.slice(15))));
+    }
+    if(key==='명령어') {
+      const [intro,...lines]=text.split('\n').filter(Boolean);
+      return guideDocument(`<p>${linkify(intro)}</p>`+guideRows(lines.map(line=>{const [term,...value]=line.slice(2).split(' | ');return {term,separator:'|',value:value.join(' | ')};}),'commands'));
+    }
+    if(key==='로어북 예산 안내'||key==='최종 리팩토링') {
+      return guideDocument(guideList(text.split('\n').filter(Boolean).map(line=>line.replace(/^▸ /,''))));
+    }
     if (key === '추천 설정값') {
       const selected = settingsPlatform === 'elyn' ? text : data.nodySettings;
-      return `<div class="guide-platform-tabs" role="tablist" aria-label="추천 설정 플랫폼">${['elyn','nody'].map(platform=>`<button type="button" role="tab" id="settings-tab-${platform}" data-settings-platform="${platform}" aria-selected="${settingsPlatform===platform}" aria-controls="settings-platform-content">${platform.toUpperCase()}</button>`).join('')}</div><div id="settings-platform-content" role="tabpanel" aria-labelledby="settings-tab-${settingsPlatform}">${prose(selected)}<div class="copy-unit settings-copy"><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(selected)}" aria-label="${settingsPlatform.toUpperCase()} 추천 설정값 전체 복사">설정값 복사</button></div></div></div>`;
+      return `<div class="guide-platform-tabs" role="tablist" aria-label="추천 설정 플랫폼">${['elyn','nody'].map(platform=>`<button type="button" role="tab" id="settings-tab-${platform}" data-settings-platform="${platform}" aria-selected="${settingsPlatform===platform}" aria-controls="settings-platform-content">${platform.toUpperCase()}</button>`).join('')}</div><div id="settings-platform-content" role="tabpanel" aria-labelledby="settings-tab-${settingsPlatform}">${guideDocument(guideSettings(selected))}<div class="copy-unit settings-copy"><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(selected)}" aria-label="${settingsPlatform.toUpperCase()} 추천 설정값 전체 복사">설정값 복사</button></div></div></div>`;
     }
     if (key === '출력 가이던스') {
       const split = text.split('▸ ');
-      return prose(split.shift()) + split.map(part => {
+      let optionalNext=false;
+      return guideDocument(guideBlocks(split.shift()) + split.map(part => {
         const lines = part.trim().split('\n');
         const title = lines.shift().trim();
         const optional = lines.indexOf('(선택 사항)');
         if (optional !== -1) lines.splice(optional, 1);
-        return `<h3>${escape(label(title))}</h3>${copyUnit(lines.join('\n').trim(),title)}${optional!==-1?'<p class="subnote">(선택 사항)</p>':''}`;
-      }).join('');
+        const note=optionalNext?guideNote('(선택 사항)'):'';
+        optionalNext=optional!==-1;
+        return guideSection(title,note+copyUnit(lines.join('\n').trim(),title));
+      }).join(''));
     }
     if (key === '추가 요약 지침') {
       const [location, ...body] = text.split('\n\n');
-      return prose(location) + copyUnit(body.join('\n\n'), key);
+      return guideDocument(guideBlocks(location) + copyUnit(body.join('\n\n'), key));
     }
     if (key === '상태창') {
-      return `<div class="prose">${text.split(/(<BrenStatus[^>]+\/>)/g).map(part => part.startsWith('<BrenStatus') ? copyUnit(part,'상태창 예시') : prose(part)).join('')}</div>`;
+      return guideDocument(text.split(/(?=^▸ )/m).filter(part=>part.trim()).map(part=>{
+        const lines=part.trim().split('\n'),title=lines.shift().slice(2),body=lines.join('\n');
+        if(body.trim().startsWith('<BrenStatus'))return guideSection(title,copyUnit(body.trim(),'상태창 예시'));
+        const groups=body.split(/(?=^· )/m).filter(part=>part.trim());
+        return guideSection(title,groups.map(group=>{
+          const entries=group.trim().split('\n'),subject=entries.shift().slice(2);
+          return guideSection(subject,guideRows(entries.filter(line=>line.startsWith('↳ ')).map(line=>{const value=line.slice(2),at=value.indexOf(': ');return {term:value.slice(0,at),separator:':',value:value.slice(at+2)};}),'props'),4);
+        }).join(''));
+      }).join(''));
     }
-    return prose(text);
+    return guideDocument(guideBlocks(text));
   }
   function intro() {
     return `<section class="intro-view" aria-label="꿈으로 입장"><img class="intro-scene" src="assets/waterpark.png" alt="푸른 물빛과 워터슬라이드가 있는 실내 워터파크" width="1536" height="1024" fetchpriority="high"><div class="intro-stage"><div class="hero-ticket intro-ticket">${ticketFrame()}${titleMark()}${[1,2,3,4].map(i=>`<span class="wave-fragment intro-wave intro-wave-${i}" aria-hidden="true"><svg class="wave-mark" viewBox="0 0 160 56" aria-hidden="true"><path class="wave-front" stroke="none" d="M3 31C8 22 9 12 21 13C35 15 34 24 46 23C61 21 58 5 73 5C89 5 83 24 98 25C114 26 112 13 127 14C142 15 134 29 149 31C158 32 159 42 151 47C141 53 129 43 118 46C104 51 97 40 85 43C71 48 63 53 51 47C39 41 32 50 20 47C10 46 0 42 3 31Z"/></svg></span>`).join('')}<h1>죽은 소꿉친구가 돌아왔다.</h1><p class="hook-sub">꿈에서만 허락된 재회로.</p>${palm}<div class="ticket-pool" aria-hidden="true">${waves}${ladder}</div><a class="button admission-button ticket-button" href="#home">${buttonTicket()}입장하기 <span aria-hidden="true">→</span></a></div><p class="intro-quote">“끝나고<br>잠깐 보자.”</p></div></section>`;
@@ -234,7 +312,7 @@
   }
   const guideItems = () => `<div class="guide-items">${guideGroups[guideGroup].items.map(key=>`<button type="button" class="guide-item" data-guide="${escape(key)}" aria-current="${guideKey===key}">${ticketFrame('paper','row')}${escape(label(key))}<span class="item-chevron" aria-hidden="true">›</span></button>`).join('')}</div><div class="guide-pool" aria-hidden="true">${palm}${ladder}${waves}</div>`;
   const guideTitle = key => escape(label(key))+(key==='모델 추천'?'<span class="guide-platform-label">ELYN</span>':'');
-  const guideReading = () => `<h2 id="guide-reading-title">${guideTitle(guideKey)}</h2><div class="prose">${guideBody(guideKey)}</div>`;
+  const guideReading = () => `<h2 id="guide-reading-title">${guideTitle(guideKey)}</h2><div class="guide-reading-body">${guideBody(guideKey)}</div>`;
   function guide() {
     return `<section class="view guide-view mature-view">${heading('이용 가이드','Before You Dream')}<div class="guide-categories" role="tablist" aria-label="가이드 분류">${guideGroups.map((group,i)=>`<button type="button" role="tab" id="guide-group-${i}" data-guide-group="${i}" aria-selected="${guideGroup===i}" aria-controls="guide-item-directory">${group.title}</button>`).join('')}</div><div class="guide-layout"><aside id="guide-item-directory" class="guide-directory" role="tabpanel" aria-labelledby="guide-group-${guideGroup}" aria-label="가이드 항목">${guideItems()}</aside><article class="guide-content" id="guide-content" aria-labelledby="guide-reading-title" tabindex="0">${guideReading()}</article></div></section>`;
   }
@@ -421,7 +499,7 @@
     }
     if(button.hasAttribute('data-copy')){
       const status=button.parentElement.querySelector('.copy-result');
-      try{await navigator.clipboard.writeText(button.dataset.copy);status.textContent='복사했습니다.';}catch{status.textContent='복사할 텍스트를 선택해 주세요.';const range=document.createRange();range.selectNodeContents(button.closest('.settings-copy')?document.getElementById('settings-platform-content').querySelector('.prose'):button.closest('.copy-unit').querySelector('pre'));const selection=getSelection();selection.removeAllRanges();selection.addRange(range);}
+      try{await navigator.clipboard.writeText(button.dataset.copy);status.textContent='복사했습니다.';}catch{status.textContent='복사할 텍스트를 선택해 주세요.';const range=document.createRange();range.selectNodeContents(button.closest('.settings-copy')?document.getElementById('settings-platform-content').querySelector('.guide-document'):button.closest('.copy-unit').querySelector('pre'));const selection=getSelection();selection.removeAllRanges();selection.addRange(range);}
     }
     if(button.hasAttribute('data-track'))await selectTrack(Number(button.dataset.track));
     if(button.hasAttribute('data-mute'))setVolume(music.volume?0:music.lastVolume||65);

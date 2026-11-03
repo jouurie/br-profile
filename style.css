@@ -1825,6 +1825,47 @@ main:has(.mature-view){container-type:inline-size;container-name:br-host}
 .mature-view .guide-platform-tabs{gap:8px;margin:0 0 24px}
 .mature-view .guide-platform-tabs button{min-height:44px;padding:8px 12px;font:600 15px/1.5 var(--body);border:1px solid var(--blue);color:var(--blue)}
 .mature-view .guide-platform-tabs button[aria-selected=true]{background:var(--lime);color:var(--ink)}
+.mature-view .guide-content>h2{font-size:24px}
+.mature-view .guide-reading-body{display:flow-root;margin:0;padding:0}
+.mature-view .guide-document{font:400 16px/1.75 var(--body);color:var(--ink);overflow-wrap:anywhere}
+.mature-view .guide-document :is(p,ul,dl){margin:0}
+.mature-view .guide-document>p+p{margin-top:12px}
+.mature-view .guide-document .guide-section{display:flow-root}
+.mature-view .guide-document .guide-section+.guide-section{margin-top:28px}
+.mature-view .guide-document h3{margin:0 0 12px;font:600 20px/1.45 var(--body);color:var(--blue)}
+.mature-view .guide-document h4{margin:0 0 10px;font:600 18px/1.5 var(--body);color:var(--navy)}
+.mature-view .guide-document .guide-section .guide-section+.guide-section{margin-top:24px}
+.mature-view .guide-document a{font:inherit;color:var(--blue);overflow-wrap:anywhere;text-underline-offset:3px}
+.mature-view .guide-document .guide-list{padding-left:20px}
+.mature-view .guide-document .guide-list>li{padding-left:2px}
+.mature-view .guide-document .guide-list>li+li{margin-top:10px}
+.mature-view .guide-document .guide-list>li::marker{color:var(--blue)}
+.mature-view .guide-document .guide-rows+.guide-list,.mature-view .guide-document .guide-list+.guide-rows{margin-top:12px}
+.mature-view .guide-document .guide-row{display:grid;grid-template-columns:minmax(0,36%) minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--cyan)}
+.mature-view .guide-document .guide-row:first-child{padding-top:0}
+.mature-view .guide-document .guide-row:last-child{padding-bottom:0;border-bottom:0}
+.mature-view .guide-document dt{font-weight:600;color:var(--navy)}
+.mature-view .guide-document dd{min-width:0;margin:0}
+.mature-view .guide-document .guide-separator{margin-left:6px;font-weight:400}
+.mature-view .guide-document .guide-tips .guide-row{grid-template-columns:minmax(0,40%) minmax(0,1fr);padding-top:16px;padding-bottom:16px}
+.mature-view .guide-document .guide-tips .guide-row:first-child{padding-top:0}
+.mature-view .guide-document .guide-tips dt{font:600 18px/1.5 var(--body);color:var(--blue)}
+.mature-view .guide-document .guide-commands{margin-top:20px}
+.mature-view .guide-document .guide-props .guide-row{grid-template-columns:minmax(0,32%) minmax(0,1fr)}
+.mature-view .guide-document .guide-note{margin:6px 0 0 12px;padding:0;font:400 14px/1.75 var(--body);color:var(--navy)}
+.mature-view .guide-document .guide-note+.guide-note{margin-top:6px}
+.mature-view .guide-document .guide-notes{margin-top:10px}
+.mature-view .guide-document .copy-unit{margin:0}
+.mature-view .guide-document>p+.copy-unit,.mature-view .guide-document>p+.guide-section{margin-top:24px}
+.mature-view .guide-document .guide-note+.copy-unit{margin-top:10px}
+.mature-view .guide-document .copy-unit pre{margin:0;padding:14px;background:color-mix(in srgb,var(--cyan) 6%,var(--paper));font:400 16px/1.75 var(--body);white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
+.mature-view .guide-document .copy-action{margin-top:8px}
+@container br-host (max-width:650px){
+ .mature-view .guide-document :is(.guide-row,.guide-tips .guide-row,.guide-props .guide-row){grid-template-columns:minmax(0,1fr);gap:4px}
+ .mature-view .guide-document .guide-section+.guide-section{margin-top:28px}
+ .mature-view .guide-document .guide-section .guide-section+.guide-section{margin-top:24px}
+ .mature-view .guide-document .guide-note{margin-left:12px}
+}
 .mature-view .copy-action button{font:600 14px/1.5 var(--body);border:1px solid var(--blue);background:var(--paper);color:var(--blue)}
 .mature-view .copy-action button:hover{background:var(--cyan);color:var(--navy)}
 .mature-view .copy-unit pre{background:none;border:1px solid var(--cyan);color:var(--navy);font:400 14px/1.8 var(--body)}
