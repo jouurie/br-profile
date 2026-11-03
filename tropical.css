@@ -26,7 +26,7 @@ body:not([data-page="intro"]) .b-wide-stage {
 body:not([data-page="intro"]) main::before {
   --footer-height: calc(48px + env(safe-area-inset-bottom, 0px));
   --wave-height: clamp(180px, 30svh, 300px);
-  --surf-art: url('assets/tropical-surf.svg');
+  --surf-art: url('assets/tropical-surf.svg?v=e4cf08c2e617');
   --surf-position: center top;
   --surf-width: max(1440px, 100%);
   content: '';
@@ -94,7 +94,7 @@ body[data-page="playlist"] .b-wide-stage {
   --left-rotate: -7deg; --right-rotate: 6deg;
 }
 body:is([data-page="profile"], [data-page="opening"], [data-page="playlist"]) main::before {
-  --surf-art: url('assets/tropical-surf-wide.svg');
+  --surf-art: url('assets/tropical-surf-wide.svg?v=bc004d9788ea');
 }
 @media (max-width: 850px) {
   body:not([data-page="intro"]) .b-wide-stage {
