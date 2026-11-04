@@ -2409,30 +2409,59 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .world-view.modular-view :is(#world-panel,#note-panel){height:auto;max-height:none;min-height:0;overflow:visible;padding-right:0}
 .world-view.modular-view .world-notes>h2{font:600 17px/1.5 var(--label);color:var(--ink);margin-bottom:12px}
 .modular-view .subject-icon{width:18px;height:18px;flex:0 0 18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
-.modular-view .reading-row{display:block;padding:0;margin:0 0 14px}
-.modular-view .reading-row:last-child{margin-bottom:0}
-.modular-view .reading-row>h4,.modular-view .guide-document :is(h3,h4,dt){display:flex;align-items:flex-start;gap:8px;color:var(--blue);font:600 14px/1.65 var(--label);margin:0 0 4px;padding:0;border:0;min-height:0}
-.modular-view .reading-value{margin:0 0 0 26px}
+.modular-view{--read-attach:4px;--read-peer:16px;--read-group:24px;--read-inset:26px}
+.modular-view :is(.profile-body>h3,.world-notes>h2,.opening-guide>h2){color:var(--ink);margin-block:var(--read-group) 12px;padding-bottom:8px;font:600 17px/1.5 var(--label)}
+.modular-view :is(.profile-body>h3:first-of-type,.world-notes>h2,.opening-guide>h2){margin-top:0}
+.modular-view .reading-row{display:block;padding:0;margin:0}
+.modular-view .reading-row+.reading-row{margin-top:var(--read-peer)}
+.modular-view .reading-row>h4,.modular-view .guide-document :is(h3,h4,dt){display:flex;align-items:flex-start;gap:8px;color:var(--blue);font:600 14px/1.65 var(--label);margin:0 0 var(--read-attach);padding:0;border:0;min-height:0}
+.modular-view .reading-value{margin:0 0 0 var(--read-inset)}
 .modular-view .reading-value>ul{list-style:none;padding:0;margin:0}
 .modular-view .reading-value>ul>li:before{content:none}
-.modular-view .guide-document :is(.guide-row,.guide-tips .guide-row,.guide-props .guide-row){display:block;padding:0;border:0;margin:0 0 14px}
-.modular-view .guide-document .guide-row:last-child{margin-bottom:0}
-.modular-view .guide-document .guide-row dd{padding:0;margin:0 0 0 26px}
+.modular-view :is(.reading-value,.prose)>p{margin:0}
+.modular-view :is(.reading-value,.prose)>p+p{margin-top:8px}
+.modular-view :is(.reading-value,.prose)>ul{margin-block:0}
+.modular-view :is(.reading-value,.prose)>ul>li+li{margin-top:8px}
+.modular-view :is(.reading-value,.prose)>.subnote{margin:var(--read-attach) 0 0 12px;color:var(--ink);font:400 var(--reading-note)/1.8 var(--body)}
+.modular-view .guide-document .guide-section{display:flow-root;margin:0}
+.modular-view .guide-document .guide-section+.guide-section{margin-top:var(--read-group)}
+.modular-view .guide-document .guide-section .guide-section+.guide-section{margin-top:var(--read-peer)}
+.modular-view .guide-document .guide-section>:not(h3,h4){margin-left:0}
+.modular-view .guide-document .guide-section>.guide-section{margin-left:0}
+.modular-view .guide-document .guide-section .guide-section>:not(h3,h4){margin-left:0}
+.modular-view .guide-document .guide-group> :is(h3,h4),.modular-view .guide-document>.guide-group:has(>.guide-section)>h3{color:var(--ink);font:600 14px/1.65 var(--label);margin:0 0 8px;padding:0;border:0}
+.modular-view .guide-document>.guide-group:has(>.guide-section)>h3{padding-bottom:8px;border-bottom:1px solid var(--cyan);margin-bottom:var(--read-peer)}
+.modular-view .guide-document .guide-subject>:not(h3,h4){margin-left:var(--read-inset)}
+.modular-view .guide-document .guide-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--read-peer) 24px;margin:0}
+.modular-view .guide-document :is(.guide-row,.guide-tips .guide-row,.guide-props .guide-row){display:block;min-width:0;padding:0;border:0;margin:0}
+.modular-view .guide-document .guide-row dd{padding:0;margin:0 0 0 var(--read-inset)}
 .modular-view .guide-document .guide-row dd>p{margin:0}
-.modular-view .guide-document .guide-section+.guide-section{margin-top:16px}
-.modular-view .guide-document .guide-section .guide-section+.guide-section{margin-top:14px}
-.modular-view .guide-document .guide-section .guide-section>h4,.modular-view .guide-document>.guide-section:has(>.guide-section)>h3{margin-bottom:4px;padding:0;border:0;font:600 14px/1.65 var(--label)}
-.modular-view .guide-document .guide-section>:not(h3,h4){margin-left:26px}
-.modular-view .guide-document .guide-section>.guide-section{margin-left:26px}
-.modular-view .guide-document .guide-section .guide-section>:not(h3,h4){margin-left:26px}
+.modular-view .guide-document .guide-row dt{color:var(--blue);font:600 14px/1.65 var(--label)}
+.modular-view .guide-document .guide-commands{grid-template-columns:minmax(0,1fr);margin-top:var(--read-peer)}
+.modular-view .guide-document .guide-note{color:var(--ink);font:400 var(--guide-note)/1.8 var(--body);margin:var(--read-attach) 0 0 12px}
+.modular-view .guide-document .guide-row dd>.guide-note{margin-left:0}
+.modular-view .guide-document .guide-note+.guide-note{margin-top:var(--read-attach)}
+.modular-view .guide-document .guide-notes{margin-top:8px}
+.modular-view .guide-document .guide-list{padding-left:20px;margin-block:0}
+.modular-view .guide-document .guide-list>li+li{margin-top:8px}
+.modular-view .guide-document .guide-rows+.guide-list,.modular-view .guide-document .guide-list+.guide-rows{margin-top:12px}
+.modular-view .guide-document .guide-section>p+p{margin-top:8px}
+.modular-view .guide-document .guide-section>.guide-note{margin-top:var(--read-attach)}
+.modular-view .guide-document .guide-path+p{margin-top:var(--read-peer)}
+.modular-view .guide-document .guide-path+.copy-unit,.modular-view .guide-document>p+.guide-section,.modular-view .guide-document>p+.copy-unit{margin-top:var(--read-peer)}
+.modular-view .guide-document.guide-settings-elyn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--read-group) 24px}
+.modular-view .guide-settings-elyn>.guide-section+.guide-section{margin-top:0}
+.modular-view .guide-settings-elyn .guide-rows{grid-template-columns:minmax(0,1fr)}
+.modular-view .guide-document.guide-settings-nody>.guide-group>.guide-section{margin-top:0}
+.modular-view .guide-document.guide-settings-nody>.guide-group>.guide-section+.guide-section{margin-top:var(--read-group)}
 .modular-view .guide-document .guide-separator{display:none}
 .world-view.modular-view .world-reading-columns{align-items:start}
 @container br-host (max-width:650px){
  .world-view.modular-view .world-context{order:-1}
  .modular-view .menu-rail>:nth-child(2)>button{padding-inline:12px}
- .modular-view .guide-document .guide-section>.guide-section{margin-left:0}
+ .modular-view .guide-document.guide-settings-elyn,.modular-view .guide-document .guide-rows{grid-template-columns:minmax(0,1fr)}
+ .modular-view .guide-context{row-gap:8px}
 }
 
-.modular-view .guide-document .guide-row dt,.modular-view .guide-document .guide-tips dt{color:var(--blue);font:600 14px/1.65 var(--label)}
-.world-view.modular-view .world-content.world-premise .prose>p:first-child{color:var(--ink)}
+.world-view.modular-view .world-content.world-premise .prose>p:first-child{color:var(--ink);margin:0 0 8px}
 .modular-view .world-content .reading-row{display:block;gap:0}

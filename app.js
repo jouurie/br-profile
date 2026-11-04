@@ -13,8 +13,7 @@
   const guideGroups = [
     {title:'시작과 진행',items:['진행 안내','플레이 팁','추천 플레이','로어북 예산 안내','채팅방 이전 안내']},
     {title:'설정과 출력',items:['추천 설정값','모델 추천','출력 가이던스','추가 요약 지침']},
-    {title:'명령어와 상태창',items:['명령어','상태창','상태창 · 대사 복원 지침']},
-    {title:'업데이트',items:['최종 리팩토링']}
+    {title:'명령어와 상태창',items:['명령어','상태창','상태창 · 대사 복원 지침']}
   ];
   const icons = {
     play:'<path d="m9 5 11 7-11 7z" fill="currentColor" stroke="none"/>',
@@ -117,8 +116,11 @@
   const copyUnit = (text, title, action='COPY') => `<div class="copy-unit"><pre>${escape(text)}</pre><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(text)}" aria-label="${escape(title)} 복사">${escape(action)}</button></div></div>`;
 
   // Guide roles follow the meaning of each item; shared profile/world prose stays unchanged.
-  const guideDocument = html => `<div class="guide-document">${html}</div>`;
-  const guideSection = (title, body, level=3) => `<section class="guide-section"><h${level}>${subjectLabel(linkify(label(title.replace(/^🔗\s*/,''))))}</h${level}>${body}</section>`;
+  const guideDocument = (html, kind='') => `<div class="guide-document${kind?' guide-'+kind:''}">${html}</div>`;
+  const guideSection = (title, body, level=3, role=/class="guide-(?:rows|section)/.test(body)?'group':'subject') => {
+    const caption=linkify(label(title.replace(/^🔗\s*/,'')));
+    return `<section class="guide-section guide-${role}"><h${level}>${role==='subject'?subjectLabel(caption):caption}</h${level}>${body}</section>`;
+  };
   const guideText = text => text.split(/((?:하단\s*)?\[\s*⭐?\s*(?:모델 추천|출력 가이던스)\s*\]|플레이 팁(?=을 참고))/g).map(part=>{
     const reference=part.match(/^(?:하단\s*)?\[\s*⭐?\s*(모델 추천|출력 가이던스)\s*\]$|^(플레이 팁)$/);
     const key=reference?.[1]||reference?.[2];
@@ -153,6 +155,7 @@
         // Notes naming another setting explain this section, not the final table value.
         const sectionNotes=[];
         entries.forEach(entry=>{entry.notes=entry.notes.filter(note=>{
+          if(note.startsWith('기본 ')||note.startsWith('설명이 길어지면')){sectionNotes.push(note);return false;}
           if(entries.some(other=>{if(other===entry||!other.value.includes(': '))return false;const term=other.value.split(': ')[0];return note.startsWith(term+'은 ')||note.startsWith(term+'는 ');})){sectionNotes.push(note);return false;}
           return true;
         });});
@@ -174,7 +177,10 @@
   }
   function guideSettings(text) {
     // NODY has two real setting locations, with subject headings nested beneath each.
-    if(settingsPlatform!=='nody')return guideBlocks(text);
+    if(settingsPlatform!=='nody')return text.split(/(?=^▸ )/m).filter(part=>part.trim()).map(part=>{
+      const lines=part.trim().split('\n');
+      return guideSection(lines.shift().slice(2),guideBlocks(lines.join('\n')),3,'group');
+    }).join('');
     const groups=text.split(/(?=^▸ 채팅방 설정 → )/m).filter(part=>part.trim());
     return groups.map(part=>{const lines=part.trim().split('\n');return guideSection(lines.shift().slice(2),guideBlocks(lines.join('\n'),true));}).join('');
   }
@@ -191,12 +197,12 @@
       const [intro,...lines]=text.split('\n').filter(Boolean);
       return guideDocument(`<p>${linkify(intro)}</p>`+guideRows(lines.map(line=>{const [term,...value]=line.slice(2).split(' | ');return {term,separator:'|',value:value.join(' | ')};}),'commands'));
     }
-    if(key==='로어북 예산 안내'||key==='최종 리팩토링') {
+    if(key==='로어북 예산 안내') {
       return guideDocument(guideList(text.split('\n').filter(Boolean).map(line=>line.replace(/^▸ /,''))));
     }
     if (key === '추천 설정값') {
       const selected = settingsPlatform === 'elyn' ? text : data.nodySettings;
-      return `<div id="settings-platform-content" role="tabpanel" aria-labelledby="settings-tab-${settingsPlatform}">${guideDocument(guideSettings(selected))}<div class="copy-unit settings-copy"><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(selected)}" aria-label="${settingsPlatform.toUpperCase()} 추천 설정값 전체 복사">설정값 복사</button></div></div></div>`;
+      return `<div id="settings-platform-content" role="tabpanel" aria-labelledby="settings-tab-${settingsPlatform}">${guideDocument(guideSettings(selected),'settings-'+settingsPlatform)}<div class="copy-unit settings-copy"><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(selected)}" aria-label="${settingsPlatform.toUpperCase()} 추천 설정값 전체 복사">설정값 복사</button></div></div></div>`;
     }
     if (key === '출력 가이던스') {
       const split = text.split('▸ ');
@@ -227,7 +233,7 @@
         }).join(''));
       }).join(''));
     }
-    return guideDocument(guideBlocks(text));
+    return guideDocument(guideBlocks(text),key==='모델 추천'?'models':'');
   }
   function intro() {
     return `<section class="intro-view" aria-label="꿈으로 입장"><img class="intro-scene" src="assets/waterpark.png" alt="푸른 물빛과 워터슬라이드가 있는 실내 워터파크" width="1536" height="1024" fetchpriority="high"><div class="intro-stage"><div class="hero-ticket intro-ticket">${ticketFrame()}${titleMark()}${[1,2,3,4].map(i=>`<span class="wave-fragment intro-wave intro-wave-${i}" aria-hidden="true"><svg class="wave-mark" viewBox="0 0 160 56" aria-hidden="true"><path class="wave-front" stroke="none" d="M3 31C8 22 9 12 21 13C35 15 34 24 46 23C61 21 58 5 73 5C89 5 83 24 98 25C114 26 112 13 127 14C142 15 134 29 149 31C158 32 159 42 151 47C141 53 129 43 118 46C104 51 97 40 85 43C71 48 63 53 51 47C39 41 32 50 20 47C10 46 0 42 3 31Z"/></svg></span>`).join('')}<h1>죽은 소꿉친구가 돌아왔다.</h1><p class="hook-sub">다시 만날 수 있는 곳은 꿈속뿐.</p>${palm}<div class="ticket-pool" aria-hidden="true">${waves}${ladder}</div><a class="button admission-button ticket-button" href="#home">${buttonTicket()}입장하기 <span aria-hidden="true">→</span></a></div><p class="intro-quote">“끝나고<br>잠깐 보자.”</p></div></section>`;
