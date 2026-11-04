@@ -2631,3 +2631,22 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .intro-scene-dim{position:absolute;inset:0;background:var(--navy);opacity:.15;pointer-events:none}
 /* Keep the original escaped prose; the faint cyan band touches only glyph bottoms. */
 .opening-user{background:linear-gradient(transparent 64%,color-mix(in srgb,var(--cyan) 10%,transparent) 64% 92%,transparent 92%);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+/* Opening album: the letter remains selectable HTML on the existing artwork. */
+.opening-view .opening-scene{position:relative;isolation:isolate;width:100%;min-width:0;display:grid;grid-template-rows:auto 1fr auto;gap:16px;aspect-ratio:16/9;min-height:300px;padding:28px 5% 22px;overflow:hidden}
+.opening-view .opening-scene>img{position:absolute;z-index:-1;inset:0;width:100%;height:100%;aspect-ratio:auto;object-fit:cover;object-position:center}
+.opening-view .opening-album-strip{display:inline-flex;align-items:center;gap:8px;width:max-content;max-width:100%;margin:0;padding:3px 7px;background:var(--paper);color:var(--navy);font:400 24px/1.2 var(--hand);letter-spacing:normal}
+.opening-view .opening-album-to{justify-self:start}
+.opening-view .opening-album-to .wave-mark{width:46px;height:16px;flex:none}
+.opening-view .opening-album-message{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;min-width:0}
+.opening-view .opening-album-message .opening-album-strip{display:block;text-align:center}
+.opening-view .opening-album-message .opening-album-strip>span{display:inline-block}
+.opening-view .opening-album-sign{justify-self:end;transform:rotate(4deg);transform-origin:right bottom}
+.opening-view .opening-album-sign .smile-mark{position:static;width:30px;height:30px;flex:none;transform:none}
+@media(max-width:600px){
+ .opening-view .opening-scene{aspect-ratio:4/3;min-height:225px;gap:12px;padding:16px 12px 14px}
+ .opening-view .opening-album-strip{font-size:clamp(18px,4.8vw,22px);padding:3px 5px;gap:6px}
+ .opening-view .opening-album-to .wave-mark{width:34px;height:14px}
+ .opening-view .opening-album-message{gap:8px}
+ .opening-view .opening-album-sign .smile-mark{width:24px;height:24px}
+}
