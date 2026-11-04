@@ -2608,3 +2608,15 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .intro-ticket .ticket-pool .wave-mark{width:34px;height:14px}
  .intro-foreground .intro-quote{font-size:30px}
 }
+
+/* Approved C ornaments: intro-only vectors; ticket and scene geometry stay fixed. */
+.intro-palm-sticker{left:-34px;top:12px;width:110px;height:150px;transform:rotate(-5deg);filter:none;z-index:0}
+.intro-palm-mark{display:block;width:100%;height:100%;fill:var(--blue);stroke:none}
+.intro-pool-mark{position:absolute;right:0;bottom:0;display:block;width:128px;height:88px;overflow:visible;stroke:none}
+.intro-pool-water{fill:var(--cyan)}
+.intro-pool-ladder,.intro-pool-ripple{fill:none;stroke:var(--blue);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+@media(min-width:601px) and (max-width:1200px),(min-width:1201px) and (max-height:899px){.intro-palm-sticker{left:-25px;top:12px;width:80px;height:110px}.intro-pool-mark{width:96px;height:64px}}
+@media(max-width:600px){.intro-palm-sticker{left:-10px;top:3px;width:61px;height:84px}.intro-pool-mark{width:58px;height:49px}}
+@media(max-width:350px){.intro-palm-sticker{left:-8px;top:4px;width:53px;height:73px}.intro-pool-mark{width:44px;height:42px}}
+
+.intro-ticket .ticket-pool:before{display:none}
