@@ -2476,3 +2476,25 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 
 .world-view.modular-view .world-content.world-premise .prose>p:first-child{color:var(--ink);margin:0 0 8px}
 .modular-view .world-content .reading-row{display:block;gap:0}
+
+/* One source-sized scene: background and full-canvas cutout share every scale/crop.
+   Same-canvas replacement art only needs the asset changed, not these anchors. */
+.intro-backdrop{position:absolute;z-index:-2;inset:0;overflow:hidden;container-type:size;pointer-events:none}
+.intro-scene-plane{
+  --intro-character-left:23.44211596%;
+  --intro-character-top:28.03685642%;
+  --intro-character-width:78.74904415%;
+  position:absolute;left:50%;top:50%;width:max(100cqw,177.68331562cqh);
+  aspect-ratio:1672/941;transform:translate(-50%,-50%);overflow:hidden;
+}
+.intro-scene-plane>.intro-scene{position:absolute;z-index:auto;inset:0;width:100%;height:100%;object-fit:fill;object-position:center}
+.intro-character{position:absolute;left:var(--intro-character-left);top:var(--intro-character-top);width:var(--intro-character-width);max-width:none;height:auto;display:block}
+@media(max-width:850px){
+  .intro-scene-plane{left:62%;transform:translate(-62%,-50%)}
+}
+@media(max-width:600px){
+  /* The unchanged entry ticket comes first; the same scene reveals the face below it. */
+  .intro-view{--intro-mobile-height:1250px;min-height:var(--intro-mobile-height)}
+  .intro-scene-plane{left:78%;top:0;width:max(100cqw,177.68331562cqh,3109.45802335px);transform:translateX(-78%)}
+  .intro-quote{top:calc(var(--intro-mobile-height) - 220px);bottom:auto;left:8px;right:auto}
+}
