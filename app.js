@@ -439,11 +439,56 @@
     document.querySelectorAll('[data-route]').forEach(link=>{if(link.dataset.route===route)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
     document.querySelector('[data-route][aria-current=page]')?.scrollIntoView({block:'nearest',inline:'nearest'});
     updateMusic();
+    mountTrackTicker();
     window.scrollTo({top:0,behavior:'instant'});
     if(route==='guide'&&rawKey)requestAnimationFrame(()=>document.getElementById('guide-content').scrollIntoView({block:'start',behavior:'instant'}));
   }
 
   const music = {index:0, player:null, loading:null, pending:false, request:0, playing:false, repeatOne:false, volume:65, lastVolume:65, elapsed:0, duration:0, message:''};
+  const tickerMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const tickerHover=matchMedia('(hover: hover) and (pointer: fine)');
+  let trackTicker;
+  function syncTrackTicker(){
+    if(!trackTicker)return;
+    const {node,animation}=trackTicker;
+    const running=music.playing&&node.isConnected&&!document.hidden&&trackTicker.visible&&!tickerMotion.matches&&!trackTicker.hovered&&document.activeElement!==node;
+    if(animation){if(running)animation.play();else animation.pause();}
+  }
+  function measureTrackTicker(){
+    if(!trackTicker)return;
+    const {node}=trackTicker, text=node.querySelector('.track-title-text'), belt=node.querySelector('.track-title-belt');
+    if(!text)return;
+    const width=text.getBoundingClientRect().width, viewport=node.clientWidth;
+    const signature=`${text.textContent}|${width}|${viewport}|${tickerMotion.matches}`;
+    if(signature===trackTicker.signature)return;
+    trackTicker.signature=signature;
+    trackTicker.animation?.cancel();trackTicker.animation=null;node.scrollLeft=0;
+    const overflowing=width>viewport+1;
+    node.classList.toggle('is-overflowing',overflowing);
+    if(overflowing&&!tickerMotion.matches){
+      const distance=width+32, travel=distance/28*1000, hold=1400;
+      trackTicker.animation=belt.animate([
+        {transform:'translateX(0)',offset:0},
+        {transform:'translateX(0)',offset:hold/(travel+hold)},
+        {transform:`translateX(-${distance}px)`,offset:1}
+      ],{duration:travel+hold,iterations:Infinity,easing:'linear'});
+      syncTrackTicker();
+    }
+  }
+  function mountTrackTicker(){
+    trackTicker?.animation?.cancel();trackTicker?.resize.disconnect();trackTicker?.intersection.disconnect();trackTicker=null;
+    const node=document.getElementById('track-current');if(!node)return;
+    trackTicker={node,visible:true,hovered:false,animation:null,signature:''};
+    trackTicker.resize=new ResizeObserver(measureTrackTicker);trackTicker.resize.observe(node);
+    trackTicker.intersection=new IntersectionObserver(entries=>{if(trackTicker?.node!==node)return;trackTicker.visible=entries[0].isIntersecting;syncTrackTicker();});trackTicker.intersection.observe(node);
+    node.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&tickerHover.matches){trackTicker.hovered=true;syncTrackTicker();}});
+    node.addEventListener('pointerleave',()=>{trackTicker.hovered=false;syncTrackTicker();});
+    node.addEventListener('focus',syncTrackTicker);node.addEventListener('blur',syncTrackTicker);
+    measureTrackTicker();
+    document.fonts.ready.then(()=>{if(trackTicker?.node===node)measureTrackTicker();});
+  }
+  tickerMotion.addEventListener('change',measureTrackTicker);
+  document.addEventListener('visibilitychange',syncTrackTicker);
   function message(text='') { music.message=text;const node=document.getElementById('music-message');if(node){node.textContent=text;node.hidden=!text;} }
   function time(ms) { const seconds=Math.max(0,Math.floor(ms/1000));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`; }
   function updateMusic() {
@@ -457,7 +502,13 @@
       button.disabled=Boolean(music.loading)&&type==='toggle';
     });
     const original=document.querySelector('[data-original]');if(original){original.href=data.playlist[music.index].url;original.setAttribute('aria-label',title+' 원곡 페이지 열기');}
-    const current=document.getElementById('track-current');if(current)current.textContent=title;
+    const current=document.getElementById('track-current');
+    if(current&&current.dataset.title!==title){
+      current.dataset.title=title;current.setAttribute('aria-label',title);current.tabIndex=0;
+      current.innerHTML=`<span class="track-title-belt"><span class="track-title-text">${escape(title)}</span><span class="track-title-copy" aria-hidden="true">${escape(title)}</span></span>`;
+      measureTrackTicker();
+    }
+    syncTrackTicker();
     document.querySelectorAll('[data-track]').forEach(button=>{button.setAttribute('aria-pressed',Number(button.dataset.track)===music.index);});
     const elapsed=document.getElementById('elapsed');if(elapsed)elapsed.textContent=time(music.elapsed);
     const duration=document.getElementById('duration');if(duration)duration.textContent=time(music.duration);

@@ -2022,22 +2022,33 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .mature-view .opening-guide-part .prose>h3:first-child{margin-top:0}
 /* Approved B mixtape console: live controls within one blue plastic body. */
 .playlist-view.mature-view .playlist-layout{display:flex;flex-direction:column;gap:24px}
-.playlist-view.mature-view .mixtape-console{position:relative;display:grid;grid-template-columns:250px minmax(0,1fr);gap:16px;align-items:center;padding:16px 16px 42px;border:3px solid var(--navy);border-radius:32px;background:linear-gradient(var(--paper),var(--blue) 4px,var(--navy) 11px,var(--blue) 18px,var(--navy));box-shadow:inset 0 0 0 2px var(--paper),inset 0 -5px 7px var(--navy),0 3px 5px var(--blue);isolation:isolate}
+.playlist-view.mature-view .mixtape-console{position:relative;display:grid;grid-template-columns:290px minmax(0,1fr);gap:16px;align-items:center;padding:16px 16px 42px;border:3px solid var(--navy);border-radius:32px;background:linear-gradient(var(--paper),var(--blue) 4px,var(--navy) 11px,var(--blue) 18px,var(--navy));box-shadow:inset 0 0 0 2px var(--paper),inset 0 -5px 7px var(--navy),0 3px 5px var(--blue);isolation:isolate}
 .playlist-view .mixtape-console:before{content:'';position:absolute;z-index:-1;inset:9px 8px 33px;border:2px solid var(--blue);border-radius:23px 23px 16px 16px;background:linear-gradient(135deg,var(--paper),var(--cyan) 8%,var(--cyan) 88%,var(--paper));box-shadow:inset 0 2px 3px var(--paper),0 2px 3px var(--navy);pointer-events:none}
-.playlist-view .mixtape-console .deck-window{width:250px;padding:3px;border:2px solid var(--blue);border-radius:16px;background:var(--navy);box-shadow:inset 0 2px 2px var(--paper),0 1px 2px var(--paper);overflow:hidden}
+.playlist-view .mixtape-console .deck-window{width:100%;padding:3px;border:2px solid var(--blue);border-radius:16px;background:var(--navy);box-shadow:inset 0 2px 2px var(--paper),0 1px 2px var(--paper);overflow:hidden}
 .playlist-view .mixtape-console .deck-window:before{display:none}
 .playlist-view .mixtape-console .cassette-art{width:100%;overflow:hidden;border-radius:10px}
-.playlist-view .console-controls{display:grid;gap:10px;min-width:0}
-.playlist-view .console-display{padding:8px 10px 4px;border:1px solid var(--blue);border-radius:15px;background:var(--cyan);box-shadow:inset 0 2px 3px var(--blue),0 1px 0 var(--paper)}
-.playlist-view .mixtape-console .track-current{font:600 16px/1.4 var(--body);color:var(--navy);min-height:45px;margin:0;overflow-wrap:anywhere}
+.playlist-view .console-controls{display:grid;gap:8px;min-width:0}
+.playlist-view .console-display{padding:8px 10px 6px;border:1px solid var(--blue);border-radius:15px;background:var(--cyan);box-shadow:inset 0 2px 3px var(--blue),0 1px 0 var(--paper)}
+.playlist-view .mixtape-console .track-current{display:flex;align-items:center;min-width:0;height:36px;min-height:36px;margin:0 0 4px;font:600 16px/1.4 var(--body);color:var(--navy);overflow:hidden;white-space:nowrap;overflow-wrap:normal}
+.playlist-view .mixtape-console .track-current:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.playlist-view .track-title-belt{display:flex;align-items:center;flex:none;width:max-content;gap:32px}
+.playlist-view .track-title-text,.playlist-view .track-title-copy{flex:none;white-space:nowrap}
+.playlist-view .track-title-copy{display:none}
+.playlist-view .is-overflowing .track-title-copy{display:block}
+.playlist-view .mixtape-console .cassette-art-title{font:400 18px/1 Bangers,system-ui,sans-serif;top:22%;}
+@media(prefers-reduced-motion:reduce){
+ .playlist-view .mixtape-console .track-current{overflow-x:auto;scrollbar-width:none}
+ .playlist-view .track-current::-webkit-scrollbar{display:none}
+ .playlist-view .is-overflowing .track-title-copy{display:none}
+}
 .playlist-view .mixtape-console .range-row{margin:0;gap:8px;color:var(--navy)}
 .playlist-view .mixtape-console .seek-time{font:400 12px/1.4 var(--body);font-variant-numeric:tabular-nums}
 .playlist-view .mixtape-console .range-row input{height:32px;accent-color:var(--blue)}
 .playlist-view .mixtape-console .player-controls{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:8px;margin:0}
-.playlist-view .mixtape-console .player-controls button{display:flex;align-items:center;justify-content:center;width:100%;height:54px;min-width:44px;min-height:44px;padding:8px;border:2px solid var(--blue);border-radius:15px;background:var(--paper);color:var(--blue);box-shadow:inset 0 2px 1px var(--paper),inset 0 -3px 2px var(--cyan),0 3px 2px var(--navy);transform:none}
-.playlist-view .mixtape-console .player-controls button[data-music=toggle]{width:100%;height:54px;background:var(--lime);color:var(--navy)}
-.playlist-view .mixtape-console .player-controls button svg{width:27px;height:27px;stroke-width:2}
-.playlist-view .mixtape-console .player-controls button[data-music=toggle] svg{width:30px;height:30px}
+.playlist-view .mixtape-console .player-controls button{display:flex;align-items:center;justify-content:center;width:100%;height:46px;min-width:44px;min-height:44px;padding:6px;border:2px solid var(--blue);border-radius:12px;background:var(--paper);color:var(--blue);box-shadow:inset 0 2px 1px var(--paper),inset 0 -3px 2px var(--cyan),0 3px 2px var(--navy);transform:none}
+.playlist-view .mixtape-console .player-controls button[data-music=toggle]{width:100%;height:46px;background:var(--lime);color:var(--navy)}
+.playlist-view .mixtape-console .player-controls button svg{width:24px;height:24px;stroke-width:2}
+.playlist-view .mixtape-console .player-controls button[data-music=toggle] svg{width:26px;height:26px}
 .playlist-view .mixtape-console .player-controls button[aria-pressed=true]{background:var(--blue);color:var(--paper);box-shadow:inset 0 2px 3px var(--navy),0 1px 0 var(--paper)}
 .playlist-view .mixtape-console .player-controls button:hover{border-color:var(--navy);box-shadow:inset 0 0 0 2px var(--cyan),0 3px 2px var(--navy)}
 .playlist-view .mixtape-console .player-controls button:active,.playlist-view .mixtape-console .player-controls button.b-touch-pressed{box-shadow:inset 0 3px 4px var(--blue);border-color:var(--navy)}
@@ -2070,7 +2081,7 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .playlist-view .mixtape-console .player-controls{gap:1px}
  .playlist-view .mixtape-console .player-controls button{border-radius:10px}
  .playlist-view .mixtape-console .console-display{padding-inline:7px}
- .playlist-view .mixtape-console .track-current{min-height:68px}
+ .playlist-view .mixtape-console .track-current{min-height:36px}
 }
 
 /* 2026-11-03 requested readable navigation and BR-only character switch. */
@@ -2090,8 +2101,8 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .site-header .character-menu a:hover,.site-header .character-menu a:active{background:var(--blue);color:var(--paper)}
 .site-header .characters :is(summary,a):focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .site-header .characters>summary:active{filter:brightness(.92)}
-.playlist-view .mixtape-console .player-controls [data-original]{display:flex;align-items:center;justify-content:center;width:100%;height:54px;min-width:44px;min-height:44px;padding:8px;border:2px solid var(--blue);border-radius:15px;background:var(--paper);color:var(--blue);box-shadow:inset 0 2px 1px var(--paper),inset 0 -3px 2px var(--cyan),0 3px 2px var(--navy);text-decoration:none}
-.playlist-view .mixtape-console .player-controls [data-original] svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.playlist-view .mixtape-console .player-controls [data-original]{display:flex;align-items:center;justify-content:center;width:100%;height:46px;min-width:44px;min-height:44px;padding:6px;border:2px solid var(--blue);border-radius:12px;background:var(--paper);color:var(--blue);box-shadow:inset 0 2px 1px var(--paper),inset 0 -3px 2px var(--cyan),0 3px 2px var(--navy);text-decoration:none}
+.playlist-view .mixtape-console .player-controls [data-original] svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .playlist-view .mixtape-console .player-controls [data-original]:hover{border-color:var(--navy);box-shadow:inset 0 0 0 2px var(--cyan),0 3px 2px var(--navy)}
 .playlist-view .mixtape-console .player-controls [data-original]:active,.playlist-view .mixtape-console .player-controls [data-original].b-touch-pressed{box-shadow:inset 0 3px 4px var(--blue);border-color:var(--navy)}
 .playlist-view .mixtape-console [data-original]:focus-visible{outline:2px solid var(--navy);outline-offset:3px}
