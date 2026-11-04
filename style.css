@@ -2502,83 +2502,102 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 /* Straight-cut paper layers use the same source coordinates as the portrait. */
 .intro-character-backing{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;stroke:none}
 
-/* Approved density v2: live type, three bold motifs, two broad wave groups. */
-.intro-ticket{left:5vw;top:-24px;width:460px;padding:28px;transform-origin:center;transform:rotate(-4deg);display:flex;flex-direction:column;align-items:stretch;z-index:1}
-.intro-ticket>.ticket-frame{filter:none;stroke:var(--ink);stroke-width:1.5}
-.intro-ticket .ticket-title{font-size:110px;line-height:.87;height:220px;padding:0 0 30px 12px;align-items:flex-start;transform:rotate(-5deg);text-shadow:2px 3px 0 var(--cyan)}
+/* Approved centered ticket: B composition with quiet handwritten quote. */
+.intro-ticket{left:35vw;top:0;width:clamp(440px,calc(26vw + 180px),700px);padding:38px 44px 40px;transform-origin:center;transform:translateX(-50%) rotate(-3deg);display:flex;flex-direction:column;align-items:stretch;z-index:1}
+.intro-ticket>.intro-ticket-frame{filter:none;stroke:var(--ink);stroke-width:1.5;overflow:visible}
+.intro-ticket-frame .intro-ticket-backing{fill:var(--blue);stroke:none}
+.intro-ticket-frame .intro-ticket-paper{fill:url(#intro-paper-texture)}
+.intro-ticket .ticket-title{font-size:125px;line-height:.9;height:240px;padding:0 0 16px 12px;align-items:flex-start;transform:rotate(-3deg);text-shadow:2px 3px 0 var(--cyan)}
 .intro-ticket .ticket-title>span:first-child{transform:skewX(-7deg) scaleX(1.08);transform-origin:left center}
 .intro-ticket .ticket-title>span:nth-child(2){padding-left:0;transform:skewX(-7deg) scaleX(1.2);transform-origin:left center}
-.intro-ticket .ticket-title .star-mark{width:82px;height:82px;right:-2px;top:56px;filter:none}
-.intro-ticket .intro-wave-1{left:auto;right:6px;top:211px;bottom:auto;width:158px;height:43px;transform:rotate(-3deg)}
+.intro-ticket .ticket-title .star-mark{width:82px;height:82px;right:14px;top:58px;filter:none}
+.intro-ticket .intro-wave-1{left:auto;right:28px;top:241px;bottom:auto;width:170px;height:43px;transform:rotate(-3deg)}
 .intro-ticket .intro-wave-1 .wave-mark{width:100%;height:100%}
-.intro-ticket .name-ticket{width:282px;min-height:37px;padding:4px 12px;margin:20px 0 0 auto;font-size:28px;line-height:1;transform:rotate(-1deg);box-shadow:none}
-.intro-ticket .intro-story{margin:24px 0 0 107px;position:relative;z-index:1}
-.intro-ticket .intro-story h1{font-size:18px;line-height:1.6;font-weight:600;text-align:left;margin:0;white-space:nowrap}
-.intro-ticket .intro-story .hook-sub{font-size:18px;line-height:1.6;font-weight:600;text-align:left;margin:0;white-space:nowrap}
-.intro-ticket.hero-ticket>.palm-mark{left:12px;top:auto;bottom:104px;width:122px;height:166px;transform:rotate(-5deg)}
-.intro-ticket .ticket-pool{position:absolute;right:17px;bottom:28px;width:118px;height:122px;margin:0}
+.intro-ticket .name-ticket{width:330px;min-height:40px;padding:4px 12px;margin:20px 0 0 8px;font-size:32px;line-height:1;transform:rotate(-1deg);box-shadow:none}
+.intro-ticket .intro-story{margin:24px 0 0 8px;position:relative;z-index:1}
+.intro-ticket .intro-story h1,.intro-ticket .intro-story .hook-sub{font-size:20px;line-height:1.6;font-weight:600;text-align:left;margin:0;white-space:nowrap}
+.intro-ticket.hero-ticket>.palm-mark{left:auto;right:37px;top:auto;bottom:155px;width:96px;height:132px;transform:rotate(5deg)}
+.intro-ticket .ticket-pool{position:absolute;right:32px;bottom:30px;width:118px;height:122px;margin:0}
 .intro-ticket .ticket-pool .ladder-mark{width:94px;height:112px;right:8px;bottom:8px;filter:none}
 .intro-ticket .ticket-pool .wave-mark{width:118px;height:38px;left:0;bottom:0}
-.intro-ticket .admission-button{width:268px;min-height:60px;margin:52px 0 0;font-size:30px;line-height:1;padding:12px 14px;gap:12px}
+.intro-ticket .admission-button{width:300px;min-height:62px;margin:28px 0 0 8px;font-size:30px;line-height:1;padding:12px 14px;gap:12px}
 .intro-ticket .admission-button>.button-edge{filter:none;stroke:var(--ink);stroke-width:1.5}
-@media(min-width:1450px) and (max-width:1699px){
-  .intro-ticket{top:-40px;width:490px;padding:30px}
-  .intro-ticket .ticket-title{font-size:116px;height:232px}
-  .intro-ticket .ticket-title .star-mark{width:88px;height:88px}
-  .intro-ticket .intro-wave-1{top:224px;width:166px;right:12px}
-  .intro-ticket .name-ticket{width:298px;font-size:30px}
-  .intro-ticket .intro-story{margin-left:116px}
-  .intro-ticket .intro-story h1,.intro-ticket .intro-story .hook-sub{font-size:19px}
-  .intro-ticket.hero-ticket>.palm-mark{width:130px;height:174px}
-  .intro-ticket .admission-button{width:284px;min-height:62px}
+.intro-seam-sticker{position:absolute;left:-16px;top:22px;width:46px;height:46px;transform:rotate(-16deg);filter:drop-shadow(3px 3px 0 var(--blue));pointer-events:none}
+.intro-seam-sticker>.star-mark{width:100%;height:100%;stroke:var(--paper);stroke-width:5;paint-order:stroke fill}
+.intro-quote{width:240px;min-height:112px;padding:15px 20px;margin:0;right:10%;bottom:24px;left:auto;top:auto;display:grid;place-items:center;color:var(--blue);font-size:38px;line-height:1.05;transform:rotate(3deg);text-shadow:none;z-index:2;isolation:isolate;text-align:center}
+.intro-quote-paper{position:absolute;z-index:-1;inset:0;width:100%;height:100%;overflow:visible;stroke:var(--ink);stroke-width:1.2}
+.intro-quote-paper .quote-backing{fill:var(--blue);stroke:none}
+.intro-quote-paper .quote-surface{fill:var(--paper)}
+@media(min-width:1900px){
+ .intro-ticket{top:-32px}
 }
-@media(min-width:1700px){
-  .intro-ticket{left:5vw;width:500px;padding:32px}
-  .intro-ticket .ticket-title{font-size:118px;height:236px}
-  .intro-ticket .ticket-title .star-mark{width:88px;height:88px}
-  .intro-ticket .intro-wave-1{top:230px;width:170px;right:14px}
-  .intro-ticket .name-ticket{width:300px;font-size:30px}
-  .intro-ticket .intro-story{margin-left:116px}
-  .intro-ticket .intro-story h1,.intro-ticket .intro-story .hook-sub{font-size:19px}
-  .intro-ticket.hero-ticket>.palm-mark{width:136px;height:180px;bottom:108px}
-  .intro-ticket .admission-button{width:286px;min-height:64px}
+@media(min-width:1201px) and (max-width:1699px){
+ .intro-ticket{padding:34px 34px 36px}
+ .intro-ticket .ticket-title{font-size:116px;height:228px}
+ .intro-ticket .ticket-title .star-mark{width:70px;height:70px;right:0}
+ .intro-ticket .intro-wave-1{top:228px;right:18px;width:145px}
+ .intro-ticket .name-ticket{width:310px;font-size:30px}
+ .intro-ticket .intro-story h1,.intro-ticket .intro-story .hook-sub{font-size:18px}
+ .intro-ticket.hero-ticket>.palm-mark{right:26px;width:72px;height:100px;bottom:153px}
+ .intro-ticket .ticket-pool{right:23px;width:98px;height:110px}
+ .intro-ticket .ticket-pool .wave-mark{width:98px}
+ .intro-ticket .ticket-pool .ladder-mark{width:80px;height:100px}
+ .intro-ticket .admission-button{width:280px;min-height:60px}
+ .intro-quote{right:7%;bottom:8px}
 }
 @media(min-width:601px) and (max-width:1200px){
-  .intro-ticket{left:4vw;width:420px;padding:26px}
-  .intro-ticket .ticket-title{font-size:100px;height:204px}
-  .intro-ticket .ticket-title .star-mark{width:74px;height:74px;right:-4px;top:50px}
-  .intro-ticket .intro-wave-1{top:196px;width:144px;right:8px}
-  .intro-ticket .name-ticket{width:265px;font-size:26px}
-  .intro-ticket .intro-story{margin-left:88px}
-  .intro-ticket .intro-story h1,.intro-ticket .intro-story .hook-sub{font-size:17px}
-  .intro-ticket.hero-ticket>.palm-mark{width:104px;height:148px;left:8px}
-  .intro-ticket .admission-button{width:240px;min-height:58px;font-size:28px}
-  .intro-ticket .ticket-pool{right:12px;width:106px;height:116px}
-  .intro-ticket .ticket-pool .wave-mark{width:106px}
+ .intro-ticket{left:36.5vw;min-width:0;width:clamp(390px,calc(26vw + 180px),492px);padding:30px 28px 32px}
+ .intro-ticket .ticket-title{font-size:100px;height:200px;padding-left:8px}
+ .intro-ticket .ticket-title .star-mark{width:62px;height:62px;right:-1px;top:47px}
+ .intro-ticket .intro-wave-1{top:200px;right:18px;width:114px;height:34px}
+ .intro-ticket .name-ticket{width:274px;font-size:28px;margin-left:4px}
+ .intro-ticket .intro-story{margin-left:4px}
+ .intro-ticket .intro-story h1,.intro-ticket .intro-story .hook-sub{font-size:18px}
+ .intro-ticket.hero-ticket>.palm-mark{right:22px;bottom:137px;width:60px;height:84px}
+ .intro-ticket .ticket-pool{right:17px;bottom:28px;width:85px;height:94px}
+ .intro-ticket .ticket-pool .wave-mark{width:85px;height:29px}
+ .intro-ticket .ticket-pool .ladder-mark{width:68px;height:86px;right:5px}
+ .intro-ticket .admission-button{width:240px;min-height:58px;font-size:28px;margin-left:4px}
+ .intro-quote{width:220px;min-height:103px;font-size:35px;right:3%;bottom:-50px}
+}
+@media(min-width:601px) and (max-width:850px){
+ .intro-ticket{left:max(220px,31vw);width:390px;padding-inline:24px}
+ .intro-ticket .ticket-title{font-size:92px;height:188px}
+ .intro-ticket .ticket-title .star-mark{width:55px;height:55px;right:-5px}
+ .intro-ticket .intro-wave-1{top:191px;width:100px}
+ .intro-ticket .name-ticket{width:260px;font-size:27px}
+ .intro-ticket.hero-ticket>.palm-mark{width:49px;height:69px;right:23px}
+ .intro-ticket .ticket-pool{width:73px;right:17px}
+ .intro-ticket .ticket-pool .wave-mark{width:73px}
+ .intro-ticket .admission-button{width:226px}
+ .intro-quote{right:1%;bottom:-95px}
 }
 @media(max-width:600px){
-  .intro-ticket{left:50%;top:0;width:100%;padding:24px 20px;transform:translateX(-50%) rotate(-4deg)}
-  .intro-ticket .ticket-title{font-size:90px;height:192px;padding-left:9px}
-  .intro-ticket .ticket-title .star-mark{width:65px;height:65px;right:-4px;top:48px}
-  .intro-ticket .intro-wave-1{top:181px;width:132px;height:37px;right:13px}
-  .intro-ticket .name-ticket{width:240px;min-height:34px;font-size:25px;margin-top:20px}
-  .intro-ticket .intro-story{margin:24px 0 0 0;align-self:center}
-  .intro-ticket .intro-story h1,.intro-ticket .intro-story .hook-sub{font-size:16px;line-height:1.6;text-align:center}
-  .intro-ticket.hero-ticket>.palm-mark{left:13px;bottom:85px;width:76px;height:103px;transform:rotate(-5deg)}
-  .intro-ticket .admission-button{width:220px;min-height:52px;font-size:25px;margin-top:120px;align-self:center}
-  .intro-ticket .ticket-pool{width:74px;height:86px;right:8px;bottom:85px}
-  .intro-ticket .ticket-pool .ladder-mark{width:66px;height:78px;right:0;bottom:6px}
-  .intro-ticket .ticket-pool .wave-mark{width:74px;height:26px}
+ .intro-view{padding:54px 20px 130px}
+ .intro-ticket{left:50%;top:0;width:calc(100% - 4px);padding:28px 22px 30px;transform:translateX(-50%) rotate(-3deg)}
+ .intro-ticket .ticket-title{font-size:88px;height:178px;padding:0 0 12px 6px}
+ .intro-ticket .ticket-title .star-mark{width:52px;height:52px;right:-2px;top:42px}
+ .intro-ticket .intro-wave-1{top:180px;width:112px;height:32px;right:16px}
+ .intro-ticket .name-ticket{width:256px;min-height:35px;font-size:26px;margin:20px 0 0;align-self:center}
+ .intro-ticket .intro-story{margin:24px 0 0;align-self:center}
+ .intro-ticket .intro-story h1,.intro-ticket .intro-story .hook-sub{font-size:16px;line-height:1.6;text-align:center}
+ .intro-ticket.hero-ticket>.palm-mark{left:20px;right:auto;bottom:94px;width:67px;height:90px;transform:rotate(-5deg)}
+ .intro-ticket .ticket-pool{width:78px;height:86px;right:18px;bottom:94px}
+ .intro-ticket .ticket-pool .ladder-mark{width:66px;height:78px;right:0;bottom:6px}
+ .intro-ticket .ticket-pool .wave-mark{width:78px;height:26px}
+ .intro-ticket .admission-button{width:226px;min-height:52px;font-size:25px;margin:120px 0 0;align-self:center}
+ .intro-seam-sticker{width:36px;height:36px;left:-6px;top:12px}
+ .intro-quote{width:220px;min-height:104px;font-size:35px;top:940px;bottom:auto;left:5px;right:auto}
 }
 @media(max-width:350px){
-  .intro-ticket{padding:22px 16px}
-  .intro-ticket .ticket-title{font-size:73px;height:160px;padding-left:6px}
-  .intro-ticket .ticket-title .star-mark{width:55px;height:55px;top:37px}
-  .intro-ticket .intro-wave-1{top:151px;width:113px;height:32px;right:12px}
-  .intro-ticket .name-ticket{width:212px;font-size:23px;margin-top:20px}
-  .intro-ticket.hero-ticket>.palm-mark{width:65px;height:88px;left:8px;bottom:85px}
-  .intro-ticket .ticket-pool{right:6px;width:65px;height:80px;bottom:85px}
-  .intro-ticket .ticket-pool .ladder-mark{width:60px;height:72px}
-  .intro-ticket .ticket-pool .wave-mark{width:65px}
-  .intro-ticket .admission-button{width:204px;min-height:50px;font-size:24px;margin-top:106px}
+ .intro-ticket{padding:26px 18px 28px}
+ .intro-ticket .ticket-title{font-size:72px;height:150px;padding-left:4px}
+ .intro-ticket .ticket-title .star-mark{width:44px;height:44px;right:-6px;top:32px}
+ .intro-ticket .intro-wave-1{top:152px;width:96px;height:28px;right:13px}
+ .intro-ticket .name-ticket{width:222px;font-size:24px}
+ .intro-ticket.hero-ticket>.palm-mark{left:16px;width:57px;height:78px}
+ .intro-ticket .ticket-pool{right:13px;width:66px;height:80px}
+ .intro-ticket .ticket-pool .ladder-mark{width:60px;height:72px}
+ .intro-ticket .ticket-pool .wave-mark{width:66px}
+ .intro-ticket .admission-button{width:204px;min-height:50px;font-size:24px;margin-top:110px}
 }
