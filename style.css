@@ -2542,7 +2542,7 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .intro-ticket{left:clamp(0px,calc((100vw - 1200px)*.25),180px)}
 }
 @media(min-width:601px) and (max-width:1200px){
- .intro-view{padding:80px 5vw 65px}
+ .intro-view{padding:clamp(80px,12svh,180px) 5vw 65px}
  .intro-ticket{width:480px;padding:25px 28px 28px;column-gap:14px;row-gap:8px}
  .intro-ticket .ticket-title{font-size:76px;height:132px}
  .intro-ticket .ticket-title .star-mark{width:36px;height:36px;top:-3px}
@@ -2557,7 +2557,7 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .intro-foreground .intro-quote{font-size:35px}
 }
 @media(min-width:601px) and (max-width:850px){
- .intro-view{padding-top:clamp(18px,calc(18px + (100vw - 700px)*.107),34px)}
+ .intro-view{padding-top:clamp(18px,calc(18px + (100svh - 900px)*.2 + (100vw - 700px)*.107),180px)}
  .intro-ticket{--intro-title-size:clamp(58px,calc(58px + (100vw - 700px)*.08),70px);width:clamp(390px,calc(390px + (100vw - 700px)*.4),450px);padding:22px 24px}
  .intro-ticket .ticket-title{font-size:var(--intro-title-size);height:calc(var(--intro-title-size)*1.74)}
  .intro-ticket .name-ticket{font-size:clamp(22px,calc(22px + (100vw - 700px)/150),23px)}
