@@ -92,17 +92,33 @@
     close();
     return `<div class="prose">${html}</div>`;
   }
+  // Semantic line icons share the same cobalt heading role across reading renderers.
+  const subjectIcon = title => {
+    const t=String(title).replace(/<[^>]*>/g,'');
+    const path=/사별|전하기/.test(t)?'<rect x="2" y="4" width="20" height="16"/><path d="m2 5 10 8L22 5M2 20l7-8m13 8-7-8"/>':/사라질/.test(t)?'<circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3Z"/>':/작품/.test(t)?'<path d="M12 5C7 2 2 4 2 4v17s5-2 10 1c5-3 10-1 10-1V4s-5-2-10 1Zm0 0v17"/>':/성인/.test(t)?'<path d="M12 22 3 13A6 6 0 0 1 12 5a6 6 0 0 1 9 8Z"/>':/다음 꿈/.test(t)?'<rect x="5" y="2" width="14" height="20" rx="1"/><path d="M10 19h4"/>':/장소|무대|공간|워터파크/.test(t)?'<path d="M12 22S4 14 4 9a8 8 0 1 1 16 0c0 5-8 13-8 13Z"/><circle cx="12" cy="9" r="2.5"/>':/사람|친구|브렌든|모습|이름/.test(t)?'<circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3Z"/>':/꿈|시간|깨어/.test(t)?'<path d="M20 15A9 9 0 0 1 9 3a9 9 0 1 0 11 12Z"/>':/지침|설정|모델|출력|상태|명령/.test(t)?'<rect x="5" y="2" width="14" height="20" rx="1"/><path d="M9 6h6M9 10h6M9 14h4M10 19h4"/>':/이야기|흔적|기억|요약|소재/.test(t)?'<path d="M12 5C7 2 2 4 2 4v17s5-2 10 1c5-3 10-1 10-1V4s-5-2-10 1Zm0 0v17"/>':'<path d="M21 11a9 8 0 0 1-9 8H6l-4 3 1-7a8 8 0 1 1 18-4Z"/>';
+    return '<svg class="subject-icon" viewBox="0 0 24 24" aria-hidden="true">'+path+'</svg>';
+  };
+  const subjectLabel = title => subjectIcon(title)+'<span>'+title+'</span>';
+  const menuRail = (html,kind) => '<div class="menu-rail '+kind+'"><button type="button" class="rail-step" data-rail-step="-1" aria-label="이전 항목"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>'+html+'<button type="button" class="rail-step" data-rail-step="1" aria-label="다음 항목"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>';
+  function syncMenuRails(reveal=false) {
+    main.querySelectorAll('.menu-rail').forEach(shell=>{
+      const rail=shell.children[1],buttons=shell.querySelectorAll('.rail-step'),active=rail.querySelector('[aria-selected="true"],[aria-current="true"]');
+      if(reveal&&active){const a=active.getBoundingClientRect(),r=rail.getBoundingClientRect();if(a.left<r.left)rail.scrollLeft-=r.left-a.left;else if(a.right>r.right)rail.scrollLeft+=a.right-r.right;}
+      buttons[0].disabled=rail.scrollLeft<=1;buttons[1].disabled=rail.scrollLeft+rail.clientWidth>=rail.scrollWidth-1;
+    });
+  }
+  main.addEventListener('scroll',()=>syncMenuRails(),true);
   // One label and its continuous body form a row, rather than a card per sentence.
   function readingRows(html) {
     return html.replace(/<h3>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h3>|<\/div>$)/g,
-      (_, title, body) => `<section class="reading-row"><h4>${title}</h4><div class="reading-value">${body}</div></section>`);
+      (_, title, body) => `<section class="reading-row"><h4>${subjectLabel(title)}</h4><div class="reading-value">${body}</div></section>`);
   }
   const readingProse = text => readingRows(prose(text));
   const copyUnit = (text, title, action='COPY') => `<div class="copy-unit"><pre>${escape(text)}</pre><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(text)}" aria-label="${escape(title)} 복사">${escape(action)}</button></div></div>`;
 
   // Guide roles follow the meaning of each item; shared profile/world prose stays unchanged.
   const guideDocument = html => `<div class="guide-document">${html}</div>`;
-  const guideSection = (title, body, level=3) => `<section class="guide-section"><h${level}>${linkify(label(title.replace(/^🔗\s*/,'')))}</h${level}>${body}</section>`;
+  const guideSection = (title, body, level=3) => `<section class="guide-section"><h${level}>${subjectLabel(linkify(label(title.replace(/^🔗\s*/,''))))}</h${level}>${body}</section>`;
   const guideText = text => text.split(/((?:하단\s*)?\[\s*⭐?\s*(?:모델 추천|출력 가이던스)\s*\]|플레이 팁(?=을 참고))/g).map(part=>{
     const reference=part.match(/^(?:하단\s*)?\[\s*⭐?\s*(모델 추천|출력 가이던스)\s*\]$|^(플레이 팁)$/);
     const key=reference?.[1]||reference?.[2];
@@ -112,7 +128,7 @@
   const guideNote = text => `<p class="guide-note">${guideText(text)}</p>`;
   const guideList = lines => `<ul class="guide-list">${lines.map(line=>`<li>${guideText(line)}</li>`).join('')}</ul>`;
   function guideRows(rows, kind='settings') {
-    return `<dl class="guide-rows guide-${kind}">${rows.map(row=>`<div class="guide-row"><dt>${guideText(row.term)}${row.separator?`<span class="guide-separator">${escape(row.separator)}</span>`:''}</dt><dd><p>${guideText(row.value)}</p>${(row.notes||[]).map(guideNote).join('')}</dd></div>`).join('')}</dl>`;
+    return `<dl class="guide-rows guide-${kind}">${rows.map(row=>`<div class="guide-row"><dt>${subjectLabel(guideText(row.term))}</dt><dd><p>${guideText(row.value)}</p>${(row.notes||[]).map(guideNote).join('')}</dd></div>`).join('')}</dl>`;
   }
   function guideBlocks(text, nested=false) {
     const lines=text.split('\n').filter(line=>line.trim());
@@ -291,7 +307,7 @@
     return readingRows(`<div class="prose">${lines.map((line,i)=>`<h3>${escape(noteHeadings[key][i])}</h3><ul><li>${linkify(line.slice(2))}</li></ul>`).join('')}</div>`);
   }
   function world() {
-    return `<section class="view world-view mature-view modular-view"><div class="world-scenery" aria-hidden="true">${palm}${palm}${palm}${palm}${worldSurf}</div><header class="world-hero section-heading">${flatHeaderDecor('world')}<svg class="world-title-rays" viewBox="0 0 420 160" aria-hidden="true"><path d="m128 7 6-8m-4 15 9-4M0 81l8-7m-7 16 5-5"/></svg>${palm}<span class="world-ticket" aria-hidden="true">${ticketFrame('lime','row')}WORLD</span><h1 class="scrap-title"><span class="scrap-title-line">꿈의 워터파크</span></h1><span class="world-english" aria-hidden="true">Dream Waterpark</span><span class="world-title-wave" aria-hidden="true">${worldWaves}</span>${worldWaves}</header><div class="world-brochure"><section class="world-map-paper">${worldPaper('map')}<div class="world-backsheet" aria-hidden="true"><span>FIRST DREAM</span>${palm}</div><div class="native-map"><img class="map-art" src="assets/waterpark-map.png" alt="입구, 오락실, 푸드코트, 파도풀, 락커룸과 직원 복도로 구성된 워터파크 안내도" width="1536" height="1024">${places.map((place,i)=>`<details class="map-place" name="world-place" style="--x:${place.x}%;--y:${place.y}%;--slot:${i+1};--mobile-slot:${i%3+1};--mobile-row:${Math.floor(i/3)+2}"><summary class="place-summary" aria-label="${place.name}" aria-controls="place-info-${i}"><span class="map-pin" aria-hidden="true"><span class="map-pin-tag${i===4?' map-pin-ticket':''}">${i===4?ticketFrame('paper','row'):''}${pin}<span class="map-pin-name">${place.name}</span><span class="map-pin-number">${i+1}</span></span></span><span class="place-list-label" aria-hidden="true">${ticketFrame('paper','row')}<b class="place-number">${i+1}</b><span>${place.name}</span><span class="place-chevron">›</span></span></summary><div id="place-info-${i}" class="place-inline"><h3>${pin}${place.name}</h3><p>${place.text}</p></div></details>`).join('')}</div><div class="world-map-footer" aria-hidden="true"><span class="world-map-signature">Our Summer<br>Never Ends.</span>${worldWaves}</div><span class="fold-corner" aria-hidden="true"></span></section><section class="world-reading">${worldPaper('reading')}<div class="tab-row" role="tablist" aria-label="세계관 항목">${worldKeys.map((name,i)=>`<button type="button" role="tab" id="world-tab-${i}" data-world="${i}" aria-selected="${worldTab===i}" aria-controls="world-panel">${ticketFrame(worldTab===i?'blue':'paper','row')}<span>${name}</span></button>`).join('')}</div><div class="world-reading-columns"><div class="world-copy"><div class="world-content${worldTab===0?' world-premise':''}" id="world-panel" role="tabpanel" aria-labelledby="world-tab-${worldTab}">${readingProse(sections[worldKeys[worldTab]])}${palm}</div><blockquote class="world-summer-note">Our Summer<br>Never Ends.</blockquote></div><aside class="world-context"><div class="world-pool-memento">${poolPhoto('world-pool-photo').replace('Our Summer<br>Never Ends.',places[4].name+waves)}${star}</div>${worldWaves}</aside></div><section class="world-notes"><h2>워터파크에 남은 이야기</h2><div class="world-note-tabs" role="tablist" aria-label="세계관 상세">${noteKeys.map((key,i)=>`<button type="button" role="tab" id="note-tab-${i}" data-note="${i}" aria-selected="${noteTab===i}" aria-controls="note-panel">${key}</button>`).join('')}</div><div id="note-panel" role="tabpanel" aria-labelledby="note-tab-${noteTab}">${worldNotes(noteKeys[noteTab])}</div></section><span class="fold-corner" aria-hidden="true"></span></section></div></section>`;
+    return `<section class="view world-view mature-view modular-view"><div class="world-scenery" aria-hidden="true">${palm}${palm}${palm}${palm}${worldSurf}</div><header class="world-hero section-heading">${flatHeaderDecor('world')}<svg class="world-title-rays" viewBox="0 0 420 160" aria-hidden="true"><path d="m128 7 6-8m-4 15 9-4M0 81l8-7m-7 16 5-5"/></svg>${palm}<span class="world-ticket" aria-hidden="true">${ticketFrame('lime','row')}WORLD</span><h1 class="scrap-title"><span class="scrap-title-line">꿈의 워터파크</span></h1><span class="world-english" aria-hidden="true">Dream Waterpark</span><span class="world-title-wave" aria-hidden="true">${worldWaves}</span>${worldWaves}</header><div class="world-brochure"><section class="world-map-paper">${worldPaper('map')}<div class="world-backsheet" aria-hidden="true"><span>FIRST DREAM</span>${palm}</div><div class="native-map"><img class="map-art" src="assets/waterpark-map.png" alt="입구, 오락실, 푸드코트, 파도풀, 락커룸과 직원 복도로 구성된 워터파크 안내도" width="1536" height="1024">${places.map((place,i)=>`<details class="map-place" name="world-place" style="--x:${place.x}%;--y:${place.y}%;--slot:${i+1};--mobile-slot:${i%3+1};--mobile-row:${Math.floor(i/3)+2}"><summary class="place-summary" aria-label="${place.name}" aria-controls="place-info-${i}"><span class="map-pin" aria-hidden="true"><span class="map-pin-tag${i===4?' map-pin-ticket':''}">${i===4?ticketFrame('paper','row'):''}${pin}<span class="map-pin-name">${place.name}</span><span class="map-pin-number">${i+1}</span></span></span><span class="place-list-label" aria-hidden="true">${ticketFrame('paper','row')}<b class="place-number">${i+1}</b><span>${place.name}</span><span class="place-chevron">›</span></span></summary><div id="place-info-${i}" class="place-inline"><h3>${pin}${place.name}</h3><p>${place.text}</p></div></details>`).join('')}</div><div class="world-map-footer" aria-hidden="true"><span class="world-map-signature">Our Summer<br>Never Ends.</span>${worldWaves}</div><span class="fold-corner" aria-hidden="true"></span></section><section class="world-reading">${worldPaper('reading')}${menuRail(`<div class="tab-row" role="tablist" aria-label="세계관 항목">${worldKeys.map((name,i)=>`<button type="button" role="tab" id="world-tab-${i}" data-world="${i}" aria-selected="${worldTab===i}" aria-controls="world-panel">${ticketFrame(worldTab===i?'blue':'paper','row')}<span>${name}</span></button>`).join('')}</div>`,'parent-menu')}<div class="world-reading-columns"><div class="world-copy"><div class="world-content${worldTab===0?' world-premise':''}" id="world-panel" role="tabpanel" aria-labelledby="world-tab-${worldTab}">${readingProse(sections[worldKeys[worldTab]])}${palm}</div><blockquote class="world-summer-note">Our Summer<br>Never Ends.</blockquote></div><aside class="world-context"><div class="world-pool-memento">${poolPhoto('world-pool-photo').replace('Our Summer<br>Never Ends.',places[4].name+waves)}${star}</div>${worldWaves}</aside></div><section class="world-notes"><h2>워터파크에 남은 이야기</h2>${menuRail(`<div class="world-note-tabs" role="tablist" aria-label="세계관 상세">${noteKeys.map((key,i)=>`<button type="button" role="tab" id="note-tab-${i}" data-note="${i}" aria-selected="${noteTab===i}" aria-controls="note-panel">${ticketFrame('paper','row')}<span>${key}</span></button>`).join('')}</div>`,'child-menu')}<div id="note-panel" role="tabpanel" aria-labelledby="note-tab-${noteTab}">${worldNotes(noteKeys[noteTab])}</div></section><span class="fold-corner" aria-hidden="true"></span></section></div></section>`;
   }
   function opening() {
     const title='<span class="scrap-title-line">졸업앨범을</span> <span class="scrap-title-line">펼친 밤</span>';
@@ -329,13 +345,13 @@
     dialog.showModal();
     dialog.querySelector('button').focus({preventScroll:true});
   }
-  const guideItemButtons = items => items.map(key=>`<button type="button" class="guide-item" data-guide="${escape(key)}" aria-current="${guideKey===key}">${ticketFrame('paper','row')}${escape(label(key))}</button>`).join('');
-  const guideItems = () => `<div class="guide-items">${guideItemButtons(guideGroups[guideGroup].items)}</div><div class="guide-pool" aria-hidden="true">${palm}${ladder}${waves}</div>`;
+  const guideItemButtons = items => items.map(key=>`<button type="button" class="guide-item" data-guide="${escape(key)}" aria-current="${guideKey===key}">${ticketFrame('paper','row')}<span>${escape(label(key))}</span></button>`).join('');
+  const guideItems = () => menuRail(`<div class="guide-items">${guideItemButtons(guideGroups[guideGroup].items)}</div>`,'child-menu');
   const guideTitle = key => escape(label(key))+(key==='모델 추천'?'<span class="guide-platform-label">ELYN</span>':'');
   const guidePlatformTabs = () => `<div class="guide-platform-tabs" role="tablist" aria-label="추천 설정 플랫폼">${['elyn','nody'].map(platform=>`<button type="button" role="tab" id="settings-tab-${platform}" data-settings-platform="${platform}" aria-selected="${settingsPlatform===platform}" aria-controls="settings-platform-content">${platform.toUpperCase()}</button>`).join('')}</div>`;
   const guideReading = () => `<header class="guide-context"><h2 id="guide-reading-title">${guideTitle(guideKey)}</h2>${guideKey==='추천 설정값'?guidePlatformTabs():''}</header><div class="guide-reading-body">${guideBody(guideKey)}</div>`;
   function guide() {
-    return `<section class="view guide-view mature-view modular-view">${heading('이용 가이드','Before You Dream')}<div class="guide-categories" role="tablist" aria-label="가이드 분류">${guideGroups.map((group,i)=>`<button type="button" role="tab" id="guide-group-${i}" data-guide-group="${i}" aria-selected="${guideGroup===i}" aria-controls="guide-item-directory">${group.title}</button>`).join('')}</div><div class="guide-layout"><aside id="guide-item-directory" class="guide-directory" role="tabpanel" aria-labelledby="guide-group-${guideGroup}" aria-label="가이드 항목">${guideItems()}</aside><article class="guide-content" id="guide-content" aria-labelledby="guide-reading-title" tabindex="0">${guideReading()}</article></div></section>`;
+    return `<section class="view guide-view mature-view modular-view">${heading('이용 가이드','Before You Dream')}${menuRail(`<div class="guide-categories" role="tablist" aria-label="가이드 분류">${guideGroups.map((group,i)=>`<button type="button" role="tab" id="guide-group-${i}" data-guide-group="${i}" aria-selected="${guideGroup===i}" aria-controls="guide-item-directory">${group.title}</button>`).join('')}</div>`,'parent-menu')}<div class="guide-layout"><aside id="guide-item-directory" class="guide-directory" role="tabpanel" aria-labelledby="guide-group-${guideGroup}" aria-label="가이드 항목">${guideItems()}</aside><article class="guide-content" id="guide-content" aria-labelledby="guide-reading-title" tabindex="0">${guideReading()}</article></div></section>`;
   }
   const screws = className => `<div class="${className}" aria-hidden="true">${'<i class="screw"></i>'.repeat(4)}</div>`;
   function playlist() {
@@ -372,18 +388,16 @@
       drawProfilePaper(document.getElementById('profile-panel'));
     }
     if(route==='world'){
-      sizeReadingViewport('#world-panel',{html:readingProse(sections[worldKeys[0]]),className:'world-content world-premise'},narrow?300:240);
-      sizeReadingViewport('#note-panel',worldNotes(noteKeys[0]),narrow?480:400);
+      // Ordinary world prose follows its natural document height.
       const map=main.querySelector('.native-map'),probe=document.createElement('div');
       probe.className='place-inline';Object.assign(probe.style,{position:'absolute',visibility:'hidden',pointerEvents:'none',width:`${map.clientWidth}px`,left:'0',top:'0'});map.append(probe);
       let height=0;for(const place of places){probe.innerHTML=`<h3>${pin}${escape(place.name)}</h3><p>${escape(place.text)}</p>`;height=Math.max(height,Math.ceil(parseFloat(getComputedStyle(probe).height)));}
       probe.remove();map.style.setProperty('--place-reading-height',`${height}px`);
     }
+    if(route==='world')syncMenuRails(true);
     if(route==='guide'){
       reservePanel('.guide-context>h2',guideGroups.flatMap(group=>group.items).map(guideTitle));
-      reservePanel('.guide-items',guideGroups.map(group=>guideItemButtons(group.items)));
-      const directory=main.querySelector('.guide-items');
-      main.querySelector('.guide-layout').style.setProperty('--guide-directory-height',`${Math.ceil(directory.getBoundingClientRect().height)}px`);
+      syncMenuRails(true);
     }
   }
   function mountStablePanels(){
@@ -412,6 +426,7 @@
     }
     main.innerHTML=(route==='intro'?'':`<div class="b-wide-stage b-${route}-stage" aria-hidden="true"></div>`)+views[route]();
     mountProfilePapers();
+
     mountStablePanels();
     document.body.dataset.page=route;
     document.title=`${titles[route]} | 브렌든 헤일`;
@@ -490,6 +505,7 @@
       main.querySelectorAll('.compact-reader,.guide-content').forEach(panel=>{panel.scrollTop=0;});
       window.scrollTo({top:0,behavior:'instant'});
     }
+    if(button.hasAttribute('data-rail-step')){button.closest('.menu-rail').children[1].scrollBy({left:Number(button.dataset.railStep)*180,behavior:'smooth'});}
     if(button.hasAttribute('data-nav-step'))document.getElementById('main-navigation').scrollBy({left:Number(button.dataset.navStep)*180,behavior:'smooth'});
     if(button.hasAttribute('data-guide-group')){
       guideGroup=Number(button.dataset.guideGroup);guideKey=guideGroups[guideGroup].items[0];
@@ -511,11 +527,11 @@
     }
     if(button.hasAttribute('data-world')){
       worldTab=Number(button.dataset.world);document.querySelectorAll('[data-world]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
-      const panel=document.getElementById('world-panel');panel.innerHTML=readingProse(sections[worldKeys[worldTab]]);panel.scrollTop=0;panel.classList.toggle('world-premise',worldTab===0);panel.setAttribute('aria-labelledby',button.id);
+      const panel=document.getElementById('world-panel');panel.innerHTML=readingProse(sections[worldKeys[worldTab]]);panel.scrollTop=0;panel.classList.toggle('world-premise',worldTab===0);panel.setAttribute('aria-labelledby',button.id);syncMenuRails(true);
     }
     if(button.hasAttribute('data-note')){
       noteTab=Number(button.dataset.note);document.querySelectorAll('[data-note]').forEach(tab=>tab.setAttribute('aria-selected',tab===button));
-      const panel=document.getElementById('note-panel');panel.innerHTML=worldNotes(noteKeys[noteTab]);panel.scrollTop=0;panel.setAttribute('aria-labelledby',button.id);
+      const panel=document.getElementById('note-panel');panel.innerHTML=worldNotes(noteKeys[noteTab]);panel.scrollTop=0;panel.setAttribute('aria-labelledby',button.id);syncMenuRails(true);
     }
     if(button.hasAttribute('data-guide')){
       guideKey=button.dataset.guide;
