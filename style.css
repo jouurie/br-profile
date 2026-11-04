@@ -2620,3 +2620,14 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 @media(max-width:350px){.intro-palm-sticker{left:-8px;top:4px;width:53px;height:73px}.intro-pool-mark{width:44px;height:42px}}
 
 .intro-ticket .ticket-pool:before{display:none}
+
+/* Scoped action anatomy: preserve each existing surface and group label/icon. */
+.mature-view .opening-read{justify-content:center;gap:8px}
+.opening-read>svg,.opening-setup .button>span>svg{width:16px;height:16px;flex:0 0 16px}
+.mature-view .opening-setup .button{justify-content:center}
+.opening-setup .button>span{justify-content:center;gap:8px}
+.mature-view .track-external>svg{width:18px;height:18px;flex:0 0 18px}
+/* The overlay sits after the scenery, before both portrait and paper backing. */
+.intro-scene-dim{position:absolute;inset:0;background:var(--navy);opacity:.15;pointer-events:none}
+/* Keep the original escaped prose; the faint cyan band touches only glyph bottoms. */
+.opening-user{background:linear-gradient(transparent 64%,color-mix(in srgb,var(--cyan) 10%,transparent) 64% 92%,transparent 92%);box-decoration-break:clone;-webkit-box-decoration-break:clone}
