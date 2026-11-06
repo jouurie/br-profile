@@ -718,10 +718,6 @@ html{scroll-padding-bottom:calc(48px + env(safe-area-inset-bottom,0px))}
 .profile-metadata{font-size:11px}
 .guide-item{font-size:14px;padding-inline:12px}
 }
-@media(prefers-reduced-motion:reduce){
-button{transition:none}
-a{transition:none}
-}
 @media(forced-colors:active){
 html{scrollbar-color:auto}
 .album-panel{scrollbar-color:auto}
@@ -2035,11 +2031,6 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .playlist-view .track-title-text,.playlist-view .track-title-copy{flex:none;white-space:nowrap}
 .playlist-view .track-title-copy{display:block}
 .playlist-view .mixtape-console .cassette-art-title{font:400 18px/1 Bangers,system-ui,sans-serif;top:22%;}
-@media(prefers-reduced-motion:reduce){
- .playlist-view .mixtape-console .track-current{overflow-x:auto;scrollbar-width:none}
- .playlist-view .track-current::-webkit-scrollbar{display:none}
- .playlist-view .track-title-copy{display:none}
-}
 .playlist-view .mixtape-console .range-row{margin:0;gap:8px;color:var(--navy)}
 .playlist-view .mixtape-console .seek-time{font:400 12px/1.4 var(--body);font-variant-numeric:tabular-nums}
 .playlist-view .mixtape-console .range-row input{height:32px;accent-color:var(--blue)}

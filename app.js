@@ -446,13 +446,12 @@
   }
 
   const music = {index:0, player:null, loading:null, pending:false, request:0, playing:false, repeatOne:false, volume:65, lastVolume:65, elapsed:0, duration:0, message:''};
-  const tickerMotion=matchMedia('(prefers-reduced-motion: reduce)');
   const tickerHover=matchMedia('(hover: hover) and (pointer: fine)');
   let trackTicker;
   function syncTrackTicker(){
     if(!trackTicker)return;
     const {node,animation}=trackTicker;
-    const running=music.playing&&node.isConnected&&!document.hidden&&trackTicker.visible&&!tickerMotion.matches&&!trackTicker.hovered&&document.activeElement!==node;
+    const running=music.playing&&node.isConnected&&!document.hidden&&trackTicker.visible&&!trackTicker.hovered&&document.activeElement!==node;
     if(animation){if(running)animation.play();else animation.pause();}
   }
   function measureTrackTicker(){
@@ -460,7 +459,7 @@
     const {node}=trackTicker, text=node.querySelector('.track-title-text'), belt=node.querySelector('.track-title-belt');
     if(!text)return;
     const width=text.getBoundingClientRect().width, viewport=node.clientWidth;
-    const signature=`${text.textContent}|${width}|${viewport}|${tickerMotion.matches}`;
+    const signature=`${text.textContent}|${width}|${viewport}`;
     if(signature===trackTicker.signature)return;
     trackTicker.signature=signature;
     trackTicker.animation?.cancel();trackTicker.animation=null;node.scrollLeft=0;
@@ -468,7 +467,7 @@
     node.classList.toggle('is-overflowing',overflowing);
     const gap=Math.max(32,viewport-width+32);
     belt.style.gap=`${gap}px`;
-    if(!tickerMotion.matches){
+    {
       const distance=width+gap, travel=distance/28*1000, hold=1400;
       trackTicker.animation=belt.animate([
         {transform:'translateX(0)',offset:0},
@@ -490,7 +489,6 @@
     measureTrackTicker();
     document.fonts.ready.then(()=>{if(trackTicker?.node===node)measureTrackTicker();});
   }
-  tickerMotion.addEventListener('change',measureTrackTicker);
   document.addEventListener('visibilitychange',syncTrackTicker);
   function message(text='') { music.message=text;const node=document.getElementById('music-message');if(node){node.textContent=text;node.hidden=!text;} }
   function time(ms) { const seconds=Math.max(0,Math.floor(ms/1000));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`; }
