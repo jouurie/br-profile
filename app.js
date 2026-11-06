@@ -466,8 +466,10 @@
     trackTicker.animation?.cancel();trackTicker.animation=null;node.scrollLeft=0;
     const overflowing=width>viewport+1;
     node.classList.toggle('is-overflowing',overflowing);
-    if(overflowing&&!tickerMotion.matches){
-      const distance=width+32, travel=distance/28*1000, hold=1400;
+    const gap=Math.max(32,viewport-width+32);
+    belt.style.gap=`${gap}px`;
+    if(!tickerMotion.matches){
+      const distance=width+gap, travel=distance/28*1000, hold=1400;
       trackTicker.animation=belt.animate([
         {transform:'translateX(0)',offset:0},
         {transform:'translateX(0)',offset:hold/(travel+hold)},

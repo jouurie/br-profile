@@ -2033,13 +2033,13 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .playlist-view .mixtape-console .track-current:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
 .playlist-view .track-title-belt{display:flex;align-items:center;flex:none;width:max-content;gap:32px}
 .playlist-view .track-title-text,.playlist-view .track-title-copy{flex:none;white-space:nowrap}
-.playlist-view .track-title-copy{display:none}
+.playlist-view .track-title-copy{display:block}
 .playlist-view .is-overflowing .track-title-copy{display:block}
 .playlist-view .mixtape-console .cassette-art-title{font:400 18px/1 Bangers,system-ui,sans-serif;top:22%;}
 @media(prefers-reduced-motion:reduce){
  .playlist-view .mixtape-console .track-current{overflow-x:auto;scrollbar-width:none}
  .playlist-view .track-current::-webkit-scrollbar{display:none}
- .playlist-view .is-overflowing .track-title-copy{display:none}
+ .playlist-view .track-title-copy{display:none}
 }
 .playlist-view .mixtape-console .range-row{margin:0;gap:8px;color:var(--navy)}
 .playlist-view .mixtape-console .seek-time{font:400 12px/1.4 var(--body);font-variant-numeric:tabular-nums}
