@@ -221,7 +221,7 @@
     }
     if (key === '추가 요약 지침') {
       const [location, ...body] = text.split('\n\n');
-      return guideDocument(guidePath(location) + copyUnit(body.join('\n\n'), key,'지침 복사'));
+      return guideDocument(guideSection('ELYN',guidePath(location)+copyUnit(body.join('\n\n'),key,'지침 복사'))+guideSection('NODY · 공통 요약 방식',guidePath('채팅방 설정 → 기억 → 장기기억 설정 → 요약 방식')+guideNote('모든 캐릭터에 공통으로 쓰는 문구입니다. 다음 요약부터 적용됩니다.')+copyUnit(data.nodyMemory,'NODY 공통 요약 방식','지침 복사')));
     }
     if (key === '상태창') {
       return guideDocument(text.split(/(?=^▸ )/m).filter(part=>part.trim()).map(part=>{
