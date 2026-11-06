@@ -2539,6 +2539,8 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .intro-ticket .admission-button{font-size:30px}
 }
 @media(min-width:1201px){
+ /* Preserve the approved 2060px composition; extra-wide space grows on both sides. */
+ .intro-stage{max-width:1813px;margin-inline:auto}
  .intro-ticket{left:clamp(0px,calc((100vw - 1200px)*.25),180px)}
 }
 @media(min-width:601px) and (max-width:1200px){
