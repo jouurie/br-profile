@@ -2058,7 +2058,7 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .playlist-view.mature-view .track-external{align-self:stretch;display:flex;align-items:center;justify-content:center;min-height:44px}
 .playlist-view.mature-view .track-list li:has(.track-pick:hover),.playlist-view.mature-view .track-pick.b-touch-pressed{background:var(--cyan);color:var(--navy)}
 @container (max-width:680px){
- .playlist-view.mature-view .mixtape-console{grid-template-columns:minmax(0,1fr);gap:12px;padding:14px 12px 40px;border-radius:27px}
+ .playlist-view.mature-view .mixtape-console{grid-template-columns:minmax(0,1fr);gap:16px;padding:20px 20px 44px;border-radius:27px}
  .playlist-view .mixtape-console .deck-window{width:min(100%,290px);justify-self:center}
  .playlist-view .mixtape-console .console-controls{width:100%}
  .playlist-view .mixtape-console .player-controls{gap:5px}
@@ -2067,8 +2067,10 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .playlist-view.mature-view .track-list li,.playlist-view.mature-view .track-pick{min-height:68px}
 }
 @container (max-width:350px){
- .playlist-view.mature-view .mixtape-console{padding-inline:8px}
- .playlist-view .mixtape-console .player-controls{gap:1px}
+ .playlist-view.mature-view .mixtape-console{padding-inline:20px}
+ .playlist-view .mixtape-console .player-controls{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+ .playlist-view .mixtape-console .player-controls>*{grid-column:span 2}
+ .playlist-view .mixtape-console .player-controls>:nth-child(n+4){grid-column:span 3}
  .playlist-view .mixtape-console .player-controls button{border-radius:10px}
  .playlist-view .mixtape-console .console-display{padding-inline:7px}
  .playlist-view .mixtape-console .track-current{min-height:36px}
@@ -2240,8 +2242,9 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .opening-full-text{font-size:13px;line-height:1.9}
 .playlist-view.modular-view .mixtape-console .track-current{font-size:13px}
 .playlist-view.modular-view .track-pick,.playlist-view.modular-view .track-pick>span,.playlist-view.modular-view .track-pick strong,.playlist-view.modular-view .track-song{font-size:13px;line-height:1.65}
-.modular-view .section-heading :is(.scrap-title,.opening-display){font-size:var(--page-title);line-height:1.3;letter-spacing:0}
-.modular-view .section-heading :is(.english,.world-english,.opening-english){margin-top:8px;font-size:16px}
+.modular-view .section-heading{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.modular-view .section-heading :is(.scrap-title,.opening-display){flex:0 1 auto;font-size:var(--page-title);line-height:1.3;letter-spacing:0}
+.modular-view .section-heading :is(.english,.world-english,.opening-english){flex:0 0 auto;display:inline-block;margin:0;font-size:12px;line-height:1.5}
 
 /* Home: the two actions precede the pool, with the portrait and its quote paired. */
 .modular-view .home-book-hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px 24px}
@@ -2405,6 +2408,8 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 .guide-view.modular-view .guide-layout{display:block;height:auto;min-height:0}
 .guide-view.modular-view .guide-directory{height:auto;min-height:0}
 .guide-view.modular-view .guide-items{min-height:48px!important}
+.guide-view.modular-view .parent-menu>:nth-child(2)>button{font-size:14px;padding-inline:10px}
+.guide-view.modular-view .child-menu>:nth-child(2)>button{font-size:13px;padding-inline:12px}
 .guide-view.modular-view .guide-content{height:auto;max-height:none;min-height:0;padding:0 0 8px;overflow:visible;scrollbar-gutter:auto;overscroll-behavior:auto}
 .guide-view.modular-view .guide-context{position:static;margin:0 0 12px;padding:0 0 8px}
 .world-view.modular-view :is(#world-panel,#note-panel){height:auto;max-height:none;min-height:0;overflow:visible;padding-right:0}
