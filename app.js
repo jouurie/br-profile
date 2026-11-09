@@ -131,7 +131,7 @@
   const guideNote = text => `<p class="guide-note">${guideText(text)}</p>`;
   const guideList = lines => `<ul class="guide-list">${lines.map(line=>`<li>${guideText(line)}</li>`).join('')}</ul>`;
   function guideRows(rows, kind='settings') {
-    return `<dl class="guide-rows guide-${kind}">${rows.map(row=>`<div class="guide-row"><dt>${subjectLabel(guideText(row.term))}</dt><dd><p>${guideText(row.value)}</p>${(row.notes||[]).map(guideNote).join('')}</dd></div>`).join('')}</dl>`;
+    return `<dl class="guide-rows guide-${kind}">${rows.map(row=>`<div class="guide-row${row.value.length>26||(row.notes||[]).some(note=>note.length>36)?' guide-row-wide':''}"><dt>${subjectLabel(guideText(row.term))}</dt><dd><p>${guideText(row.value)}</p>${(row.notes||[]).map(guideNote).join('')}</dd></div>`).join('')}</dl>`;
   }
   function guideBlocks(text, nested=false) {
     const lines=text.split('\n').filter(line=>line.trim());

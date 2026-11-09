@@ -2465,7 +2465,8 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
 @container br-host (max-width:650px){
  .world-view.modular-view .world-context{order:-1}
  .modular-view .menu-rail>:nth-child(2)>button{padding-inline:12px}
- .modular-view .guide-document.guide-settings-elyn,.modular-view .guide-document .guide-rows:not(.guide-commands){grid-template-columns:minmax(0,1fr)}
+ .modular-view .guide-document.guide-settings-elyn{grid-template-columns:minmax(0,1fr)}
+ .modular-view .guide-document .guide-rows:not(.guide-commands){grid-template-columns:repeat(2,minmax(0,1fr))}
  .modular-view .guide-context{row-gap:8px}
 }
 
@@ -2648,10 +2649,13 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .opening-view .opening-album-sign .smile-mark{width:24px;height:24px}
 }
 
-/* Commands retain their own readable 3/2/1 column ladder. */
+/* Short mobile peers remain paired; longer explanations own the full row. */
 @container br-host (max-width:660px){
  .modular-view .guide-document .guide-commands{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@container br-host (max-width:440px){
- .modular-view .guide-document .guide-commands{grid-template-columns:minmax(0,1fr)}
+@container br-host (max-width:650px){
+ .modular-view .guide-document .guide-rows{column-gap:16px}
+ .modular-view .guide-document .guide-row-wide,.modular-view .guide-document .guide-row:only-child{grid-column:1/-1}
+ .modular-view .guide-settings-elyn .guide-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--read-peer) 16px}
+ .modular-view .guide-settings-elyn .guide-list>li+li{margin-top:0}
 }
