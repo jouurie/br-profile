@@ -2647,3 +2647,10 @@ body:not([data-page=intro]) .site-footer{border-top:1px solid var(--blue);box-sh
  .opening-view .opening-album-message{gap:8px}
  .opening-view .opening-album-sign .smile-mark{width:24px;height:24px}
 }
+
+/* Guide heading roles, 2026-11-09. */
+.modular-view .guide-document :is(.guide-section,.guide-group)>h4{font:600 14px/1.65 var(--label)}
+.modular-view .guide-document .guide-row dt{font:500 14px/1.8 var(--label)}
+
+.modular-view .guide-document .guide-section .guide-section>h4{font-weight:600}
+.modular-view .guide-document>.guide-group>h3{font-size:15px}

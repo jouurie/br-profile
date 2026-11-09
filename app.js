@@ -156,7 +156,7 @@
         // Notes naming another setting explain this section, not the final table value.
         const sectionNotes=[];
         entries.forEach(entry=>{entry.notes=entry.notes.filter(note=>{
-          if(note.startsWith('기본 ')||note.startsWith('설명이 길어지면')){sectionNotes.push(note);return false;}
+          if((note.startsWith('높음은 ')&&entries.some(other=>other.value.startsWith('응답 품질:')))||note.startsWith('기본 ')||note.startsWith('설명이 길어지면')){sectionNotes.push(note);return false;}
           if(entries.some(other=>{if(other===entry||!other.value.includes(': '))return false;const term=other.value.split(': ')[0];return note.startsWith(term+'은 ')||note.startsWith(term+'는 ');})){sectionNotes.push(note);return false;}
           return true;
         });});
@@ -176,6 +176,7 @@
     }
     return html;
   }
+  function conciseSettings(text){return text.replace("응답 품질은 답변 전에 점검할 항목 수를 정하는 설정입니다. 노디 안내에 따르면 낮음은 3개, 보통은 4개, 높음은 5개입니다. 모델 자체의 추론 예산과는 다릅니다. 설정과 앞선 대화를 더 꼼꼼히 확인하도록 모든 모델에 높음을 권장합니다. 답변이 느려지거나 캐시 사용량이 늘 수 있습니다.","높음은 답변이 느려지거나 캐시 사용량이 늘 수 있습니다.").replace("↳ 로어북 예산은 설정창에 넣는 값입니다. 브렌든 패키지의 실제 크기나 꼭 필요한 분량을 뜻하지는 않습니다.\n","").replace("↳ 가이던스 내용은 [ 출력 가이던스 ] 항목 참고.\n","");}
   function guideSettings(text) {
     // NODY has two real setting locations, with subject headings nested beneath each.
     if(settingsPlatform!=='nody')return text.split(/(?=^▸ )/m).filter(part=>part.trim()).map(part=>{
@@ -203,7 +204,7 @@
     }
     if (key === '추천 설정값') {
       const selected = settingsPlatform === 'elyn' ? text : data.nodySettings;
-      return `<div id="settings-platform-content" role="tabpanel" aria-labelledby="settings-tab-${settingsPlatform}">${guideDocument(guideSettings(selected),'settings-'+settingsPlatform)}<div class="copy-unit settings-copy"><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(selected)}" aria-label="${settingsPlatform.toUpperCase()} 추천 설정값 전체 복사">설정값 복사</button></div></div></div>`;
+      return `<div id="settings-platform-content" role="tabpanel" aria-labelledby="settings-tab-${settingsPlatform}">${guideDocument(guideSettings(conciseSettings(selected)),'settings-'+settingsPlatform)}<div class="copy-unit settings-copy"><div class="copy-action"><span class="copy-result" role="status"></span><button type="button" data-copy="${escape(selected)}" aria-label="${settingsPlatform.toUpperCase()} 추천 설정값 전체 복사">설정값 복사</button></div></div></div>`;
     }
     if (key === '출력 가이던스') {
       const split = text.split('▸ ');
