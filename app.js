@@ -416,7 +416,10 @@
     stableWidthObserver.observe(view);
     document.fonts.ready.then(()=>{if(view.isConnected)sizeStablePanels();});
   }
+  let renderedRoute = null, routeEntrance = null;
   function render() {
+    const previousRoute = renderedRoute;
+    routeEntrance?.cancel();routeEntrance=null;
     openingDialog?.close(false);
     const [candidate, rawKey] = location.hash.slice(1).split('/');
     route = routes.includes(candidate) ? candidate : 'intro';
@@ -444,6 +447,19 @@
     mountTrackTicker();
     window.scrollTo({top:0,behavior:'instant'});
     if(route==='guide'&&rawKey)requestAnimationFrame(()=>document.getElementById('guide-content').scrollIntoView({block:'start',behavior:'instant'}));
+    renderedRoute=route;
+    if(previousRoute!==null&&previousRoute!==route){
+      const view=main.querySelector('.view,.intro-view');
+      if(view){
+        const direction=Math.sign(routes.indexOf(route)-routes.indexOf(previousRoute));
+        const animation=view.animate([
+          {opacity:0,transform:`translate3d(${direction*16}px,0,0)`},
+          {opacity:1,transform:'translate3d(0,0,0)'}
+        ],{duration:220,easing:'cubic-bezier(.22,.61,.36,1)',fill:'none'});
+        routeEntrance=animation;
+        animation.onfinish=()=>{if(routeEntrance===animation)routeEntrance=null;};
+      }
+    }
   }
 
   const music = {index:0, player:null, loading:null, pending:false, request:0, playing:false, repeatOne:false, volume:65, lastVolume:65, elapsed:0, duration:0, message:''};
