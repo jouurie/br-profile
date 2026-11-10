@@ -1,0 +1,123 @@
+/* 2026-11 refresh. style.css · tropical.css 뒤에 불러온다.
+   1) 넓은 화면(1100px 이상): 종이 폭을 넓히고, 양옆 야자수를 "화면 가장자리와 종이 사이 여백의 한가운데"에
+      세운다. 예전에는 화면 중앙에서 ±835px 떨어진 자리에 고정돼 있어서, 표시 폭이 1100px 로 묶이는
+      플랫폼에서는 나무 대부분이 화면 밖으로 나갔다.
+   2) 글자 계층: 화면 제목 › 구역 제목 › 소제목 › 본문 › 주석.
+   3) 새 그림 자리(.image-slot). */
+
+/* ---------- 1. 판형 ---------- */
+:root{--shell:770px;--palm-k:1}
+@media(min-width:851px){:root{--palm-k:.5}}
+@media(min-width:1100px){:root{--shell:860px;--palm-k:.62}}
+@media(min-width:1280px){:root{--shell:880px;--palm-k:.8}}
+@media(min-width:1480px){:root{--shell:900px;--palm-k:1}}
+.mature-view{width:min(100%,var(--shell))}
+
+/* ---------- 2. 양옆 야자수 ----------
+   야자수 그림(가로 600 기준)에서 큰 나무의 잎 중심은 x=250. 그 점을 여백 한가운데에 맞춘다.
+   --gutter-mid = (화면 폭 − 종이 폭) / 4
+   표시 폭이 1100px 에 조금 못 미치는 틀(안쪽 여백이 있는 플랫폼)에서도 같은 식으로 선다. */
+@media(min-width:851px){
+  body:not([data-page="intro"]) .b-wide-stage{
+    --gutter-mid:calc((100% - var(--shell)) / 4);
+    --lh:1000; --rh:910; --lt:-75; --rt:35;
+    --left-height:calc(var(--lh) * var(--palm-k) * 1px);
+    --right-height:calc(var(--rh) * var(--palm-k) * 1px);
+    --left-top:calc(var(--lt) * var(--palm-k) * 1px + 40px * (1 - var(--palm-k)));
+    --right-top:calc(var(--rt) * var(--palm-k) * 1px + 40px * (1 - var(--palm-k)));
+    --left-x:calc(var(--gutter-mid) - var(--left-height) * .2383);
+    --right-x:calc(100% - var(--gutter-mid) - var(--right-height) * .3337);
+  }
+  body[data-page="profile"] .b-wide-stage{--lh:1070;--lt:-105;--rh:650;--rt:305}
+  body[data-page="world"] .b-wide-stage{--lh:900;--lt:30;--rh:1000;--rt:-45}
+  body[data-page="opening"] .b-wide-stage{--lh:1050;--lt:-165;--rh:760;--rt:175}
+  body[data-page="guide"] .b-wide-stage{--lh:1070;--lt:-95;--rh:1010;--rt:-10}
+  body[data-page="playlist"] .b-wide-stage{--lh:760;--lt:155;--rh:820;--rt:105}
+}
+
+/* ---------- 3. 글자 계층 ---------- */
+.view.modular-view{
+  --page-title:38px;      /* 화면 제목 h1 */
+  --section-title:22px;   /* 구역 제목 */
+  --reading-label:16.5px; /* 소제목 */
+  --reading-body:15px;    /* 본문 */
+  --reading-note:12.5px;  /* 주석 */
+}
+.guide-view.view.modular-view{--guide-body:15px;--guide-note:12.5px;--guide-payload:13px}
+@container br-host (max-width:650px){
+  .view.modular-view{--page-title:30px;--section-title:20px;--reading-label:16px;--reading-body:14.5px;--reading-note:12px}
+  .guide-view.view.modular-view{--guide-body:14.5px;--guide-note:12px;--guide-payload:12.5px}
+}
+
+/* 구역 제목: 남색 굵은 글씨 + 파란 괘선. 소제목(파랑)과 색을 달리해 한 단 위임을 보인다 */
+.view.modular-view :is(.profile-body>h3,.world-notes>h2,.opening-guide>h2,.guide-context>h2,.intro-paper>h2){
+  font:600 var(--section-title)/1.4 var(--label);color:var(--navy);letter-spacing:-.01em;
+}
+.view.modular-view :is(.profile-body>h3,.world-notes>h2,.opening-guide>h2,.intro-paper>h2){
+  padding-bottom:10px;margin-bottom:16px;border-bottom:2px solid var(--blue);
+}
+.view.modular-view .guide-context{border-bottom:2px solid var(--blue)}
+
+/* 소제목: 파랑, 본문보다 한 단 크게 */
+.view.modular-view .reading-row>h4,
+.view.modular-view .guide-document :is(h3,h4,dt){font-size:var(--reading-label);line-height:1.55}
+.view.modular-view .guide-document>.guide-group>h3{font-size:calc(var(--reading-label) + 2px);color:var(--navy);border-bottom-width:1px}
+.view.modular-view .guide-document .guide-group>h4,
+.view.modular-view .guide-document .guide-row dt,
+.view.modular-view .guide-document .guide-tips dt{font-size:calc(var(--reading-label) - 1px);line-height:1.6}
+.view.modular-view .place-inline h3{font-size:calc(var(--reading-label) + 2px)}
+
+/* 본문 · 주석 · 붙여 넣는 글 */
+.view.modular-view :is(.prose,.prose li,.world-content,.opening-guide .prose),
+.view.modular-view .reading-value>p,.view.modular-view .reading-value>ul{font-size:var(--reading-body);line-height:1.8}
+.view.modular-view .copy-unit pre{font-size:var(--guide-payload,13px);line-height:1.85}
+.opening-full-text{font-size:15px;line-height:1.9}
+.view.modular-view .tag{font-size:calc(var(--reading-body) - 1px)}
+.view.modular-view .section-heading :is(.english,.world-english,.opening-english){font-size:13px;letter-spacing:.04em}
+
+/* 메뉴 · 탭 · 단추: 본문과 같은 눈높이 */
+.view.modular-view .profile-tabs button{font-size:15.5px}
+.view.modular-view .world-note-tabs button{font-size:15px}
+.view.modular-view .menu-rail>:nth-child(2)>button{font-size:15px}
+.view.modular-view .parent-menu>:nth-child(2)>button{font-size:16px}
+.guide-view.view.modular-view .parent-menu>:nth-child(2)>button{font-size:15.5px}
+.guide-view.view.modular-view .child-menu>:nth-child(2)>button{font-size:14.5px}
+.view.modular-view .disclosure-buttons button{font-size:15px}
+.view.modular-view .guide-context .guide-platform-label{font-size:13px}
+
+/* 플레이리스트 */
+.playlist-view.view.modular-view .mixtape-console .track-current{font-size:14.5px}
+.playlist-view.view.modular-view :is(.track-pick,.track-pick>span,.track-pick strong,.track-song){font-size:15px;line-height:1.6}
+.view.modular-view .track-list-title{font-size:24px;letter-spacing:.04em}
+
+/* 홈 */
+.view.modular-view .home-book-genre{font-size:13px;letter-spacing:.06em}
+.view.modular-view .home-book-story h2{font-size:28px;line-height:1.35}
+.view.modular-view .home-book-story>p{font-size:16.5px}
+.view.modular-view .profile-title{font-size:var(--page-title)}
+
+@media(min-width:1100px){
+  .view.modular-view .home-book-identity h1{font-size:84px}
+  .view.modular-view .home-book-name{font-size:26px}
+  .view.modular-view .home-book-hero{gap:24px 36px}
+  .mature-view{padding:32px 32px 36px}
+}
+@container br-host (max-width:650px){
+  .view.modular-view .home-book-story h2{font-size:24px}
+  .view.modular-view .home-book-story>p{font-size:15px}
+  .view.modular-view .profile-title{font-size:30px}
+  .view.modular-view .track-list-title{font-size:21px}
+}
+
+/* ---------- 4. 새 그림 자리 ----------
+   그림이 아직 없는 사진 칸. 폴라로이드 틀은 그대로 두고, 사진 자리에 설명 글을 적어 둔다. */
+.image-slot .image-slot-frame{
+  display:grid;align-content:center;justify-items:center;gap:8px;aspect-ratio:3/2;padding:14px;text-align:center;
+  color:var(--navy);
+  background:
+    repeating-linear-gradient(135deg,transparent 0 9px,color-mix(in srgb,var(--blue) 12%,transparent) 9px 10px),
+    color-mix(in srgb,var(--cyan) 18%,var(--paper));
+  border:1px dashed var(--blue);
+}
+.image-slot .image-slot-frame>b{font:400 13px/1 Bangers,sans-serif;letter-spacing:.12em;color:var(--blue)}
+.image-slot .image-slot-frame>span{font:400 12.5px/1.6 var(--body);word-break:keep-all}

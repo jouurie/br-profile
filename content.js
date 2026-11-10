@@ -139,3 +139,20 @@ window.BRENDAN_CONTENT = {
     "sha256": "d00ef0422757425eeb86ed2b6af81ff5195a04a913f5f5442f0aac3e7966a1e0"
   }
 };
+
+// 새 그림 자리. src 가 비어 있는 동안에는 note 가 사진 대신 보인다.
+// 그림을 넣을 때는 assets/ 에 파일을 두고 src 만 채우면 된다. 생성용 프롬프트는 IMAGE-SLOTS.md.
+window.BRENDAN_CONTENT.imageSlots = {
+  worldDream: {
+    src: '',
+    caption: '락커룸',
+    alt: '불 꺼진 락커룸의 파란 사물함',
+    note: '불 꺼진 락커룸. 줄지은 파란 사물함 가운데 문 하나만 열려 있고, 젖은 타일에 수영장 물빛이 일렁인다.'
+  },
+  worldWake: {
+    src: '',
+    caption: '직원 복도',
+    alt: '직원 복도 끝의 출구 표시등',
+    note: '직원 복도 끝, 초록 출구 표시등. 닫힌 문틈으로 현실의 아침빛이 가늘게 새어 든다.'
+  }
+};
