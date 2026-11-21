@@ -11,6 +11,18 @@
   <link rel="preload" href="fonts/A2z-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/Cafe24Ohsquare.woff" as="font" type="font/woff" crossorigin>
   <link rel="preload" href="fonts/Bangers-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <script>
+    const initialView = location.hash.slice(1).split("/")[0];
+    if (!initialView || initialView === "intro") {
+      const hero = document.createElement("link");
+      hero.rel = "preload";
+      hero.as = "image";
+      hero.href = "assets/waterpark.png";
+      hero.type = "image/png";
+      hero.fetchPriority = "high";
+      document.head.append(hero);
+    }
+  </script>
   <link rel="stylesheet" href="style.css?v=20261109-guide-mobile-pairs">
   <link rel="stylesheet" href="tropical.css?v=1b9d639f6f58">
   <script defer src="content.js?v=20261112-c6bb44bcdc13"></script>
